@@ -18,6 +18,11 @@ const ForgotPassword = lazy(() => import('../pages/auth/ForgotPassword'));
 const DefaultLayout = lazy(() => import('../layouts/DefaultLayout'));
 
 import {loadEquipment} from '../utils/loaders';
+
+// Error Page
+const ErrorPage = lazy(() => import('../pages/other/ErrorPage'));
+
+
 // Router
 export const router = createBrowserRouter([
     // Public Route
@@ -25,6 +30,7 @@ export const router = createBrowserRouter([
         path: '/visitor',
         element: <Visitor />,
         loader: loadEquipment, 
+        errorElement: <ErrorPage />,
     },
     {
         path:'/login',
