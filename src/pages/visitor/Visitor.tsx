@@ -1,11 +1,16 @@
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigation } from "react-router-dom";
 // import components  
 import Dropdown from "@/components/ui/Dropdown";
 import Input from "@/components/ui/Input";
 import EquipmentCard from "@/components/ui/EquipmentCard";
-
+import LoadingPage from '@/components/ui/LoadingPage';
 const Visitor = () => {
     const data = useLoaderData() as { equipment: any[] };
+    const navigation = useNavigation();
+
+  if (navigation.state === "loading") {
+    return <LoadingPage />; // Your loading indicator component
+  }
     return (
         <div className="p-4 bg-gray-100">
             <div className="flex justify-between mb-4">

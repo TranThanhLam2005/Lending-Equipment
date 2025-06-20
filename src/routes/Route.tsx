@@ -14,10 +14,14 @@ const BrowseCourse = lazy(() => import('../pages/student/BrowseCourse'));
 const Visitor = lazy(() => import('../pages/visitor/Visitor'));
 const Login = lazy(() => import('../pages/auth/Login'));
 const ForgotPassword = lazy(() => import('../pages/auth/ForgotPassword'));
+
 // Layouts
 const DefaultLayout = lazy(() => import('../layouts/DefaultLayout'));
 
-import {loadEquipment} from '../utils/loaders';
+
+// Components
+
+import {loadEquipment, studentDashboardLoader, studentCourseLoader} from '../utils/loaders';
 
 // Error Page
 const ErrorPage = lazy(() => import('../pages/other/ErrorPage'));
@@ -49,19 +53,12 @@ export const router = createBrowserRouter([
             {
                 index: true,
                 element: <StudentDashBoard />,
-                //errorElement: <ErrorPage />, 
-                // loader: async () => {
-                //     const res = await fetch('/api/dashboard');
-                //     return res.json();
-                // },
+                loader: studentDashboardLoader,
             },
             {
                 path: '/student_course',
                 element: <StudentCourse />,
-                // loader: async () => {
-                //     const res = await fetch('/api/courses');
-                //     return res.json();
-                // },
+                loader: studentCourseLoader,
             },
             {
                 path: '/student_equipment',

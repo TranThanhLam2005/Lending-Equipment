@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/Button";
 import LoginForm from '@/components/ui/LoginForm'
-import { Link } from "react-router-dom";
-import { Eye } from "lucide-react";
-
+import { Link, useNavigate } from "react-router-dom";
+import { Eye, TriangleAlert, AlertTriangle } from "lucide-react";
 import Logo from '@/assets/Rmit.png';
 import FacebookIcon from '@/assets/facebook.png';
 import GoogleIcon from '@/assets/google.webp';
@@ -12,35 +11,104 @@ const Login = () => {
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(true);
+    const [usernameCheck, setUCheck] = useState("");
+    const [passwordCheck, setPCheck] = useState("");
+    const [loading, setLoading] = useState(false);
+
+    const [error, setError] = useState("");
+    const navigate = useNavigate();
+
+
+    const validateUsername = (value: string) => {
+        if (value.length === 0) return "Username is required";
+        return "";
+    }
+    const validatePassword = (value: string) => {
+        if (value.length === 0) return "Password is required";
+        return "";
+    }
+    const handleUsernameChange = (value: string) => {
+        setUserName(value);
+        if (value.length > 0) {
+            setUCheck("");
+        }
+    }
+    const handlePasswordChange = (value: string) => {
+        setPassword(value);
+        if (value.length > 0) {
+            setPCheck("");
+        }
+    }
+    const handleUsernameBlur = () => {
+        setUCheck(validateUsername(userName));
+    }
+    const handlePasswordBlur = () => {
+        setPCheck(validatePassword(password));
+    }
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            login();
+        }
+    }
 
 
     const login = async () => {
-        try {
-            const response = await fetch('http://192.168.1.8:3000/auth/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                credentials: 'include', // 👈 Important for cookies
-                body: JSON.stringify({
-                    Username: userName,
-                    Password: password,
-                }),
-            });
+        setLoading(true);
+        setError("");
+        setUCheck("");
+        setPCheck("");
 
-            if (response.ok) {
+        const usernameError = validateUsername(userName);
+        const passwordError = validatePassword(password);
+
+        if (usernameError || passwordError) {
+            setUCheck(usernameError);
+            setPCheck(passwordError);
+            setLoading(false);
+            return;
+        }
+
+
+        try {
+            const response = await fetch("http://192.168.1.8:3000/auth/login",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    credentials: "include",
+                    body: JSON.stringify({
+                        Username: userName,
+                        Password: password,
+                    }),
+                }
+            );
+
+            if (response.status === 200) {
                 const data = await response.json();
                 console.log('Login successful:', data);
+                navigate('/', { replace: true });
+                return;
                 // You can store role or other non-sensitive info in state
-            } else {
-                console.error('Login failed:', response.statusText);
+            } else if (response.status === 400) {
+                setError("Username and password are required");
+                setLoading(false);
+            } else if (response.status === 401) {
+                setError("Incorrect Password. Please try again.");
+                setLoading(false);
+            } else if (response.status === 404) {
+                setError("User not found. Please check your username.");
+                setLoading(false);
+            }
+            else {
+                setError("An error occurred while logging in. Please try again later.");
+                setLoading(false);
             }
         } catch (error) {
             console.error('Login error:', error);
         }
     };
-
-
 
 
 
@@ -85,16 +153,31 @@ const Login = () => {
                     <input
                         type="text"
                         value={userName}
-                        onChange={(e) => setUserName(e.target.value)}
+                        onChange={(e) => handleUsernameChange(e.target.value)}
+                        onBlur={handleUsernameBlur}
+                        onKeyDown={handleKeyDown}
                         placeholder="Enter Username"
-                        className="mb-4 px-3 py-2 md:px-4 md:py-3 rounded-full bg-[#FDECEC] placeholder:text-[#F58989] text-[#F58989] text-xs md:text-base outline-none"
+                        className={`${usernameCheck ? "mb-2": "mb-4"} px-3 py-2 md:px-4 md:py-3 rounded-full bg-[#FDECEC] placeholder:text-[#F58989] text-[#F58989] text-xs md:text-base outline-none ${usernameCheck ? "ring-2 ring-red-400" : ""
+                            }`}
                     />
+                    {usernameCheck && (
+                        <p
+                            id="username-error"
+                            className="ml-2 mb-2 text-sm text-red-600 flex items-center animate-fade-in"
+                            aria-live="polite"
+                        >
+                            <TriangleAlert className="w-4 h-4 mr-1" />
+                            {usernameCheck}
+                        </p>
+                    )}
 
                     <div className="relative mb-2">
                         <input
                             type={showPassword ? "password" : "text"}
                             value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            onChange={(e) => handlePasswordChange(e.target.value)}
+                            onBlur={handlePasswordBlur}
+                            onKeyDown={handleKeyDown}
                             placeholder="Enter Password"
                             className="w-full px-3 py-2 md:px-4 md:py-3 rounded-full bg-[#FDECEC] placeholder:text-[#F58989] text-[#F58989] text-xs md:text-base outline-none pr-12"
                         />
@@ -102,10 +185,19 @@ const Login = () => {
                             <Eye className="absolute right-3 top-2 w-5 h-5 md:right-4 md:top-3 md:w-6 md:h-6 text-[#F26666] cursor-pointer" />
                         </span>
                     </div>
+                    {passwordCheck && (
+                        <p
+                            id="password-error"
+                            className="ml-2 mb-2 text-sm text-red-600 flex items-center animate-fade-in"
+                            aria-live="polite"
+                        >
+                            <TriangleAlert className="w-4 h-4 mr-1" />
+                            {passwordCheck}
+                        </p>
+                    )}
 
                     <div className="text-right mb-6">
                         <Link
-                            style={{ userSelect: 'none', WebkitUserSelect: 'none', MozUserSelect: 'none', msUserSelect: 'none' }}
                             to="/forgot-password"
                             className="text-sm md:text-base text-[#F26666] hover:underline transition"
 
@@ -115,9 +207,17 @@ const Login = () => {
                     </div>
 
                     <Button variant="primary" size="primary" className="mb-2 font-light rounded-full" onClick={login}>
-                        Login
+                        {loading ? "Logging in..." : "Login"}
                     </Button>
-
+                    {error && (
+                        <p
+                            className="text-sm text-red-600 flex items-center animate-fade-in mb-2"
+                            aria-live="polite"
+                        >
+                            <AlertTriangle className="w-4 h-4 mr-1" />
+                            {error}
+                        </p>
+                    )}
                     <Link to="/visitor" className="border border-[#F26666] text-center text-[#F26666] rounded-full py-2 hover:bg-[#F26666] hover:text-white md:text-base text-sm transition">
                         Guest
                     </Link>
