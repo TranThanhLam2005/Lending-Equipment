@@ -27,32 +27,32 @@ const CourseCard = ({...data}) => {
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-y-2 text-sm text--[#475467] border-b pb-3">
                         {DetailInfo({
                             icon: User2,
-                            label: "Staff",
+                            label: "Staff:",
                             info: data.academicName
                         })}
 
                         {DetailInfo({
                             icon: CalendarDays,
-                            label: "Date End",
+                            label: "Date End:",
                             info: formattedDateEnd
                         })}
 
                         {DetailInfo({
                             icon: Info,
-                            label: "Description",
+                            label: "Description:",
                             info: data.description,
                             className: "md:block hidden"
                         })}
 
                         {DetailInfo({
                             icon: MapPin,
-                            label: "Room",
+                            label: "Room:",
                             info: data.room,
                         })}
 
                         {DetailInfo({
                             icon: CalendarDays,
-                            label: "Lecture Date",
+                            label: "Lecture Date:",
                             info: data.lectureDate
                         })}
                     </div>

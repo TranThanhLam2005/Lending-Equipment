@@ -183,7 +183,7 @@ const Sidebar = () => {
       </nav>
       {/* Logout */}
       {isSidebarOpen &&
-        (<div className="absolute bottom-0 w-full flex justify-center py-4">
+        (<div className="absolute bottom-0 w-full flex justify-center py-4 hidden md:flex">
           <Button className="flex items-center" variant="primary" size="lg" onClick={handleLogoutClick}>
             <LogOut size={24} />
             Log out
