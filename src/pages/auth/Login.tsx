@@ -1,11 +1,19 @@
-import { useState, useEffect } from 'react';
+// import libraries
+import { useState } from 'react';
+import { Link, useNavigate } from "react-router-dom";
+
+// import components
 import { Button } from "@/components/ui/Button";
 import LoginForm from '@/components/ui/LoginForm'
-import { Link, useNavigate } from "react-router-dom";
+
+// import icons and assets
 import { Eye, TriangleAlert, AlertTriangle } from "lucide-react";
 import Logo from '@/assets/Rmit.png';
 import FacebookIcon from '@/assets/facebook.png';
 import GoogleIcon from '@/assets/google.webp';
+
+
+const URL_API = '192.168.1.12';
 
 const Login = () => {
     const [userName, setUserName] = useState('');
@@ -71,7 +79,7 @@ const Login = () => {
 
 
         try {
-            const response = await fetch("http://192.168.1.8:3000/auth/login",
+            const response = await fetch(`http://${URL_API}:3000/auth/login`,
                 {
                     method: "POST",
                     headers: {
@@ -84,21 +92,20 @@ const Login = () => {
                     }),
                 }
             );
-
+            const data = await response.json();
             if (response.status === 200) {
-                const data = await response.json();
                 console.log('Login successful:', data);
                 navigate('/', { replace: true });
                 return;
                 // You can store role or other non-sensitive info in state
             } else if (response.status === 400) {
-                setError("Username and password are required");
+                setError(data.error);
                 setLoading(false);
             } else if (response.status === 401) {
-                setError("Incorrect Password. Please try again.");
+                setError(data.error);
                 setLoading(false);
             } else if (response.status === 404) {
-                setError("User not found. Please check your username.");
+                setError(data.error);
                 setLoading(false);
             }
             else {

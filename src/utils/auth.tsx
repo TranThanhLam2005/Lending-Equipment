@@ -1,7 +1,11 @@
 import { redirect } from "react-router-dom";
 
+
+const URL_API = '192.168.1.12';
+
+
 export async function requireAuth(request) {
-  const res = await fetch('http://192.168.1.8:3000/auth/verify-session', {
+  const res = await fetch(`http://${URL_API}:3000/auth/verify-session`, {
     method: 'GET',
     credentials: "include",
   });

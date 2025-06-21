@@ -6,10 +6,9 @@ import { Button } from '@/components/ui/Button';
 const Header = () => {
     const [state, dispatch] = useStore();
     const { isSidebarOpen } = state;
-    console.log('Sidebar open:', isSidebarOpen); 
 
     return (
-        <div className={`fixed top-0 transition-all duration-300 ${isSidebarOpen ? "left-80" :"left-22"} right-0 h-17.5 bg-white flex justify-between items-center px-4 z-50`}>
+        <div className={`fixed top-0 transition-all duration-300 ${isSidebarOpen ? "left-80" :"left-22"} right-0 h-17.5 bg-white flex justify-between items-center px-4`}>
 
             {!isSidebarOpen && <SquareMenu size={32} className="text-[#F26666]" onClick={() => dispatch(setSidebarOpen(!isSidebarOpen))} />}
 

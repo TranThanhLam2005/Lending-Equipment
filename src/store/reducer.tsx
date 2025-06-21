@@ -5,7 +5,6 @@ const initState = {
 };
 
 function reducer(state = initState, action: any) {
-    console.log('Reducer received:', action);
     switch (action.type) {
         case SET_SIDEBAR_OPEN:
             return {

@@ -5,7 +5,6 @@ import { createBrowserRouter } from 'react-router-dom';
 // Pages
 const Account = lazy(() => import('../pages/Account'));
 const StudentDashBoard = lazy(() => import('../pages/student/StudentDashBoard'));
-const StudentCourse = lazy(() => import('../pages/student/StudentCourse'));
 const StudentEquipment = lazy(() => import('../pages/student/StudentEquipment'));
 const StudentRecord = lazy(() => import('../pages/student/StudentRecord'));
 const MyCourse = lazy(() => import('../pages/student/MyCourse'));
@@ -21,7 +20,7 @@ const DefaultLayout = lazy(() => import('../layouts/DefaultLayout'));
 
 // Components
 
-import {loadEquipment, studentDashboardLoader, studentCourseLoader} from '../utils/loaders';
+import {loadEquipment, studentDashboardLoader, myStudentCourseLoader} from '../utils/loaders';
 
 // Error Page
 const ErrorPage = lazy(() => import('../pages/other/ErrorPage'));
@@ -56,9 +55,13 @@ export const router = createBrowserRouter([
                 loader: studentDashboardLoader,
             },
             {
-                path: '/student_course',
-                element: <StudentCourse />,
-                loader: studentCourseLoader,
+                path: '/course/my_course',
+                element: <MyCourse />,
+                loader: myStudentCourseLoader,
+            },
+            {
+                path: '/course/browse_course',
+                element: <BrowseCourse />,
             },
             {
                 path: '/student_equipment',
@@ -75,14 +78,6 @@ export const router = createBrowserRouter([
                 //     const res = await fetch('/api/record');
                 //     return res.json();
                 // },
-            },
-            {
-                path: '/course/my_course',
-                element: <MyCourse />,
-            },
-            {
-                path: '/course/browse_course',
-                element: <BrowseCourse />,
             },
             {
                 path: '/account',

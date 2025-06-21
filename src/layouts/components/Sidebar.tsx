@@ -1,7 +1,15 @@
-import { useStore } from '@/hooks/hooks';
-import { setSidebarOpen } from '@/store/actions';
-import { NavLink } from 'react-router-dom';
+// import libraries
 import { useState } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { useStore } from '@/hooks/hooks';
+
+// import components and actions
+import { setSidebarOpen } from '@/store/actions';
+import { Button } from '@/components/ui/Button';
+import ConfirmModal from '@/components/ui/ConfirmModal';
+
+
+
 import {
   CalendarDays,
   BookOpen,
@@ -9,8 +17,14 @@ import {
   User2,
   LayoutDashboard,
   CalendarSearch,
+  LogOut
 } from 'lucide-react';
 import Logo from '@/assets/loan.svg'; // Logo for collapsed sidebar
+
+
+
+const URL_API = '192.168.1.12';
+
 
 const Sidebar = () => {
   const renderLink = (
@@ -44,7 +58,43 @@ const Sidebar = () => {
   const [state, dispatch] = useStore();
   const { isSidebarOpen } = state;
   const [courseOpen, setCourseOpen] = useState(false);
+  const navigate = useNavigate();
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const handleLogoutClick = () => {
+    setIsConfirmModalOpen(true);
+  };
+  const handleConfirmLogout = () => {
+    logout();
+    setIsConfirmModalOpen(false);
+  };
+  const handleCancelLogout = () => {
+    setIsConfirmModalOpen(false);
+  };
 
+  const logout = async () => {
+    try {
+      const response = await fetch(`http://${URL_API}:3000/auth/logout`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+      const data = await response.json();
+      if (response.status === 200) {
+        console.log('Logout successful:', data.message);
+        dispatch(setSidebarOpen(false));
+        navigate('/login', { replace: true });
+      } else if (response.status === 400) {
+        console.error('Logout error:', data.error);
+      }
+      else {
+        console.error('An error occurred while logging out:', data.error);
+      }
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+  }
   return (
     <div
       className={`fixed top-0 left-0 h-full transition-all duration-300 ${isSidebarOpen ? 'w-80' : 'w-22'
@@ -128,11 +178,31 @@ const Sidebar = () => {
           label: 'Account',
           onClick: () => setCourseOpen(false),
         })}
+
+
       </nav>
+      {/* Logout */}
+      {isSidebarOpen &&
+        (<div className="absolute bottom-0 w-full flex justify-center py-4">
+          <Button className="flex items-center" variant="primary" size="lg" onClick={handleLogoutClick}>
+            <LogOut size={24} />
+            Log out
+          </Button>
+        </div>)
+      }
+      {/* Confirm Modal */}
+      {isConfirmModalOpen && (
+        <ConfirmModal
+          type="logout"
+          title="Confirm Logout"
+          message="Are you sure you want to log out?"
+          onConfirm={handleConfirmLogout}
+          onCancel={handleCancelLogout}
+        />
+      )}
     </div>
   );
 
 };
-// Reusable link component for better readability
 
 export default Sidebar;
