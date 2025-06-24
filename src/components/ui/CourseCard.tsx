@@ -1,7 +1,14 @@
-import { Button } from "@/components/ui/Button";
+// import libraries
+import {Link} from "react-router-dom";
 import { format, parseISO } from 'date-fns';
 
+// import components
+import { Button } from "@/components/ui/Button";
+
+// import icons
 import { CalendarDays, MapPin, Info, User2, Eye } from "lucide-react";
+
+
 const CourseCard = ({...data}) => {
     const startDate = format(parseISO(data.startDate), 'dd');
     const startMonth = format(parseISO(data.startDate), 'MMMM');
@@ -9,7 +16,7 @@ const CourseCard = ({...data}) => {
     const formattedDateEnd = format(parseISO(data.endDate), 'EEEE, MMMM dd, yyyy');
 
     return (
-        <div className="border rounded-lg md:rounded-sm shadow-sm overflow-hidden md:p-3 bg-white">
+        <Link to ={`/course/my_course/${data.id}`} className="border rounded-lg md:rounded-sm shadow-sm overflow-hidden md:p-3 bg-white">
             <div className="flex md:flex-row flex-col items-start">
                 {/* Date */}
                 <div className="flex border-b justify-center md:border-b-0 md:mb-0 mb-4 md:p-0 pt-4 pl-4 pr-4">
@@ -66,7 +73,7 @@ const CourseCard = ({...data}) => {
                     More Details
                 </Button>
             </div>
-        </div>
+        </Link>
     );
 };
 const DetailInfo = ({ icon: Icon, label, info, className = "" }) => {

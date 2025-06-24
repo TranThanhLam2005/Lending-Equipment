@@ -1,60 +1,31 @@
 // import libraries
-import { useState, useEffect } from "react";
 import { useLoaderData } from "react-router-dom";
-import useDebounce from "@/hooks/useDebounce";
 
-
-// import components  
+// import components and hooks
 import Dropdown from "@/components/ui/Dropdown";
 import Input from "@/components/ui/Input";
 import EquipmentCard from "@/components/ui/EquipmentCard";
+import useSearchAndFilter from "@/hooks/useSearchAndFilter";
 
-
-
-const URL_API = '192.168.1.12';
-
-const statusItems = [
-    { text: "All" },
-    { text: "Available" },
-    { text: "Borrowed" },
-];
-const sortItems = [
-    { text: "Default" },
-    { text: "Most Recent" },
-    { text: "Oldest" },
-];
 
 const Visitor = () => {
     const data = useLoaderData() as { equipment: any[] };
 
-    const [queryEquipmentList, setQueryEquipmentList] = useState([]);
+    const {
+        searchTerm,
+        setSearchTerm,
+        searchStatus,
+        setSearchStatus,
+        searchOrder,
+        setSearchOrder,
+        displayData,
+        statusItems,
+        sortItems
+    } =  useSearchAndFilter({
+        data: data,
+        path: "visitor/query_equipment"
+      });
 
-    const [searchTerm, setSearchTerm] = useState("");
-    const [searchStatus, setSearchStatus] = useState("All");
-    const [searchOrder, setSearchOrder] = useState("Default");
-
-    const debouncedSearchTerm = useDebounce(searchTerm, 500);
-
-
-    useEffect(() => {
-        if (debouncedSearchTerm === "" && searchStatus === "All" && searchOrder === "Default") {
-            setQueryEquipmentList([]);
-            return;
-        }
-
-        fetch(`http://${URL_API}:3000/visitor/query_equipment?searchValue=${debouncedSearchTerm}&searchStatus=${searchStatus}&searchOrder=${searchOrder}`)
-            .then((res) => res.json())
-            .then((data) => {
-                setQueryEquipmentList(data);
-            })
-    }, [debouncedSearchTerm, searchStatus, searchOrder]);
-    let displayData = [];
-    if (debouncedSearchTerm != "" || searchStatus != "All" || searchOrder != "Default") {
-        displayData = queryEquipmentList;
-    }
-    else {
-        displayData = data;
-    }
     return (
         <div className="p-4 bg-gray-100 min-h-screen">
             <div className="flex justify-between mb-4">

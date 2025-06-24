@@ -12,7 +12,7 @@ const buttonVariants = cva(
         default:
           "bg-primary text-primary-foreground shadow-xs hover:bg-primary/90",
         primary:
-          "bg-[#F58989] hover:bg-[#F26666] text-white  hover:bg-[#e96e6e] transition",
+          "bg-[#F58989] hover:bg-[#F26666] text-white hover:bg-[#e96e6e] transition",
         destructive:
           "bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
         outline:
@@ -28,7 +28,7 @@ const buttonVariants = cva(
         primary: "w-full h-9 md:h-12 px-3 py-2 md:px-4 md:py-3 has-[>svg]:px-3 text-sm md:text-base",
         sm: "h-5 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5",
         lg: "h-10 rounded-md px-5 has-[>svg]:px-4",
-        medium: "h-10 w-full rounded-md px-5 has-[>svg]:px-4",
+        medium: "h-10 rounded-md px-5 has-[>svg]:px-4",
         icon: "size-9 rounded-full has-[>svg]:size-6 has-[>svg]:px-0",
       },
     },

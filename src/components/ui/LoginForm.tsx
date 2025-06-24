@@ -1,4 +1,4 @@
-import React from 'react';
+
 import FacebookLogin from 'react-facebook-login';
 
 const LoginForm = (props) => {

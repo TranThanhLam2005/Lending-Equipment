@@ -1,6 +1,5 @@
 import { redirect } from "react-router-dom";
 
-
 const URL_API = '192.168.1.12';
 
 

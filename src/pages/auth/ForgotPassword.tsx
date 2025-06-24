@@ -1,5 +1,10 @@
-import {Button} from "@/components/ui/Button";
+// import libraries
 import {Link} from "react-router-dom";
+
+// import components
+import {Button} from "@/components/ui/Button";
+
+// import icons
 import Logo from '@/assets/Ishowspeed.png';
 const ForgotPassword = () => {
     return (

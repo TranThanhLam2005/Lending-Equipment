@@ -1,29 +1,65 @@
+// import libraries
+import { useLoaderData } from "react-router-dom";
+
 // import components  
 import Dropdown from "@/components/ui/Dropdown";
 import Input from "@/components/ui/Input";
+import useSearchAndFilter from "@/hooks/useSearchAndFilter";
+
+// import icons
 import { Trash, AlertTriangle, CornerUpLeft } from 'lucide-react';
 
 const StudentRecord = () => {
+    const data = useLoaderData();
+
+    const {
+        searchTerm,
+        setSearchTerm,
+        searchStatus,
+        setSearchStatus,
+        searchOrder,
+        setSearchOrder,
+        displayData,
+        statusItems,
+        sortItems
+    } = useSearchAndFilter({
+        data: data,
+        path: "user/query_participant_equipment"
+    });
     return (
         <div>
             <div className="text-2xl md:text-4xl font-medium mb-4">Lending Record</div>
             <div className="flex justify-between mb-4">
                 <div className="flex space-x-4">
                     <div className="hidden md:block">
-                        <Input
-                            placeholder="Search Record..."
+                    <Input
+                            placeholder="Search Equipment..."
                             type="text"
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            value={searchTerm}
                             search
                         />
                     </div>
-                    <Dropdown options={['Default', 'Most Recent', 'Oldest']} />
+                    <Dropdown
+                        value={searchStatus}
+                        placeholder="Order events by:"
+                        items={statusItems}
+                        valueSetter={setSearchStatus}
+                    />
                 </div>
-                <Dropdown options={['Default', 'Most Recent', 'Oldest']} labeled />
+                <Dropdown
+                    value={searchOrder}
+                    placeholder="Order events by:"
+                    items={sortItems}
+                    valueSetter={setSearchOrder}
+                />
             </div>
             <div className="md:hidden block mb-4">
                 <Input
                     placeholder="Search Equipment..."
                     type="text"
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    value={searchTerm}
                     search
                 />
             </div>

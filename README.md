@@ -1,54 +1,100 @@
-# React + TypeScript + Vite
+# Lending Equipment And Course Management
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
+## Project Overview
+The Lending Equipment And Course Management is a comprehensive full stack web application using the PERN stack, including PostgreSQL database hosted with Neon services, ExpressJS and NodeJS for RESTful Backend APIs, and React for frontend user interfaces. The application is designed to facilitate the lending equipment supporting mood operation for school. It provides different interfaces for various user roles including student, academic staff, professor and admin.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Note: Admin account for system:
+UserName: admin123
+Password: admin123
 
-## Expanding the ESLint configuration
+User account with preset data:
+UserName: testaccount1
+Password: Testing123
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Application Demo Video link:
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+### Key Features
+
+
+## Tech Stack
+- React.js for frontend
+- Node.js and Express.js for backend
+- PostgreSQL for database
+- Neon for database hosting
+- Tailwind for UI styling
+- RESTful API architecture
+- Cookie for authentication and authorization
+
+## System Requirements
+- Node.js 16 or later (Download at https://nodejs.org/en/download)
+- NPM 8 or later (https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
+- Modern web browser (Chrome, Firefox, Safari, Edge)
+
+## Installation & Setup
+
+1. Clone the repository
+
+2. Install backend dependencies
+```bash
+# In the root directory
+cd ./FullStackDev_Group4_BackEnd
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+3. Configure environment variables
+```bash
+# In the backend directory
+cp .env.example .env
 ```
+
+4. Install frontend dependencies
+```bash
+# In the root directory
+cd ./FullStackDev_Group4_Project
+npm install
+```
+
+5. Run the application
+```bash
+# In the root directory
+cd ./FullStackDev_Group4_BackEnd
+node main.js
+________
+
+# In the root directory (separate terminal)
+cd ./FullStackDev_Group4_Project
+npm run dev
+```
+
+## User Roles & Functionalities
+
+### Attendee
+
+
+### Organizer
+
+
+### Admin
+
+## Database Schema
+The system uses a database with the following main entities:
+
+## Features Implemented
+
+### Frontend
+
+
+### Backend
+- RESTful API endpoints for all core features
+- JWT authentication and role-based authorization
+- File upload functionality for event images
+- Database models and relationships
+- Event statistics and reporting APIs
+- Input validation and sanitization
+- Error handling middleware
+
+## Future Enhancements
+
+
+## Acknowledgments

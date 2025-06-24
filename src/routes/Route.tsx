@@ -1,4 +1,4 @@
-// routes/index.jsx
+// import libraries
 import { lazy } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 
@@ -8,7 +8,9 @@ const StudentDashBoard = lazy(() => import('../pages/student/StudentDashBoard'))
 const StudentEquipment = lazy(() => import('../pages/student/StudentEquipment'));
 const StudentRecord = lazy(() => import('../pages/student/StudentRecord'));
 const MyCourse = lazy(() => import('../pages/student/MyCourse'));
+const MyCourseDetail = lazy(() => import('../pages/student/MyCourseDetail'));
 const BrowseCourse = lazy(() => import('../pages/student/BrowseCourse'));
+const EquipmentDetail = lazy(() => import('../pages/student/EquipmentDetail'));
 
 const Visitor = lazy(() => import('../pages/visitor/Visitor'));
 const Login = lazy(() => import('../pages/auth/Login'));
@@ -18,9 +20,9 @@ const ForgotPassword = lazy(() => import('../pages/auth/ForgotPassword'));
 const DefaultLayout = lazy(() => import('../layouts/DefaultLayout'));
 
 
-// Components
-
-import {loadEquipment, studentDashboardLoader, myStudentCourseLoader} from '../utils/loaders';
+// import loaders
+import {myStudentCourseDetailLoader, loadEquipment, studentDashboardLoader,
+     myStudentCourseLoader,myStudentEquipmentParticipant} from '../utils/loaders';
 
 // Error Page
 const ErrorPage = lazy(() => import('../pages/other/ErrorPage'));
@@ -60,12 +62,22 @@ export const router = createBrowserRouter([
                 loader: myStudentCourseLoader,
             },
             {
+                path: '/course/my_course/:id',
+                element: <MyCourseDetail />,
+                loader: myStudentCourseDetailLoader,
+            },
+            {
                 path: '/course/browse_course',
                 element: <BrowseCourse />,
             },
             {
                 path: '/student_equipment',
                 element: <StudentEquipment />,
+                loader: myStudentEquipmentParticipant,
+            },
+            {
+                path: '/student_equipment/:id',
+                element: <EquipmentDetail />,
                 // loader: async () => {
                 //     const res = await fetch('/api/equipment');
                 //     return res.json();

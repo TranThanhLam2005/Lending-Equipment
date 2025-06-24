@@ -1,4 +1,5 @@
-import { Search, Send } from "lucide-react";
+// import icons
+import { Search, Send,Text  } from "lucide-react";
 
 function Input({
   className,
@@ -12,6 +13,11 @@ function Input({
         {search && (
           <span className="text-gray-400 hover:text-gray-600">
             <Search className="w-5 h-5 mr-1" />
+          </span>
+        )}
+        {inbox && (
+          <span className="text-gray-400 hover:text-gray-600">
+            <Text className="w-5 h-5 mr-1" />
           </span>
         )}
         <input

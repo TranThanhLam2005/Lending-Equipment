@@ -1,14 +1,17 @@
-// import components 
+// import libraries
 import { Link } from 'react-router-dom';
-import { Button } from '@/components/ui/Button';
 import { format, parseISO } from 'date-fns';
 
+// import components 
+import { Button } from '@/components/ui/Button';
+
+// import icons
 import { CalendarDays, CheckCircle, Sparkles } from 'lucide-react';
 
 const EquipmentCard = ({ isRequest, ...data}) => {
     const formattedDate = format(parseISO(data.purchaseDate), 'EEEE, MMMM dd, yyyy');
     return (
-        <Link to="/detail" className="max-w-3xs md:max-w-2xs rounded-sm border border-gray-200 shadow-sm p-2 bg-white hover:shadow-lg transition-transform duration-200 ease-in-out hover:-translate-y-1">
+        <Link to={`/student_equipment/${data.id}`} className="max-w-3xs md:max-w-2xs rounded-sm border border-gray-200 shadow-sm p-2 bg-white">
             {/* Equipment Image */}
             <div className="rounded-sm border border-gray-200 shadow-sm bg-white mb-4">
                 <img
@@ -55,7 +58,7 @@ const EquipmentCard = ({ isRequest, ...data}) => {
                     View Details
                 </Button>
             </div>}
-            {!isRequest && <Button variant="outline" size="medium" className="hover:bg-red-400 hover:text-white hover:border-none">
+            {!isRequest && <Button variant="outline" size="medium" className="w-full hover:bg-red-400 hover:text-white hover:border-none">
                 View Details
             </Button>}
         </Link>

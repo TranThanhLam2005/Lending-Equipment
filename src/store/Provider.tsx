@@ -1,4 +1,7 @@
+// import libraries
 import {useReducer} from 'react';
+
+// import components
 import Context from './Context';
 import reducer, {initState} from './reducer';
 

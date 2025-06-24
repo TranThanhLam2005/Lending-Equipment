@@ -1,6 +1,5 @@
 
 import { requireAuth } from './auth';
-
 const API_URL = "192.168.1.12"
 
 
@@ -28,6 +27,37 @@ export async function myStudentCourseLoader({ request }) {
   });
   if (!res.ok) {
     throw new Error('Failed to load courses');
+  }
+  return res.json();
+}
+
+export async function myStudentCourseDetailLoader({request, params}) {
+  const { id } = params; // Extract the id from the route parameters
+  await requireAuth(request);
+  const res = await fetch(`http://${API_URL}:3000/user/get_participant_course_detail/${id}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+  });
+  if (!res.ok) {
+    throw new Error('Failed to load course details');
+  }
+  return res.json();
+}
+
+export async function myStudentEquipmentParticipant({ request }) {
+  await requireAuth(request);
+  const res = await fetch(`http://${API_URL}:3000/user/get_participant_equipment`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+  });
+  if (!res.ok) {
+    throw new Error('Failed to load equipment');
   }
   return res.json();
 }
