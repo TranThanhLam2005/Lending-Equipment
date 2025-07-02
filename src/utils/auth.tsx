@@ -1,6 +1,6 @@
 import { redirect } from "react-router-dom";
 
-const URL_API = '192.168.1.12';
+const URL_API = '192.168.1.127';
 
 
 export async function requireAuth(request) {
@@ -10,7 +10,7 @@ export async function requireAuth(request) {
   });
 
   if (!res.ok) {
-    throw redirect('/login');
+    throw redirect('/');
   }
 
   return await res.json(); // Return user info if needed

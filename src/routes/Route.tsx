@@ -16,6 +16,8 @@ const Visitor = lazy(() => import('../pages/visitor/Visitor'));
 const Login = lazy(() => import('../pages/auth/Login'));
 const ForgotPassword = lazy(() => import('../pages/auth/ForgotPassword'));
 
+const LandingPage = lazy(() => import('../pages/other/LandingPage'));
+
 // Layouts
 const DefaultLayout = lazy(() => import('../layouts/DefaultLayout'));
 
@@ -31,6 +33,11 @@ const ErrorPage = lazy(() => import('../pages/other/ErrorPage'));
 // Router
 export const router = createBrowserRouter([
     // Public Route
+    {
+        path: '/',
+        element: <LandingPage />,
+        errorElement: <ErrorPage />,
+    },
     {
         path: '/visitor',
         element: <Visitor />,
@@ -52,7 +59,7 @@ export const router = createBrowserRouter([
         element: <DefaultLayout />,
         children: [
             {
-                index: true,
+                path: '/student_dashboard',
                 element: <StudentDashBoard />,
                 loader: studentDashboardLoader,
             },

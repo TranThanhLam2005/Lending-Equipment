@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import useDebounce from "@/hooks/useDebounce";
 
 
-const URL_API = '192.168.1.12';
+const URL_API = '192.168.1.127';
 
 const statusItems = [
     { text: "All" },

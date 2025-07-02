@@ -13,7 +13,7 @@ import FacebookIcon from '@/assets/facebook.png';
 import GoogleIcon from '@/assets/google.webp';
 
 
-const URL_API = '192.168.1.12';
+const URL_API = '192.168.1.127';
 
 const Login = () => {
     const [userName, setUserName] = useState('');
@@ -95,7 +95,7 @@ const Login = () => {
             const data = await response.json();
             if (response.status === 200) {
                 console.log('Login successful:', data);
-                navigate('/', { replace: true });
+                navigate('/student_dashboard', { replace: true });
                 return;
                 // You can store role or other non-sensitive info in state
             } else if (response.status === 400) {

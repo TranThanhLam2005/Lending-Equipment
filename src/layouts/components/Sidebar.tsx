@@ -23,7 +23,7 @@ import Logo from '@/assets/loan.svg'; // Logo for collapsed sidebar
 
 
 
-const URL_API = '192.168.1.12';
+const URL_API = '192.168.1.127';
 
 
 const Sidebar = () => {
@@ -112,7 +112,7 @@ const Sidebar = () => {
       {/* Navigation links */}
       <nav className="flex flex-col space-y-1 px-2">
         {renderLink({
-          to: '/',
+          to: '/student_dashboard',
           icon: LayoutDashboard,
           label: 'Dashboard',
           onClick: () => setCourseOpen(false),

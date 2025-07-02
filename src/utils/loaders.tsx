@@ -1,6 +1,6 @@
 
 import { requireAuth } from './auth';
-const API_URL = "192.168.1.12"
+const API_URL = "192.168.1.127"
 
 
 export async function loadEquipment() {
