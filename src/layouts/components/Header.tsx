@@ -35,7 +35,7 @@ const Header = () => {
             });
             const data = await response.json();
             if (response.status === 200) {
-                navigate('/login', { replace: true });
+                navigate('/', { replace: true });
             } else if (response.status === 400) {
                 console.error('Logout error:', data.error);
             }

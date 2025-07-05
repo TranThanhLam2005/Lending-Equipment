@@ -24,7 +24,7 @@ const DefaultLayout = lazy(() => import('../layouts/DefaultLayout'));
 
 // import loaders
 import {myStudentCourseDetailLoader, loadEquipment, studentDashboardLoader,
-     myStudentCourseLoader,myStudentEquipmentParticipant} from '../utils/loaders';
+     myStudentCourseLoader,myStudentEquipmentParticipant, loadEquipmentDetail} from '../utils/loaders';
 
 // Error Page
 const ErrorPage = lazy(() => import('../pages/other/ErrorPage'));
@@ -85,10 +85,7 @@ export const router = createBrowserRouter([
             {
                 path: '/student_equipment/:id',
                 element: <EquipmentDetail />,
-                // loader: async () => {
-                //     const res = await fetch('/api/equipment');
-                //     return res.json();
-                // },
+                loader: loadEquipmentDetail,
             },
             {
                 path: '/student_record',

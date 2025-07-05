@@ -61,3 +61,19 @@ export async function myStudentEquipmentParticipant({ request }) {
   }
   return res.json();
 }
+
+export async function loadEquipmentDetail({ request, params }) {
+  const { id } = params; // Extract the id from the route parameters
+  await requireAuth(request);
+  const res = await fetch(`http://${API_URL}:3000/user/get_participant_equipment_detail/${id}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+  });
+  if (!res.ok) {
+    throw new Error('Failed to load equipment details');
+  }
+  return res.json();
+}

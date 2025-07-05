@@ -1,12 +1,23 @@
+import { useState } from 'react';
+
 // import icons
-import { Search, Send,Text  } from "lucide-react";
+import { Search, Send, Text } from "lucide-react";
 
 function Input({
   className,
   search,
   inbox,
+  onSend,
   ...props
 }: React.InputHTMLAttributes<HTMLInputElement>) {
+  const [value, setValue] = useState('');
+
+  const handleSend = () => {
+    if (value.trim() && onSend) {
+      onSend(value);
+      setValue('');
+    }
+  };
   return (
     <div className={`w-full`}>
       <div className="flex items-center bg-white border rounded-md focus-within:ring-1 focus-within:ring-gray-300 px-3">
@@ -21,7 +32,10 @@ function Input({
           </span>
         )}
         <input
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
           className={`flex-1 py-2 bg-transparent focus:outline-none ${className}`}
+          onKeyDown={(e) => e.key === 'Enter' && handleSend()}
           {...props}
         />
         {inbox && (

@@ -11,7 +11,7 @@ import { CalendarDays, CheckCircle, Sparkles } from 'lucide-react';
 const EquipmentCard = ({ isRequest, ...data}) => {
     const formattedDate = format(parseISO(data.purchaseDate), 'EEEE, MMMM dd, yyyy');
     return (
-        <Link to={`/student_equipment/${data.id}`} className="max-w-3xs md:max-w-2xs rounded-sm border border-gray-200 shadow-sm p-2 bg-white">
+        <Link to={`/student_equipment/${data.id}`} className="max-w-xs md:max-w-2xs rounded-xl border border-gray-200 shadow-2xl p-2 bg-white">
             {/* Equipment Image */}
             <div className="rounded-sm border border-gray-200 shadow-sm bg-white mb-4">
                 <img

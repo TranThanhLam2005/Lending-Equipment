@@ -84,7 +84,7 @@ const Sidebar = () => {
       if (response.status === 200) {
         console.log('Logout successful:', data.message);
         dispatch(setSidebarOpen(false));
-        navigate('/login', { replace: true });
+        navigate('/', { replace: true });
       } else if (response.status === 400) {
         console.error('Logout error:', data.error);
       }
