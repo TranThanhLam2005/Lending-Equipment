@@ -1,17 +1,19 @@
-import { useState, useEffect, useRef } from 'react';
-import { Button } from '@/components/ui/Button';
+// import libraries
+import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import logo from '@/assets/Rmit.png';
-import Image from '@/assets/dashboard.png';
-import { ArrowRight, CalendarDays, Users, MessageSquare, BarChart, CircleCheck, ArrowUp, ArrowDown, Wrench } from 'lucide-react';
+
+// import components
+import { Button } from '@/components/ui/Button';
 import Footer from '@/layouts/components/Footer';
 import { FadeInSection } from '@/components/ui/FadeInSection';
+
+// import icons
+import logo from '@/assets/Rmit.png';
+import Image from '@/assets/dashboard.png';
+import { ArrowRight, CalendarDays, MessageSquare, BarChart, CircleCheck, ArrowUp, ArrowDown, Wrench } from 'lucide-react';
+
 const LandingPage = () => {
   const navigate = useNavigate();
-  // useEffect(() => {
-  //   window.history.scrollRestoration = "manual"; // prevent browser restoring scroll
-  //   window.scrollTo(0, 0); // scroll to top on page load
-  // }, []);
   return (
     <div>
       <header className="fixed bg-white h-16 w-full flex items-center justify-between border-b-1 px-4 md:px-30 z-20">

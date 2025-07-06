@@ -1,3 +1,4 @@
+// import libraries
 import { useState } from 'react';
 
 // import icons
@@ -39,7 +40,7 @@ function Input({
           {...props}
         />
         {inbox && (
-          <span className="text-gray-400 hover:text-gray-600">
+          <span className="text-gray-400 hover:text-gray-600"  onClick={handleSend}>
             <Send className="w-5 h-5" />
           </span>
         )}

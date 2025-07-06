@@ -12,6 +12,7 @@ import { setSidebarOpen } from '@/store/actions';
 import { BellRing, SquareMenu, SquareX, Users, ChevronRight, Settings, MessagesSquare, LogOut, Monitor } from 'lucide-react';
 import Tippy from '@tippyjs/react/headless';
 
+// Define the URL for the API
 const URL_API = '192.168.1.127';
 
 const Header = () => {

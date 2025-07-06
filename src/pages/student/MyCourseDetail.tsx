@@ -6,22 +6,17 @@ import { format, parseISO } from 'date-fns';
 // import components
 import EquipmentCard from "@/components/ui/EquipmentCard";
 import { useStore } from '@/hooks/hooks';
-import Dropdown from "@/components/ui/Dropdown";
 
 // import icons
-import { CalendarDays, MapPin, Info, User2, Home, Eye } from "lucide-react";
+import { CalendarDays, MapPin, Info, User2, Home } from "lucide-react";
 
-const sortItems = [
-    { text: "Default" },
-    { text: "Most Recent" },
-    { text: "Oldest" },
-];
+
 const MyCourseDetail = () => {
+    const data = useLoaderData() as { course: any };
     const [searchOrder, setSearchOrder] = useState("Default");
     const [state, dispatch] = useStore();
     const { isSidebarOpen } = state;
 
-    const data = useLoaderData() as { course: any };
     const formattedDateEnd = format(parseISO(data.DateEnd), 'dd MMMM yyyy');
 
     return (

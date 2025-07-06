@@ -22,7 +22,7 @@ import {
 import Logo from '@/assets/loan.svg'; // Logo for collapsed sidebar
 
 
-
+// Define the URL for the API
 const URL_API = '192.168.1.127';
 
 

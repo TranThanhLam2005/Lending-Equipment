@@ -7,7 +7,6 @@ import { useStore } from '@/hooks/hooks';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import Footer from './components/Footer';
-
 // import icons
 import { ArrowUp } from 'lucide-react';
 
@@ -33,11 +32,12 @@ const DefaultLayout = () => {
         <Header />
         <main className="mt-17.5 p-2 md:p-4 bg-gray-100 overflow-y-auto min-h-[calc(100vh-230px)]">
           <Outlet />
+
         </main>
         <Footer />
       </div>
       {showButton && <button
-        className="fixed bottom-4 right-4 p-2 bg-red-400 text-white rounded-full shadow-lg transition-opacity duration-300"
+        className="fixed hidden md:block bottom-4 right-4 p-2 bg-red-400 text-white rounded-full shadow-lg transition-opacity duration-300"
         onClick={scrollToTop}
       >
         <ArrowUp className="w-5 h-5" />
