@@ -1,6 +1,7 @@
 // import libraries
 import { lazy } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
+import { Suspense } from "react";
 
 // Pages
 const Account = lazy(() => import('../pages/Account'));
@@ -17,21 +18,23 @@ const Login = lazy(() => import('../pages/auth/Login'));
 const ForgotPassword = lazy(() => import('../pages/auth/ForgotPassword'));
 
 const LandingPage = lazy(() => import('../pages/other/LandingPage'));
-
+import LoadingPage from '../components/ui/LoadingPage';
 // Layouts
 const DefaultLayout = lazy(() => import('../layouts/DefaultLayout'));
 
 
 // import loaders
-import {myStudentCourseDetailLoader, loadEquipment, studentDashboardLoader,
-     myStudentCourseLoader,myStudentEquipmentParticipant, loadEquipmentDetail} from '../utils/loaders';
+import {
+    myStudentCourseDetailLoader, loadEquipment, studentDashboardLoader,
+    myStudentCourseLoader, myStudentEquipmentParticipant, loadEquipmentDetail
+} from '../utils/loaders';
 
 // Error Page
 const ErrorPage = lazy(() => import('../pages/other/ErrorPage'));
 
 
 // Router
-export const router = createBrowserRouter([
+const router = createBrowserRouter([
     // Public Route
     {
         path: '/',
@@ -41,12 +44,12 @@ export const router = createBrowserRouter([
     {
         path: '/visitor',
         element: <Visitor />,
-        loader: loadEquipment, 
+        loader: loadEquipment,
         errorElement: <ErrorPage />,
     },
     {
-        path:'/login',
-        element: <Login />, 
+        path: '/login',
+        element: <Login />,
     },
     {
         path: '/forgot-password',
@@ -70,7 +73,11 @@ export const router = createBrowserRouter([
             },
             {
                 path: '/course/my_course/:id',
-                element: <MyCourseDetail />,
+                element: (
+                    <Suspense fallback={<LoadingPage />}>
+                        <MyCourseDetail />
+                    </Suspense>
+                ),
                 loader: myStudentCourseDetailLoader,
             },
             {
@@ -84,7 +91,11 @@ export const router = createBrowserRouter([
             },
             {
                 path: '/student_equipment/:id',
-                element: <EquipmentDetail />,
+                element: (
+                    <Suspense fallback={<LoadingPage />}>
+                        <EquipmentDetail />
+                    </Suspense>
+                ),
                 loader: loadEquipmentDetail,
             },
             {
@@ -106,3 +117,4 @@ export const router = createBrowserRouter([
         ],
     }
 ]);
+export default router;

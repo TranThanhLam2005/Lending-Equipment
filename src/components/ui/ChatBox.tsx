@@ -1,16 +1,25 @@
 // import libraries
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, memo } from 'react';
 
 // import components
 import Comment from './Comment';
 import Input from './Input';
 import { socket } from '@/utils/socket';
 
-// Define the URL for the API
-const URL_API = '192.168.1.127';
+const ChatBox = memo(({ equipmentId, commentHistory, user }) => {
+    const historyComments = useMemo(() => {
+        return commentHistory.map(comment => ({
+            content: comment.content,
+            groupID: equipmentId,
+            createAt: comment.createAt,
+            sender: {
+                username: comment.userName,
+                fullName: comment.fullName,
+                role: comment.role,
+            }
+        }));
+    }, [commentHistory, equipmentId]);
 
-
-const ChatBox = ({ equipmentId }) => {
     const [messages, setMessages] = useState<{
         content: string;
         groupID: string;
@@ -20,18 +29,9 @@ const ChatBox = ({ equipmentId }) => {
             fullName: string;
             role: string;
         };
-    }[]>([]);
-    const [myInfo, setMyInfo] = useState(null);
+    }[]>(historyComments);
 
     useEffect(() => {
-        const fetchMyInfo = async () => {
-            const res = await fetch(`http://${URL_API}:3000/user/get_user_by_session`, {
-                credentials: "include",
-            });
-            const data = await res.json();
-            setMyInfo(data);
-        };
-        fetchMyInfo();
         socket.connect();
 
         // Join the equipment-specific room
@@ -39,7 +39,7 @@ const ChatBox = ({ equipmentId }) => {
 
         // Listen for messages
         socket.on('receive-message', (msg) => {
-            setMessages((prevMessages) => [...prevMessages, msg]);
+            return setMessages((prevMessages) => [...prevMessages, msg]);
         });
 
         // Clean up on unmount
@@ -50,7 +50,7 @@ const ChatBox = ({ equipmentId }) => {
     }, []);
 
     const handleSendMessage = (msg) => {
-        if (msg.trim() && myInfo) {
+        if (msg.trim() && user) {
             socket.emit("send-message", {
                 content: msg,
                 groupID: equipmentId,
@@ -64,9 +64,9 @@ const ChatBox = ({ equipmentId }) => {
                     groupID: equipmentId,
                     createAt: new Date().toISOString(),
                     sender: {
-                        username: myInfo.Username,
-                        fullName: myInfo.FullName,
-                        role: myInfo.Role
+                        username: user.Username,
+                        fullName: user.FullName,
+                        role: user.Role
                     }
                 },
             ]);
@@ -74,10 +74,11 @@ const ChatBox = ({ equipmentId }) => {
     };
 
     return (
-        <div className="flex flex-col gap-y-6 bg-white rounded-lg shadow-lg p-2">
-            {messages.map((msg, index) => (
-                <Comment key={index} message={msg} />
-            ))}
+        <div className="flex flex-col gap-y-6 md:gap-y-4 bg-white rounded-lg shadow-lg px-4 py-2">
+            {messages.map((msg, index) => {
+                const isMine = msg.sender?.username === user?.Username;
+                return <Comment key={index} message={msg} isMine={isMine} />;
+            })}
             <Input
                 type="text"
                 placeholder="Type your message here..."
@@ -86,6 +87,6 @@ const ChatBox = ({ equipmentId }) => {
             />
         </div>
     );
-};
+});
 
 export default ChatBox;

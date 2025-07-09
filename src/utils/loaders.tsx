@@ -65,15 +65,17 @@ export async function myStudentEquipmentParticipant({ request }) {
 export async function loadEquipmentDetail({ request, params }) {
   const { id } = params; // Extract the id from the route parameters
   await requireAuth(request);
-  const res = await fetch(`http://${API_URL}:3000/user/get_participant_equipment_detail/${id}`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    credentials: 'include',
-  });
-  if (!res.ok) {
-    throw new Error('Failed to load equipment details');
+  // Run both requests in parallel
+  const [equipmentRes, userRes] = await Promise.all([
+    fetch(`http://${API_URL}:3000/user/get_participant_equipment_detail/${id}`, { credentials: 'include' }),
+    fetch(`http://${API_URL}:3000/user/get_user_by_session`, { credentials: 'include' }),
+  ]);
+
+  if (!equipmentRes.ok || !userRes.ok) {
+    throw new Error('Failed to load data');
   }
-  return res.json();
+
+  const equipment = await equipmentRes.json();
+  const user = await userRes.json();
+  return { equipment, user };
 }

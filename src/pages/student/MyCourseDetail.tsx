@@ -1,5 +1,5 @@
 // import libraries
-import { useState } from "react";
+import { useState, memo } from "react";
 import { useLoaderData } from "react-router-dom";
 import { format, parseISO } from 'date-fns';
 
@@ -18,6 +18,7 @@ const MyCourseDetail = () => {
     const { isSidebarOpen } = state;
 
     const formattedDateEnd = format(parseISO(data.DateEnd), 'dd MMMM yyyy');
+    const formattedDateStart = format(parseISO(data.DateStart), 'dd MMMM yyyy');
 
     return (
         <div>
@@ -27,46 +28,47 @@ const MyCourseDetail = () => {
                     <img
                         src="https://media.licdn.com/dms/image/v2/D5603AQEe4ZoLQ3_cbA/profile-displayphoto-shrink_200_200/B56ZbFRglsGsAY-/0/1747066424476?e=2147483647&v=beta&t=dtj7XdWmVigvP5yXH-uSyEDj6h3VRJhh0rFD2vNbNBM"
                         alt="Equipment"
-                        className="w-screen h-[240px] md:w-[500px] md:h-[278px] md:rounded-tl-sm md:rounded-bl-sm  shadow-lg" />
+                        className="w-screen h-[240px] md:w-[500px] md:h-[278px] rounded-tl-sm md:rounded-bl-sm rounded-tr-sm md:rounded-tr-none shadow-lg" />
                 </div>
                 <div className="flex-1">
                     <h2 className="text-2xl mb-2 border-b pb-3 md:block hidden">Course Information</h2>
-                    <div className="grid grid-cols-2 gap-y-5 text-sm text--[#475467] pb-3">
-                        {DetailInfo({
-                            icon: Home,
-                            label: "ID:",
-                            info: data.CourseID
-                        })}
-                        {DetailInfo({
-                            icon: User2,
-                            label: "Staff:",
-                            info: data.AcademicStaffName
-                        })}
-
-                        {DetailInfo({
-                            icon: CalendarDays,
-                            label: "Date End:",
-                            info: formattedDateEnd
-                        })}
-
-                        {DetailInfo({
-                            icon: Info,
-                            label: "Description:",
-                            info: data.Description,
-                            className: "md:block hidden"
-                        })}
-
-                        {DetailInfo({
-                            icon: MapPin,
-                            label: "Room:",
-                            info: data.Room
-                        })}
-
-                        {DetailInfo({
-                            icon: CalendarDays,
-                            label: "Lecture Date:",
-                            info: data.LectureDate
-                        })}
+                    <div className="grid grid-cols-2 gap-y-5 text-sm text--[#475467] p-3 md:p-0">
+                        <DetailInfo
+                            icon={Home}
+                            label="ID:"
+                            info={data.CourseID}
+                        />
+                        <DetailInfo
+                            icon={User2}
+                            label="Staff:"
+                            info={data.AcademicStaffName}
+                        />
+                        <DetailInfo
+                            icon={CalendarDays}
+                            label="Date Start:"
+                            info={formattedDateStart}
+                        />
+                        <DetailInfo
+                            icon={CalendarDays}
+                            label="Date End:"
+                            info={formattedDateEnd}
+                        />
+                        <DetailInfo
+                            icon={MapPin}
+                            label="Room:"
+                            info={data.Room}
+                        />
+                        <DetailInfo
+                            icon={CalendarDays}
+                            label="Lecture Date:"
+                            info={data.LectureDate}
+                        />
+                        <DetailInfo
+                            icon={Info}
+                            label="Description:"
+                            info={data.Description}
+                            className="md:block hidden"
+                        />
                     </div>
                 </div>
             </div>
@@ -89,7 +91,7 @@ const MyCourseDetail = () => {
         </div>
     );
 }
-const DetailInfo = ({ icon: Icon, label, info, className = "" }) => {
+const DetailInfo = memo(({ icon: Icon, label, info, className = "" }) => {
     return (
         <div className={`space-x-2 ${className}`}>
             <div className="flex items-center ">
@@ -101,6 +103,6 @@ const DetailInfo = ({ icon: Icon, label, info, className = "" }) => {
             </div>
         </div>
     );
-}
+})
 
 export default MyCourseDetail;
