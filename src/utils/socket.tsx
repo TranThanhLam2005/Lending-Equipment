@@ -1,7 +1,7 @@
 import io from 'socket.io-client';
 
 
-export const socket = io("http://192.168.1.127:3000", {
+export const socket = io("http://192.168.1.6:3000", {
     withCredentials: true,
 })
 

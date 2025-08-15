@@ -13,7 +13,7 @@ import { BellRing, SquareMenu, SquareX, Users, ChevronRight, Settings, MessagesS
 import Tippy from '@tippyjs/react/headless';
 
 // Define the URL for the API
-const URL_API = '192.168.1.127';
+const URL_API = '192.168.1.6';
 
 const Header = () => {
     const [state, dispatch] = useStore();

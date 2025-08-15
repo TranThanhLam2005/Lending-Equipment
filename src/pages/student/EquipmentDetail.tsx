@@ -6,36 +6,35 @@ import { format, parseISO } from 'date-fns';
 // import components
 import { useStore } from '@/hooks/hooks';
 import ChatBox from "@/components/ui/ChatBox";
+import LendingModal from "@/components/ui/LendingModal";
 import { Button } from "@/components/ui/Button";
-import Dropdown from "@/components/ui/Dropdown";
 
 // import icons
 import { CalendarDays, MapPin, Info, Home, Monitor, Wrench, CheckCircle } from "lucide-react";
+import ConfirmModal from "@/components/ui/ConfirmModal";
 
 
-const sortItems = [
-  { text: "Default" },
-  { text: "Most Recent" },
-  { text: "Oldest" },
-];
+
 const EquipmentDetail = () => {
   const [searchOrder, setSearchOrder] = useState("Default");
   const [state, dispatch] = useStore();
+  const [isLendingModalOpen, setIsLendingModalOpen] = useState(false);
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const { isSidebarOpen } = state;
-  
-  const {equipment, user} = useLoaderData() as { equipment: any };
+
+  const { equipment, user } = useLoaderData() as { equipment: any };
   const formatPurchaseDate = format(parseISO(equipment.PurchaseDate), 'EEEE, MMMM dd, yyyy');
   const formatAvailableDate = format(parseISO(equipment.DateAvailable), 'EEEE, MMMM dd, yyyy');
-  
+
   return (
     <div>
       <div className="text-2xl md:text-4xl font-medium mb-6 md:mb-4">{equipment.Name}</div>
-      <div className="flex md:flex-row flex-col items-start md:space-x-4 rounded-sm shadow-sm bg-white">
-        <div className="border-r border-gray-200 mb-4 md:mb-0">
+      <div className="flex md:flex-row flex-col items-start rounded-sm shadow-sm bg-white">
+        <div className="border-r border-gray-200 mb-4 md:mr-4 md:mb-0">
           <img
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBbQ5tc4F35cTBlYWIIWxfLoDupmR00CG5fQ&s"
             alt="Equipment"
-            className="w-screen h-[240px] md:w-[500px] md:h-[278px] rounded-tl-sm md:rounded-bl-sm rounded-tr-sm md:rounded-tr-none  shadow-lg" />
+            className="w-screen h-[240px] md:w-[500px] md:h-[290px] rounded-tl-sm md:rounded-bl-sm rounded-tr-sm md:rounded-tr-none  shadow-lg" />
         </div>
         <div className="flex-1">
           <h2 className="text-2xl mb-2 border-b pb-3 md:block hidden">Equipment Information</h2>
@@ -86,24 +85,41 @@ const EquipmentDetail = () => {
             />
           </div>
           <div className="flex justify-end mr-2 mb-3 md:mb-0">
-            <Button variant="primary" size="medium">
+            <Button variant="primary" size="medium" onClick={() => setIsLendingModalOpen(true)}>
               Request
             </Button>
           </div>
         </div>
       </div>
-      <div className="flex items-center justify-between my-6 md:my-4">
-        <div className="text-xl md:text-3xl font-medium ">Comment</div>
-        <Dropdown
-          value={searchOrder}
-          placeholder="Order Comment by:"
-          items={sortItems}
-          valueSetter={setSearchOrder}
-        />
-      </div>
+      <div className="text-xl md:text-3xl font-medium my-6 md:my-4">Comment</div>
       <div>
         <ChatBox equipmentId={equipment.ID} commentHistory={equipment.historyComments} user={user} />
       </div>
+
+
+      {isLendingModalOpen && (
+        <LendingModal
+          title="Lending Request"
+          data={equipment}
+          onAccept={() => {
+            setIsLendingModalOpen(false);
+            setIsConfirmModalOpen(true);
+          }}
+          onCancel={() => setIsLendingModalOpen(false)}
+        />
+      )}
+      {isConfirmModalOpen && (
+        <ConfirmModal
+          type = "confirm"
+          title="Confirm Lending Request"
+          message="Are you sure you want to send this lending request?"
+          onConfirm={() => {
+            setIsConfirmModalOpen(false);
+            // Handle the lending request confirmation logic here
+          }}
+          onCancel={() => setIsConfirmModalOpen(false)}
+        />
+      )}
     </div>
   );
 }

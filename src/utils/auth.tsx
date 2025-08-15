@@ -1,6 +1,6 @@
 import { redirect } from "react-router-dom";
 
-const URL_API = '192.168.1.127';
+const URL_API = '192.168.1.6';
 
 
 export async function requireAuth(request) {

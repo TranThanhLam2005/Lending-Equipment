@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/Button";
 
 // import icons
-import {Trash, LogOut} from "lucide-react";
+import {Trash, LogOut, Check} from "lucide-react";
 
 interface ConfirmModalProps {
   type?: "delete" | "logout";
@@ -37,9 +37,11 @@ function ConfirmModal({
           <div className="flex items-center justify-center text-5xl text-red-500 mb-4">
             {type === "delete" ? (
               <Trash className="w-10 h-10" />
-            ) : (
+            ) : type === "logout" ? (
               <LogOut className="w-10 h-10" />
-            )}
+            ) : type === "confirm" ? (
+              <Check className="w-10 h-10" />
+            ) : null}
           </div>
           <h2 className="text-2xl font-semibold">{title}</h2>
           <p className="text-base text-gray-600 mt-2 text-center">{message}</p>
