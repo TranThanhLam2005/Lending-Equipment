@@ -1,68 +1,134 @@
 // import libraries
-import { Link } from 'react-router-dom';
-import { format, parseISO } from 'date-fns';
+import {Link} from "react-router-dom";
+import {format, parseISO} from "date-fns";
 
-// import components 
-import { Button } from '@/components/ui/Button';
+// import components
+import {Button} from "@/components/ui/Button";
+
+// import routes
+import {ROUTES} from "@/api/config";
 
 // import icons
-import { CalendarDays, CheckCircle, Sparkles } from 'lucide-react';
+import {CalendarDays, CheckCircle, Sparkles} from "lucide-react";
 
-const EquipmentCard = ({ isRequest, ...data}) => {
-    const formattedDate = format(parseISO(data.purchaseDate), 'EEEE, MMMM dd, yyyy');
-    return (
-        <Link to={`/student_equipment/${data.id}`} className="max-w-xs md:max-w-2xs rounded-xl border border-gray-200 shadow-2xl p-2 bg-white">
-            {/* Equipment Image */}
-            <div className="rounded-sm border border-gray-200 shadow-sm bg-white mb-4">
-                <img
-                    src="https://m.media-amazon.com/images/I/41mUYAPTs7L._SY300_SX300_QL70_FMwebp_.jpg" // Replace with your image path
-                    alt="VR headset"
-                    className="w-full h-48 object-contain "
-                />
+/**
+ * Pure presentational component for displaying equipment card
+ * All data and handlers passed as props for headless UI pattern
+ */
+export interface EquipmentCardProps {
+  id: string;
+  name: string;
+  type: string;
+  status: string;
+  condition: string;
+  purchaseDate: string;
+  imageUrl?: string;
+  isRequest?: boolean;
+  onRequestBorrow?: (id: string) => void;
+  onViewDetails?: (id: string) => void;
+}
 
-            </div>
+const EquipmentCard = ({
+  id,
+  name,
+  type,
+  status,
+  condition,
+  purchaseDate,
+  imageUrl = "https://m.media-amazon.com/images/I/41mUYAPTs7L._SY300_SX300_QL70_FMwebp_.jpg",
+  isRequest = false,
+  onRequestBorrow,
+  onViewDetails,
+}: EquipmentCardProps) => {
+  const formattedDate = format(parseISO(purchaseDate), "EEEE, MMMM dd, yyyy");
 
-            {/* Equipment Type */}
-            <span className="inline-block bg-red-400 text-white text-xs font-normal px-2 py-1 rounded-sm mb-2">
-                {data.type}
-            </span>
+  const handleRequestClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (onRequestBorrow) {
+      onRequestBorrow(id);
+    }
+  };
 
-            {/* Equipment Name */}
-            <h2 className="text-lg font-semibold mb-3">{data.name}</h2>
+  const handleViewClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (onViewDetails) {
+      onViewDetails(id);
+    }
+  };
 
-            {/* Equipment Status */}
-            <div className="flex items-center text-sm mb-1 font-normal">
-                <CheckCircle className="w-4 h-4 mr-2" />
-                {data.status}
-            </div>
+  return (
+    <Link
+      to={ROUTES.STUDENT_EQUIPMENT_DETAIL(id)}
+      className="max-w-xs md:max-w-2xs rounded-xl border border-gray-200 shadow-2xl p-2 bg-white"
+    >
+      {/* Equipment Image */}
+      <div className="rounded-sm border border-gray-200 shadow-sm bg-white mb-4">
+        <img
+          src={imageUrl}
+          alt={name}
+          className="w-full h-48 object-contain "
+        />
+      </div>
 
-            {/* Equipment Condition */}
-            <div className="flex items-center text-sm mb-1 font-normal">
-                <Sparkles className="w-4 h-4 mr-2" />
-                {data.condition}
-            </div>
+      {/* Equipment Type */}
+      <span className="inline-block bg-red-400 text-white text-xs font-normal px-2 py-1 rounded-sm mb-2">
+        {type}
+      </span>
 
-            {/* Equipment Purchase Date */}
-            <div className="flex items-center text-sm mb-4 font-normal">
-                <CalendarDays className="w-4 h-4 mr-2" />
-                {formattedDate}
-            </div>
+      {/* Equipment Name */}
+      <h2 className="text-lg font-semibold mb-3">{name}</h2>
 
-            {/* Equipment Button */}
+      {/* Equipment Status */}
+      <div className="flex items-center text-sm mb-1 font-normal">
+        <CheckCircle className="w-4 h-4 mr-2" />
+        {status}
+      </div>
 
-            {isRequest && <div className="flex justify-center items-center md:space-x-4">
-                <Button variant="primary" size="lg" className="w-full md:w-auto">
-                    Request Borrow
-                </Button>
-                <Button variant="outline" size="lg" className="hover:bg-red-400 hover:text-white hover:border-none md:block hidden">
-                    View Details
-                </Button>
-            </div>}
-            {!isRequest && <Button variant="outline" size="medium" className="w-full hover:bg-red-400 hover:text-white hover:border-none">
-                View Details
-            </Button>}
-        </Link>
-    );
+      {/* Equipment Condition */}
+      <div className="flex items-center text-sm mb-1 font-normal">
+        <Sparkles className="w-4 h-4 mr-2" />
+        {condition}
+      </div>
+
+      {/* Equipment Purchase Date */}
+      <div className="flex items-center text-sm mb-4 font-normal">
+        <CalendarDays className="w-4 h-4 mr-2" />
+        {formattedDate}
+      </div>
+
+      {/* Equipment Button */}
+      {isRequest && (
+        <div className="flex justify-center items-center md:space-x-4">
+          <Button
+            variant="primary"
+            size="lg"
+            className="w-full md:w-auto"
+            onClick={handleRequestClick}
+          >
+            Request Borrow
+          </Button>
+          <Button
+            variant="outline"
+            size="lg"
+            className="hover:bg-red-400 hover:text-white hover:border-none md:block hidden"
+            onClick={handleViewClick}
+          >
+            View Details
+          </Button>
+        </div>
+      )}
+      {!isRequest && (
+        <Button
+          variant="outline"
+          size="medium"
+          className="w-full hover:bg-red-400 hover:text-white hover:border-none"
+          onClick={handleViewClick}
+        >
+          View Details
+        </Button>
+      )}
+    </Link>
+  );
 };
 
 export default EquipmentCard;

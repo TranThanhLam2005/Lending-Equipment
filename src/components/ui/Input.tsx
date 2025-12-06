@@ -1,22 +1,22 @@
 // import libraries
-import { useState } from 'react';
+import {useState} from "react";
 
 // import icons
-import { Search, Send, Text } from "lucide-react";
+import {Search, Send, Text} from "lucide-react";
 
-function Input({
-  className,
-  search,
-  inbox,
-  onSend,
-  ...props
-}: React.InputHTMLAttributes<HTMLInputElement>) {
-  const [value, setValue] = useState('');
+interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  search?: boolean;
+  inbox?: boolean;
+  onSend?: (value: string) => void;
+}
+
+function Input({className, search, inbox, onSend, ...props}: InputProps) {
+  const [value, setValue] = useState("");
 
   const handleSend = () => {
     if (value.trim() && onSend) {
       onSend(value);
-      setValue('');
+      setValue("");
     }
   };
   return (
@@ -36,11 +36,14 @@ function Input({
           value={value}
           onChange={(e) => setValue(e.target.value)}
           className={`flex-1 py-2 bg-transparent focus:outline-none ${className}`}
-          onKeyDown={(e) => e.key === 'Enter' && handleSend()}
+          onKeyDown={(e) => e.key === "Enter" && handleSend()}
           {...props}
         />
         {inbox && (
-          <span className="text-gray-400 hover:text-gray-600"  onClick={handleSend}>
+          <span
+            className="text-gray-400 hover:text-gray-600"
+            onClick={handleSend}
+          >
             <Send className="w-5 h-5" />
           </span>
         )}

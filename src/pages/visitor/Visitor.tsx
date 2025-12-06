@@ -1,80 +1,74 @@
-// import libraries
-import { useLoaderData } from "react-router-dom";
+/**
+ * Visitor Page - Headless UI Pattern
+ * Public equipment viewing page without authentication
+ * Uses useEquipmentList hook with visitor mode enabled
+ */
 
-// import components and hooks
-import Dropdown from "@/components/ui/Dropdown";
-import Input from "@/components/ui/Input";
-import EquipmentCard from "@/components/ui/EquipmentCard";
-import useSearchAndFilter from "@/hooks/useSearchAndFilter";
+// import libraries
+import {useLoaderData} from "react-router-dom";
+
+// import hooks and handlers
+import {useEquipmentList} from "@/hooks/useEquipmentList";
+import {createEquipmentSearchHandlers} from "@/handlers";
+
+// import components
+import EquipmentListView from "@/components/ui/EquipmentListView";
 
 const Visitor = () => {
-    const data = useLoaderData() as { equipment: any[] };
+  // Load initial data from route loader
+  const initialData = useLoaderData();
+  console.log("Visitor initial data:", initialData);
 
-    const {
-        searchTerm,
-        setSearchTerm,
-        searchStatus,
-        setSearchStatus,
-        searchOrder,
-        setSearchOrder,
-        displayData,
-        statusItems,
-        sortItems
-    } = useSearchAndFilter({
-        data: data,
-        path: "visitor/query_equipment"
-    });
+  // Use headless hook with visitor mode enabled
+  const {
+    displayData,
+    filters,
+    setSearchTerm,
+    setSearchStatus,
+    setSearchOrder,
+    statusOptions,
+    sortOptions,
+    error,
+  } = useEquipmentList({
+    initialData: initialData as any[],
+    isVisitor: true, // Use visitor endpoint for queries
+  });
 
-    return (
-        <div className="p-4 bg-gray-100 min-h-screen">
-            <div className="flex justify-between mb-4">
-                <div className="flex space-x-4">
-                    <div className="hidden md:block">
-                        <Input
-                            placeholder="Search Equipment..."
-                            type="text"
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                            value={searchTerm}
-                            search
-                        />
-                    </div>
-                    <Dropdown
-                        value={searchStatus}
-                        placeholder="Order events by:"
-                        items={statusItems}
-                        valueSetter={setSearchStatus}
-                    />
-                </div>
-                <Dropdown
-                    value={searchOrder}
-                    placeholder="Order events by:"
-                    items={sortItems}
-                    valueSetter={setSearchOrder}
-                />
-            </div>
-            <div className="md:hidden block mb-4">
-                <Input
-                    placeholder="Search Equipment..."
-                    type="text"
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    value={searchTerm}
-                    search
-                />
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-2 gap-y-10 justify-items-center">
-                {displayData.map((item, index) => (
-                    <EquipmentCard
-                        key={item.index}
-                        name={item.Name}
-                        type={item.Type}
-                        status={item.Status}
-                        condition={item.Condition}
-                        purchaseDate={item.PurchaseDate}
-                    />
-                ))}
-            </div>
-        </div>
-    );
-}
+  // Create event handlers
+  const searchHandlers = createEquipmentSearchHandlers(
+    setSearchTerm,
+    setSearchStatus,
+    setSearchOrder
+  );
+
+  // Visitor mode has no borrow or detail view actions
+  const handleViewDetails = (equipmentId: string) => {
+    console.log("View details:", equipmentId);
+    // Could navigate to a public detail page if needed
+  };
+
+  return (
+    <div className="p-4 bg-gray-100 min-h-screen">
+      {error && (
+        <div className="mb-4 p-4 bg-red-100 text-red-700 rounded">{error}</div>
+      )}
+
+      <EquipmentListView
+        equipmentList={displayData}
+        searchTerm={filters.searchTerm}
+        searchStatus={filters.searchStatus}
+        searchOrder={filters.searchOrder}
+        statusOptions={statusOptions}
+        sortOptions={sortOptions}
+        onSearchChange={searchHandlers.onSearchChange}
+        onStatusChange={searchHandlers.onStatusChange}
+        onSortChange={searchHandlers.onSortChange}
+        onViewDetails={handleViewDetails}
+        isRequest={false} // Hide borrow actions for visitors
+        title="Available Equipment"
+      />
+    </div>
+  );
+};
 
 export default Visitor;

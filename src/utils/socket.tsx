@@ -1,7 +1,6 @@
-import io from 'socket.io-client';
+import io from "socket.io-client";
+import {API_BASE_URL} from "@/api/config";
 
-
-export const socket = io("http://192.168.1.6:3000", {
-    withCredentials: true,
-})
-
+export const socket = io(API_BASE_URL, {
+  withCredentials: true,
+});

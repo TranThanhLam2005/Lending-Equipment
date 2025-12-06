@@ -1,17 +1,10 @@
-import { redirect } from "react-router-dom";
+import {authService} from "@/api/auth.service";
 
-const URL_API = '192.168.1.6';
+export async function requireAuth(_request: Request) {
+  const res = await authService.verifySession();
+  return res.data; // Return user info if needed
+}
 
-
-export async function requireAuth(request) {
-  const res = await fetch(`http://${URL_API}:3000/auth/verify-session`, {
-    method: 'GET',
-    credentials: "include",
-  });
-
-  if (!res.ok) {
-    throw redirect('/');
-  }
-
-  return await res.json(); // Return user info if needed
+export function setAuthCookie(token: string) {
+  document.cookie = `auth_token=${token}; path=/; max-age=86400`; // 24 hours
 }

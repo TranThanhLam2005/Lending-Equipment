@@ -13,7 +13,6 @@ import { CalendarDays, MapPin, Info, User2, Home } from "lucide-react";
 
 const MyCourseDetail = () => {
     const data = useLoaderData() as { course: any };
-    const [searchOrder, setSearchOrder] = useState("Default");
     const [state, dispatch] = useStore();
     const { isSidebarOpen } = state;
 

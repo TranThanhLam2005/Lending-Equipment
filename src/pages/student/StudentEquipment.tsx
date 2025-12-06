@@ -1,84 +1,92 @@
-// import libraries
-import { useLoaderData } from "react-router-dom";
+/**
+ * StudentEquipment Page - Headless UI Pattern
+ * Demonstrates separation of concerns:
+ * - Data fetching: useEquipmentList hook
+ * - Event handling: createEquipmentSearchHandlers
+ * - UI rendering: EquipmentListView component
+ */
 
-// import components and hooks 
-import Dropdown from "@/components/ui/Dropdown";
-import Input from "@/components/ui/Input";
-import EquipmentCard from "@/components/ui/EquipmentCard";
-import { useStore } from '@/hooks/hooks';
-import useSearchAndFilter from "@/hooks/useSearchAndFilter";
+// import libraries
+import {useLoaderData, useNavigate} from "react-router-dom";
+
+// import hooks and handlers
+import {useStore} from "@/hooks/hooks";
+import {useEquipmentList} from "@/hooks/useEquipmentList";
+import {createEquipmentSearchHandlers} from "@/handlers";
+
+// import routes
+import {ROUTES} from "@/api/config";
+
+// import components
+import EquipmentListView from "@/components/ui/EquipmentListView";
 
 const StudentEquipment = () => {
+  const [state] = useStore() as [any, any];
+  const {isSidebarOpen} = state;
+  const navigate = useNavigate();
 
-    const [state, dispatch] = useStore();
-    const { isSidebarOpen } = state;
-    const data = useLoaderData();
-    const {
-        searchTerm,
-        setSearchTerm,
-        searchStatus,
-        setSearchStatus,
-        searchOrder,
-        setSearchOrder,
-        displayData,
-        statusItems,
-        sortItems
-    } = useSearchAndFilter({
-        data: data,
-        path: "user/query_participant_equipment"
-    });
+  // Load initial data from route loader
+  const initialData = useLoaderData();
+
+  // Use headless hook for business logic and state management
+  const {
+    displayData,
+    filters,
+    setSearchTerm,
+    setSearchStatus,
+    setSearchOrder,
+    statusOptions,
+    sortOptions,
+    error,
+  } = useEquipmentList({
+    initialData: initialData as any[],
+  });
+
+  // Create event handlers
+  const searchHandlers = createEquipmentSearchHandlers(
+    setSearchTerm,
+    setSearchStatus,
+    setSearchOrder
+  );
+
+  // Handle navigation to detail page
+  const handleViewDetails = (equipmentId: string) => {
+    navigate(ROUTES.STUDENT_EQUIPMENT_DETAIL(equipmentId));
+  };
+
+  const handleRequestBorrow = (equipmentId: string) => {
+    // Navigate to detail page where user can request borrow
+    navigate(ROUTES.STUDENT_EQUIPMENT_DETAIL(equipmentId));
+  };
+
+  // Show error state
+  if (error) {
     return (
-        <div>
-            <div className="text-2xl md:text-4xl font-medium mb-4">Equipment</div>
-            <div className="flex justify-between mb-4">
-                <div className="flex space-x-4">
-                    <div className="hidden md:block">
-                        <Input
-                            placeholder="Search Equipment..."
-                            type="text"
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                            value={searchTerm}
-                            search
-                        />
-                    </div>
-                    <Dropdown
-                        value={searchStatus}
-                        placeholder="Order events by:"
-                        items={statusItems}
-                        valueSetter={setSearchStatus}
-                    />
-                </div>
-                <Dropdown
-                    value={searchOrder}
-                    placeholder="Order events by:"
-                    items={sortItems}
-                    valueSetter={setSearchOrder}
-                />
-            </div>
-            <div className="md:hidden block mb-4">
-                <Input
-                    placeholder="Search Equipment..."
-                    type="text"
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    value={searchTerm}
-                    search
-                />
-            </div>
-            <div className={`grid grid-cols-1 ${isSidebarOpen ? "lg:grid-cols-3" : "lg:grid-cols-4"} sm:grid-cols-2 md:grid-cols-3 gap-x-2 gap-y-10 justify-items-center`}>
-                {displayData.map((item, index) => (
-                    <EquipmentCard
-                        key={index}
-                        id={item.ID}
-                        name={item.Name}
-                        type={item.Type}
-                        status={item.Status}
-                        condition={item.Condition}
-                        purchaseDate={item.PurchaseDate}
-                        isRequest
-                    />
-                ))}
-            </div>
-        </div>
+      <div className="text-center py-12">
+        <p className="text-red-500 text-lg">Error: {error}</p>
+      </div>
     );
-}
+  }
+
+  // Render pure presentational component
+  return (
+    <EquipmentListView
+      equipmentList={displayData}
+      isSidebarOpen={isSidebarOpen}
+      searchTerm={filters.searchTerm}
+      searchStatus={filters.searchStatus}
+      searchOrder={filters.searchOrder}
+      statusOptions={statusOptions}
+      sortOptions={sortOptions}
+      onSearchChange={searchHandlers.onSearchChange}
+      onStatusChange={searchHandlers.onStatusChange}
+      onSortChange={searchHandlers.onSortChange}
+      onRequestBorrow={handleRequestBorrow}
+      onViewDetails={handleViewDetails}
+      isRequest={true}
+      title="Equipment"
+    />
+  );
+};
+
 export default StudentEquipment;

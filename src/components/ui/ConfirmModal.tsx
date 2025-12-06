@@ -1,14 +1,14 @@
 // import libraries
-import { useState } from "react";
+import {useState} from "react";
 
 // import components
-import { Button } from "@/components/ui/Button";
+import {Button} from "@/components/ui/Button";
 
 // import icons
 import {Trash, LogOut, Check} from "lucide-react";
 
 interface ConfirmModalProps {
-  type?: "delete" | "logout";
+  type?: "delete" | "logout" | "confirm";
   title: string;
   message: string;
   onConfirm: () => void;
@@ -47,12 +47,21 @@ function ConfirmModal({
           <p className="text-base text-gray-600 mt-2 text-center">{message}</p>
         </div>
         <div className="flex justify-center mt-2">
-          <Button variant="secondary" className="mr-2" onClick={onCancel} disabled={isLoading}>
+          <Button
+            variant="secondary"
+            className="mr-2"
+            onClick={onCancel}
+            disabled={isLoading}
+          >
             Close
           </Button>
           <Button
             className="ml-2 bg-red-500 text-white hover:bg-red-700 hover:scale-105  focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50"
-            onClick={async () => { setIsLoading(true); await onConfirm(); setIsLoading(false); }}
+            onClick={async () => {
+              setIsLoading(true);
+              await onConfirm();
+              setIsLoading(false);
+            }}
             disabled={isLoading}
           >
             {isLoading ? "Loading..." : "Confirm"}
