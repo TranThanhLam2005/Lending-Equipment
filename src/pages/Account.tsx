@@ -1,10 +1,9 @@
-import { useState } from 'react';
+import {useState} from "react";
 
-import { Button } from '@/components/ui/Button';
+import {Button} from "@/components/ui/common/Button";
 const Account = () => {
   const [isEditInfo, setIsEditInfo] = useState(false);
   const [isEditPassword, setIsEditPassword] = useState(false);
-
 
   return (
     <div>
@@ -19,29 +18,47 @@ const Account = () => {
           <Button variant="outline">Change Avatar</Button>
         </div>
         <div className="flex-1 rounded-lg shadow-lg bg-white p-4">
-          <div className="text-xl font-semibold mb-4 border-b-1 pb-2">Personal Information</div>
+          <div className="text-xl font-semibold mb-4 border-b-1 pb-2">
+            Personal Information
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-2">
-            {inputField('Full Name:', 'Lionel Messi', 'text')}
-            {inputField('Email:', 's4038329@gmail.com', 'email')}
-            {inputField('Phone Number:', '+1234567890', 'tel')}
-            {inputField('Date of Birth:', '1987-06-24', 'date')}
-            {inputField('Address:', '123 Main St, City, Country', 'text')}
-            {inputField('Username:', 'messi_goat', 'text')}
+            {inputField("Full Name:", "Lionel Messi", "text")}
+            {inputField("Email:", "s4038329@gmail.com", "email")}
+            {inputField("Phone Number:", "+1234567890", "tel")}
+            {inputField("Date of Birth:", "1987-06-24", "date")}
+            {inputField("Address:", "123 Main St, City, Country", "text")}
+            {inputField("Username:", "messi_goat", "text")}
           </div>
 
-          {isEditInfo ? (<div className="mt-4 flex justify-end gap-x-2">
-            <Button variant="secondary" size="medium" onClick={() => setIsEditInfo(!isEditInfo)}>Cancel</Button>
-            <Button variant="primary" size="medium">Save</Button>
-          </div>) : (<div className="flex justify-end mt-4" onClick={() => setIsEditInfo(!isEditInfo)}>
-            <Button variant="primary" size="medium">Edit</Button>
-          </div>)}
-
+          {isEditInfo ? (
+            <div className="mt-4 flex justify-end gap-x-2">
+              <Button
+                variant="secondary"
+                size="medium"
+                onClick={() => setIsEditInfo(!isEditInfo)}
+              >
+                Cancel
+              </Button>
+              <Button variant="primary" size="medium">
+                Save
+              </Button>
+            </div>
+          ) : (
+            <div
+              className="flex justify-end mt-4"
+              onClick={() => setIsEditInfo(!isEditInfo)}
+            >
+              <Button variant="primary" size="medium">
+                Edit
+              </Button>
+            </div>
+          )}
         </div>
       </div>
       <div className="mt-8 rounded-lg shadow-lg bg-white p-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-2">
-          {inputField('Current Password:', '', 'password')}
-          {inputField('New Password:', '', 'password')}
+          {inputField("Current Password:", "", "password")}
+          {inputField("New Password:", "", "password")}
         </div>
 
         <div className="mt-4">
@@ -56,17 +73,31 @@ const Account = () => {
         <div className="ml-auto mt-4 flex justify-end gap-x-2">
           {isEditPassword ? (
             <>
-              <Button variant="secondary" size="medium" onClick={() => setIsEditPassword(!isEditPassword)}>Cancel</Button>
-              <Button variant="primary" size="medium" >Save</Button>
+              <Button
+                variant="secondary"
+                size="medium"
+                onClick={() => setIsEditPassword(!isEditPassword)}
+              >
+                Cancel
+              </Button>
+              <Button variant="primary" size="medium">
+                Save
+              </Button>
             </>
           ) : (
-            <Button variant="primary" size="medium" onClick={() => setIsEditPassword(!isEditPassword)}>Change Password</Button>
+            <Button
+              variant="primary"
+              size="medium"
+              onClick={() => setIsEditPassword(!isEditPassword)}
+            >
+              Change Password
+            </Button>
           )}
         </div>
       </div>
     </div>
   );
-}
+};
 const inputField = (label: string, value: string, type: string) => (
   <div className="flex justify-between items-center gap-x-6">
     <div className="block text-sm font-medium text-gray-700 mb-1">{label}</div>
@@ -77,8 +108,5 @@ const inputField = (label: string, value: string, type: string) => (
     />
   </div>
 );
-
-
-
 
 export default Account;

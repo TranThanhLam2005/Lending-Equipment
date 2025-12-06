@@ -1,13 +1,6 @@
 import {apiClient} from "./client";
 import {API_ENDPOINTS} from "./config";
-
-export interface User {
-  ID: string;
-  Username: string;
-  Email?: string;
-  Role?: string;
-  Name?: string;
-}
+import type {User} from "@/types/Type";
 
 export const userService = {
   /**

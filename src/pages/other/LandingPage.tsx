@@ -3,9 +3,9 @@ import {useState, useRef} from "react";
 import {useNavigate} from "react-router-dom";
 
 // import components
-import {Button} from "@/components/ui/Button";
+import {Button} from "@/components/ui/common/Button";
 import Footer from "@/layouts/components/Footer";
-import {FadeInSection} from "@/components/ui/FadeInSection";
+import {FadeInSection} from "@/components/ui/common/FadeInSection";
 
 // import routes
 import {ROUTES} from "@/api/config";
@@ -27,17 +27,17 @@ import {
 const LandingPage = () => {
   const navigate = useNavigate();
   return (
-    <div>
-      <header className="fixed bg-white h-16 w-full flex items-center justify-between border-b-1 px-4 md:px-30 z-20">
+    <div className="bg-white">
+      <header className="fixed bg-white h-16 w-full flex items-center justify-between border-b-2 border-gray-200 px-4 md:px-30 z-20 shadow-sm">
         <div className="flex items-center">
           <img
             src={logo}
             alt="RMIT Logo"
             className="h-14 w-14 inline-block mr-4"
           />
-          <span>EasyEd Track</span>
+          <span className="font-bold text-gray-900 text-lg">EasyEd Track</span>
         </div>
-        <div className="flex items-center gap-0 md:gap-4">
+        <div className="flex items-center gap-2 md:gap-3">
           <Button
             variant="ghost"
             size="sm"
@@ -404,12 +404,14 @@ const workComponent = (
   return (
     <div className="flex flex-col md:flex-row justify-center items-start gap-x-50">
       <div className="relative flex flex-col items-center w-full md:w-auto mb-4 md:mb-0">
-        <div className="flex items-center justify-center h-18 w-18 bg-gradient-to-r from-[#0071e3]/20 to-[#6c56f5]/20 text-3xl font-bold text-blue-600 rounded-full shadow-xl">
+        <div
+          className="flex items-center justify-center h-18 w-18 bg-gradient-to-l from-gray-900/20 to-gray-100/20 text-3xl font-bold text-black rounded-full shadow-xl"
+        >
           {number}
         </div>
         {/* Connector line */}
         {!isLast && (
-          <div className="hidden md:block absolute top-18 h-18 w-0.5 bg-blue-200" />
+          <div className="hidden md:block absolute top-18 h-18 w-0.5 bg-black" />
         )}
       </div>
       <div className="flex flex-col max-w-md">
@@ -489,19 +491,19 @@ const featureDetail = (
           <p className="text-lg text-gray-600 mt-4">{description}</p>
           <div className="flex flex-col mt-6 gap-4">
             <div className="flex items-center gap-2">
-              <CircleCheck className="text-red-400" />
+              <CircleCheck className="text-black" />
               <span>{feature1}</span>
             </div>
             <div className="flex items-center gap-2">
-              <CircleCheck className="text-red-400" />
+              <CircleCheck className="text-black" />
               <span>{feature2}</span>
             </div>
             <div className="flex items-center gap-2">
-              <CircleCheck className="text-red-400" />
+              <CircleCheck className="text-black" />
               <span>{feature3}</span>
             </div>
             <div className="flex items-center gap-2">
-              <CircleCheck className="text-red-400" />
+              <CircleCheck className="text-black" />
               <span>{feature4}</span>
             </div>
           </div>
@@ -523,7 +525,7 @@ const feedbackComponent = (image: string, name: string, feedback: string) => {
         <h2 className="text-lg font-semibold mb-2">{name}</h2>
       </div>
       <p className="text-gray-700 mb-2">{feedback}</p>
-      <div className="text-red-400 text-xl">★★★★★</div>
+      <div className="text-black text-xl">★★★★★</div>
     </div>
   );
 };

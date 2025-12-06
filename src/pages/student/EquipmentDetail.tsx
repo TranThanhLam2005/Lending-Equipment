@@ -10,11 +10,11 @@
 import {useLoaderData} from "react-router-dom";
 
 // import hooks
-import {useEquipmentDetail} from "@/hooks/useEquipmentDetail";
+import {useEquipmentDetail} from "@/hooks/equipment/useEquipmentDetail";
 
 // import components
-import EquipmentDetailView from "@/components/ui/EquipmentDetailView";
-import LoadingPage from "@/components/ui/LoadingPage";
+import EquipmentDetailView from "@/components/ui/equipment/EquipmentDetailView";
+import LoadingPage from "@/components/ui/common/LoadingPage";
 
 const EquipmentDetail = () => {
   // Load initial data from route loader

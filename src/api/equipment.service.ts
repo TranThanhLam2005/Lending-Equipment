@@ -1,24 +1,6 @@
 import {apiClient} from "./client";
 import {API_ENDPOINTS} from "./config";
-
-export interface Equipment {
-  ID: string;
-  Name: string;
-  Type: string;
-  Status: string;
-  Condition: string;
-  PurchaseDate: string;
-  DateAvailable?: string;
-  Venue?: string;
-  Description?: string;
-  historyComments?: any[];
-}
-
-export interface EquipmentQueryParams {
-  searchValue?: string;
-  searchStatus?: string;
-  searchOrder?: string;
-}
+import type {Equipment, EquipmentQueryParams} from "@/types/Type";
 
 export const equipmentService = {
   /**

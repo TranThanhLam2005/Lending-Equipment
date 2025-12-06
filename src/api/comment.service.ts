@@ -1,27 +1,6 @@
 import {apiClient} from "./client";
 import {API_ENDPOINTS} from "./config";
-
-export interface Comment {
-  ID: string;
-  Content: string;
-  UserID: string;
-  EquipmentID: string;
-  CreatedAt: string;
-  UpdatedAt?: string;
-  User?: {
-    Username: string;
-    Name?: string;
-  };
-}
-
-export interface CreateCommentData {
-  content: string;
-  equipmentId: string;
-}
-
-export interface UpdateCommentData {
-  content: string;
-}
+import type {Comment, CreateCommentData, UpdateCommentData} from "@/types/Type";
 
 export const commentService = {
   /**

@@ -9,8 +9,8 @@ import {useLoaderData} from "react-router-dom";
 import {useState} from "react";
 
 // import components
-import Dropdown from "@/components/ui/Dropdown";
-import Input from "@/components/ui/Input";
+import Dropdown from "@/components/ui/common/Dropdown";
+import Input from "@/components/ui/common/Input";
 
 // import icons
 import {Trash, AlertTriangle, CornerUpLeft} from "lucide-react";

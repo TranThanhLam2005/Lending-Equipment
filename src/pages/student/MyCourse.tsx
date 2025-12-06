@@ -1,79 +1,76 @@
 // import libraries
-import { useState } from "react";
-import { useLoaderData } from "react-router-dom";
+import {useLoaderData, useNavigate} from "react-router-dom";
 
+// import components
+import CourseListView from "@/components/ui/course/CourseListView";
+// import hooks
+import {useCourseList} from "@/hooks/course/useCourseList";
+// import handlers
+import {
+  createCourseSearchHandlers,
+  createCourseActionHandlers,
+} from "@/handlers/course.handlers";
 
-// import components  
-import Dropdown from "@/components/ui/Dropdown";
-import Input from "@/components/ui/Input";
-import CourseCard from "@/components/ui/CourseCard";
-
-
-const statusItems = [
-  { text: "All" },
-  { text: "Available" },
-  { text: "Borrowed" },
-];
-const sortItems = [
-  { text: "Default" },
-  { text: "Most Recent" },
-  { text: "Oldest" },
-];
 const MyCourse = () => {
-  
-  const data = useLoaderData();
+  const data = useLoaderData() as any[];
+  const navigate = useNavigate();
 
-  const [searchStatus, setSearchStatus] = useState("All");
-  const [searchOrder, setSearchOrder] = useState("Default");
+  // Use the headless hook for course list management
+  const {
+    courses,
+    displayData,
+    filters,
+    isLoading,
+    error,
+    setSearchTerm,
+    setSearchStatus,
+    setSearchOrder,
+    refreshCourses,
+    statusOptions,
+    sortOptions,
+  } = useCourseList({initialData: data});
+
+  // Create event handlers
+  const searchHandlers = createCourseSearchHandlers(
+    setSearchTerm,
+    setSearchStatus,
+    setSearchOrder
+  );
+
+  const actionHandlers = createCourseActionHandlers(
+    navigate,
+    undefined,
+    undefined,
+    refreshCourses
+  );
+
   return (
     <div>
-      <div className="text-2xl md:text-4xl font-medium mb-4">Courses</div>
-      <div className="flex justify-between mb-4">
-        <div className="flex space-x-4">
-          <div className="hidden md:block">
-            <Input
-              placeholder="Search Course..."
-              type="text"
-              search
-            />
-          </div>
-          <Dropdown
-            value={searchStatus}
-            placeholder="Order events by:"
-            items={statusItems}
-            valueSetter={setSearchStatus}
-          />
-        </div>
-        <Dropdown
-          value={searchOrder}
-          placeholder="Order events by:"
-          items={sortItems}
-          valueSetter={setSearchOrder}
-        />
+      {/* Page Title */}
+      <div className="mb-8">
+        <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
+          My Courses
+        </h1>
+        <div className="h-1 w-20 bg-gradient-to-r from-gray-900 to-gray-600 mt-3 rounded-full"></div>
       </div>
-      <div className="md:hidden block mb-4">
-        <Input
-          placeholder="Search Course..."
-          type="text"
-          search
-        />
-      </div>
-      <div className="grid grid-cols-1 gap-4">
-        {data.map((course: any) => (
-          <CourseCard
-            key={course.CourseID}
-            id={course.CourseID}
-            name={course.CourseName}
-            startDate={course.DateStart}
-            endDate={course.DateEnd}
-            description={course.Description}
-            lectureDate={course.LectureDate}
-            room={course.Room}
-            academicName={course.AcademicStaffName}
-          />
-        ))}
-      </div>
+
+      {/* Course List View */}
+      <CourseListView
+        courses={courses}
+        displayData={displayData}
+        filters={filters}
+        isLoading={isLoading}
+        error={error}
+        statusOptions={statusOptions}
+        sortOptions={sortOptions}
+        searchHandlers={searchHandlers}
+        actionHandlers={actionHandlers}
+        searchPlaceholder="Search courses by name, instructor, description, or room..."
+        emptyMessage="You don't have any enrolled courses yet"
+        showTotalCount={true}
+      />
     </div>
   );
-}
+};
+
 export default MyCourse;

@@ -1,15 +1,6 @@
 import {apiClient} from "./client";
 import {API_ENDPOINTS} from "./config";
-
-export interface LoginCredentials {
-  Username: string;
-  Password: string;
-}
-
-export interface AuthResponse {
-  message: string;
-  user?: any;
-}
+import type {LoginCredentials, AuthResponse} from "@/types/Type";
 
 export const authService = {
   /**

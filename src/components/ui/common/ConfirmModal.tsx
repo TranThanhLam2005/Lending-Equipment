@@ -2,7 +2,7 @@
 import {useState} from "react";
 
 // import components
-import {Button} from "@/components/ui/Button";
+import {Button} from "@/components/ui/common/Button";
 
 // import icons
 import {Trash, LogOut, Check} from "lucide-react";
@@ -28,35 +28,41 @@ function ConfirmModal({
   };
 
   return (
-    <div className="fixed inset-0 backdrop-blur-md z-[9999]" onClick={onCancel}>
+    <div
+      className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999] flex items-center justify-center p-4"
+      onClick={onCancel}
+    >
       <div
-        className="flex flex-col items-center justify-center bg-white rounded-xl shadow-xl w-full max-w-md p-6 mx-auto mt-20"
+        className="flex flex-col items-center justify-center bg-white rounded-2xl shadow-2xl w-full max-w-md p-8 border-2 border-gray-200"
         onClick={handlePropagation}
       >
-        <div className="flex flex-col items-center mb-4">
-          <div className="flex items-center justify-center text-5xl text-red-500 mb-4">
+        <div className="flex flex-col items-center mb-6">
+          <div className="flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
             {type === "delete" ? (
-              <Trash className="w-10 h-10" />
+              <Trash className="w-8 h-8 text-gray-900" />
             ) : type === "logout" ? (
-              <LogOut className="w-10 h-10" />
+              <LogOut className="w-8 h-8 text-gray-900" />
             ) : type === "confirm" ? (
-              <Check className="w-10 h-10" />
+              <Check className="w-8 h-8 text-gray-900" />
             ) : null}
           </div>
-          <h2 className="text-2xl font-semibold">{title}</h2>
-          <p className="text-base text-gray-600 mt-2 text-center">{message}</p>
+          <h2 className="text-2xl font-bold text-gray-900">{title}</h2>
+          <p className="text-base text-gray-600 mt-3 text-center leading-relaxed">
+            {message}
+          </p>
         </div>
-        <div className="flex justify-center mt-2">
+        <div className="flex gap-3 w-full mt-2">
           <Button
-            variant="secondary"
-            className="mr-2"
+            variant="outline"
+            className="flex-1"
             onClick={onCancel}
             disabled={isLoading}
           >
-            Close
+            Cancel
           </Button>
           <Button
-            className="ml-2 bg-red-500 text-white hover:bg-red-700 hover:scale-105  focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50"
+            variant="primary"
+            className="flex-1"
             onClick={async () => {
               setIsLoading(true);
               await onConfirm();

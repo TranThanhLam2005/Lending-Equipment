@@ -5,8 +5,8 @@ import {useStore} from "@/hooks/hooks";
 
 // import components and actions
 import {setSidebarOpen} from "@/store/actions";
-import {Button} from "@/components/ui/Button";
-import ConfirmModal from "@/components/ui/ConfirmModal";
+import {Button} from "@/components/ui/common/Button";
+import ConfirmModal from "@/components/ui/common/ConfirmModal";
 
 // import routes
 import {ROUTES} from "@/api/config";
@@ -46,8 +46,10 @@ const Sidebar = () => {
           to={to}
           onClick={onClick}
           className={({isActive}) =>
-            `flex items-center gap-3 p-2 rounded transition-all ${
-              isActive ? "bg-[#FDECEC] text-[#F26666]" : "text-[#687382]"
+            `flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-medium ${
+              isActive
+                ? "bg-gray-900 text-white shadow-sm"
+                : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
             } ${extra}`
           }
         >
@@ -59,12 +61,14 @@ const Sidebar = () => {
           to={to}
           onClick={onClick}
           className={({isActive}) =>
-            `flex items-center justify-center p-2 rounded transition-all ${
-              isActive ? "bg-[#FDECEC] text-[#F26666]" : "text-[#687382]"
+            `flex items-center justify-center p-3 rounded-xl transition-all ${
+              isActive
+                ? "bg-gray-900 text-white shadow-sm"
+                : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
             } ${extra}`
           }
         >
-          <Icon className="w-6 h-6 md:w-8 md:h-8" />
+          <Icon className="w-6 h-6 md:w-7 md:h-7" />
         </NavLink>
       )}
     </>
@@ -99,21 +103,21 @@ const Sidebar = () => {
     <div
       className={`fixed top-0 left-0 h-full transition-all duration-300 ${
         isSidebarOpen ? "w-80" : "w-22"
-      } bg-white shadow-md border-r`}
+      } bg-white shadow-lg border-r-2 border-gray-200 z-50`}
     >
       {/* Header logo / icon */}
-      <div className="text-center py-6 px-4 text-2xl font-bold text-red-500">
+      <div className="text-center py-6 px-4 text-2xl font-bold border-b-2 border-gray-100">
         {isSidebarOpen ? (
-          <>
-            Lend<span className="text-gray-900">Equip</span>
-          </>
+          <div className="text-gray-900">
+            Lend<span className="text-gray-600">Equip</span>
+          </div>
         ) : (
           <img src={Logo} alt="Logo" className="w-12 h-12 mx-auto" />
         )}
       </div>
 
       {/* Navigation links */}
-      <nav className="flex flex-col space-y-1 px-2">
+      <nav className="flex flex-col space-y-2 px-3 py-4">
         {renderLink({
           to: ROUTES.STUDENT_DASHBOARD,
           icon: LayoutDashboard,
@@ -127,7 +131,7 @@ const Sidebar = () => {
               to: ROUTES.MY_COURSE,
               icon: CalendarDays,
               label: "Course",
-              extra: courseOpen ? "bg-[#FDECEC] text-[#F26666]" : "",
+              extra: courseOpen ? "bg-gray-900 text-white" : "",
               onClick: () => setCourseOpen(!courseOpen),
             })
           : renderLink({
@@ -138,12 +142,12 @@ const Sidebar = () => {
                 setCourseOpen(!courseOpen);
                 dispatch(setSidebarOpen(true));
               },
-              extra: courseOpen ? "bg-[#FDECEC] text-[#F26666]" : "",
+              extra: courseOpen ? "bg-gray-900 text-white" : "",
             })}
 
         {/* Submenu: My Course / Browse Course */}
         {courseOpen && isSidebarOpen && (
-          <div className="ml-6 flex flex-col space-y-1">
+          <div className="ml-4 flex flex-col space-y-2 pl-4 border-l-2 border-gray-200">
             {renderLink({
               to: ROUTES.MY_COURSE,
               icon: CalendarDays,
@@ -182,14 +186,14 @@ const Sidebar = () => {
       </nav>
       {/* Logout */}
       {isSidebarOpen && (
-        <div className="absolute bottom-0 w-full flex justify-center py-4 hidden md:flex">
+        <div className="absolute bottom-0 w-full flex justify-center p-4 border-t-2 border-gray-100 hidden md:flex">
           <Button
-            className="flex items-center"
+            className="flex items-center gap-2 w-full mx-3"
             variant="primary"
             size="lg"
             onClick={handleLogoutClick}
           >
-            <LogOut size={24} />
+            <LogOut size={20} />
             Log out
           </Button>
         </div>

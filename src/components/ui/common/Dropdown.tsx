@@ -23,13 +23,13 @@ function Dropdown<T extends string | number | readonly string[] | undefined>({
             valueSetter(newValue);
           }
         }}
-        className=" w-full rounded-md shadow-sm px-4 py-2 bg-white"
+        className="w-full rounded-lg border-2 border-gray-200 shadow-sm px-4 py-2.5 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-gray-900 transition-all cursor-pointer hover:border-gray-400"
       >
-        <option value="" disabled className="text-gray-500">
+        <option value="" disabled className="text-gray-400">
           {placeholder}
         </option>
         {items.map((item, idx) => (
-          <option key={idx} value={item.text}>
+          <option key={idx} value={item.text} className="text-gray-900">
             {item.text}
           </option>
         ))}

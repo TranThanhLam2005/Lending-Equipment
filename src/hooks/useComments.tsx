@@ -5,25 +5,13 @@
 
 import {useState, useEffect} from "react";
 import {commentService} from "@/api";
-import type {Comment} from "@/api";
+import type {
+  Comment,
+  UseCommentsOptions,
+  UseCommentsReturn,
+} from "@/types/Type";
 
-export interface UseCommentsOptions {
-  equipmentId: string;
-  initialComments?: Comment[];
-}
-
-export interface UseCommentsReturn {
-  // Data
-  comments: Comment[];
-  isLoading: boolean;
-  error: string | null;
-
-  // Actions
-  addComment: (content: string) => Promise<void>;
-  updateComment: (commentId: string, content: string) => Promise<void>;
-  deleteComment: (commentId: string) => Promise<void>;
-  refreshComments: () => Promise<void>;
-}
+export type {UseCommentsOptions, UseCommentsReturn};
 
 export const useComments = (options: UseCommentsOptions): UseCommentsReturn => {
   const {equipmentId, initialComments = []} = options;

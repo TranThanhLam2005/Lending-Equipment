@@ -11,14 +11,14 @@ import {useLoaderData, useNavigate} from "react-router-dom";
 
 // import hooks and handlers
 import {useStore} from "@/hooks/hooks";
-import {useEquipmentList} from "@/hooks/useEquipmentList";
+import {useEquipmentList} from "@/hooks/equipment/useEquipmentList";
 import {createEquipmentSearchHandlers} from "@/handlers";
 
 // import routes
 import {ROUTES} from "@/api/config";
 
 // import components
-import EquipmentListView from "@/components/ui/EquipmentListView";
+import EquipmentListView from "@/components/ui/equipment/EquipmentListView";
 
 const StudentEquipment = () => {
   const [state] = useStore() as [any, any];
@@ -30,6 +30,7 @@ const StudentEquipment = () => {
 
   // Use headless hook for business logic and state management
   const {
+    equipmentList,
     displayData,
     filters,
     setSearchTerm,
@@ -72,6 +73,7 @@ const StudentEquipment = () => {
   return (
     <EquipmentListView
       equipmentList={displayData}
+      allEquipment={equipmentList}
       isSidebarOpen={isSidebarOpen}
       searchTerm={filters.searchTerm}
       searchStatus={filters.searchStatus}

@@ -2,8 +2,8 @@
 import {Link} from "react-router-dom";
 
 // import components
-import {Button} from "@/components/ui/Button";
-import {FadeInSection} from "@/components/ui/FadeInSection";
+import {Button} from "@/components/ui/common/Button";
+import {FadeInSection} from "@/components/ui/common/FadeInSection";
 
 // import routes
 import {ROUTES} from "@/api/config";

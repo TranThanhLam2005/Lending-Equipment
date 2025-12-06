@@ -8,8 +8,8 @@ import {ROUTES} from "../api/config";
 
 // import services and auth
 import {equipmentService, courseService, userService} from "../api";
-import {requireAuth} from "../utils/auth";
 import type {LoaderFunctionArgs} from "react-router-dom";
+import {authService} from "../api/auth.service";
 
 // Pages
 const Account = lazy(() => import("../pages/Account"));
@@ -30,7 +30,7 @@ const Login = lazy(() => import("../pages/auth/Login"));
 const ForgotPassword = lazy(() => import("../pages/auth/ForgotPassword"));
 
 const LandingPage = lazy(() => import("../pages/other/LandingPage"));
-import LoadingPage from "../components/ui/LoadingPage";
+import LoadingPage from "../components/ui/common/LoadingPage";
 // Layouts
 const DefaultLayout = lazy(() => import("../layouts/DefaultLayout"));
 
@@ -71,16 +71,16 @@ const router = createBrowserRouter([
       {
         path: ROUTES.STUDENT_DASHBOARD,
         element: <StudentDashBoard />,
-        loader: async ({request}: LoaderFunctionArgs) => {
-          await requireAuth(request);
+        loader: async () => {
+          await authService.verifySession();
           return null;
         },
       },
       {
         path: ROUTES.MY_COURSE,
         element: <MyCourse />,
-        loader: async ({request}: LoaderFunctionArgs) => {
-          await requireAuth(request);
+        loader: async () => {
+          await authService.verifySession();
           const res = await courseService.getParticipantCourses();
           return res.data;
         },
@@ -92,9 +92,9 @@ const router = createBrowserRouter([
             <MyCourseDetail />
           </Suspense>
         ),
-        loader: async ({request, params}: LoaderFunctionArgs) => {
+        loader: async ({params}: LoaderFunctionArgs) => {
           const {id} = params!;
-          await requireAuth(request);
+          await authService.verifySession();
           const res = await courseService.getCourseDetail(id!);
           return res.data;
         },
@@ -106,8 +106,8 @@ const router = createBrowserRouter([
       {
         path: ROUTES.STUDENT_EQUIPMENT,
         element: <StudentEquipment />,
-        loader: async ({request}: LoaderFunctionArgs) => {
-          await requireAuth(request);
+        loader: async () => {
+          await authService.verifySession();
           const res = await equipmentService.getParticipantEquipment();
           return res.data;
         },
@@ -119,9 +119,9 @@ const router = createBrowserRouter([
             <EquipmentDetail />
           </Suspense>
         ),
-        loader: async ({request, params}: LoaderFunctionArgs) => {
+        loader: async ({params}: LoaderFunctionArgs) => {
           const {id} = params!;
-          await requireAuth(request);
+          await authService.verifySession();
           const [equipmentRes, userRes] = await Promise.all([
             equipmentService.getEquipmentDetail(id!),
             userService.getUserBySession(),

@@ -1,13 +1,6 @@
-/**
- * Event handlers for modal interactions
- */
+import type {ModalHandlers, FormHandlers} from "@/types/Type";
 
-export interface ModalHandlers {
-  onOpen: () => void;
-  onClose: () => void;
-  onConfirm: () => void;
-  onCancel: () => void;
-}
+export type {ModalHandlers, FormHandlers};
 
 /**
  * Create modal handlers
@@ -39,15 +32,6 @@ export const createModalHandlers = (
     }
   },
 });
-
-/**
- * Form submission handlers
- */
-export interface FormHandlers<T = any> {
-  onSubmit: (data: T) => void;
-  onChange: (field: string, value: any) => void;
-  onReset: () => void;
-}
 
 /**
  * Create form handlers

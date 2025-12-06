@@ -3,30 +3,26 @@
  */
 
 import {ROUTES} from "@/api/config";
+import type {CourseSearchHandlers, CourseActionHandlers} from "@/types/Type";
 
-export interface CourseSearchHandlers {
-  onSearchChange: (value: string) => void;
-  onFilterChange: (filter: string) => void;
-}
-
-export interface CourseActionHandlers {
-  onEnroll: (courseId: string) => void;
-  onViewDetails: (courseId: string) => void;
-  onUnenroll: (courseId: string) => void;
-}
+export type {CourseSearchHandlers, CourseActionHandlers};
 
 /**
  * Create search handlers for course filtering
  */
 export const createCourseSearchHandlers = (
   setSearchTerm: (value: string) => void,
-  setFilter: (value: string) => void
+  setSearchStatus: (value: string) => void,
+  setSearchOrder: (value: string) => void
 ): CourseSearchHandlers => ({
   onSearchChange: (value: string) => {
     setSearchTerm(value);
   },
-  onFilterChange: (filter: string) => {
-    setFilter(filter);
+  onStatusChange: (status: string) => {
+    setSearchStatus(status);
+  },
+  onSortChange: (sort: string) => {
+    setSearchOrder(sort);
   },
 });
 
@@ -36,7 +32,8 @@ export const createCourseSearchHandlers = (
 export const createCourseActionHandlers = (
   navigate?: (path: string) => void,
   onEnrollAction?: (courseId: string) => Promise<void>,
-  onUnenrollAction?: (courseId: string) => Promise<void>
+  onUnenrollAction?: (courseId: string) => Promise<void>,
+  onRefresh?: () => Promise<void>
 ): CourseActionHandlers => ({
   onEnroll: async (courseId: string) => {
     if (onEnrollAction) {
@@ -51,6 +48,11 @@ export const createCourseActionHandlers = (
   onUnenroll: async (courseId: string) => {
     if (onUnenrollAction) {
       await onUnenrollAction(courseId);
+    }
+  },
+  onRefresh: async () => {
+    if (onRefresh) {
+      await onRefresh();
     }
   },
 });

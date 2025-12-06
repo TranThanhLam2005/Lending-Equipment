@@ -4,23 +4,17 @@
  */
 
 import {ROUTES} from "@/api/config";
+import type {
+  EquipmentSearchHandlers,
+  EquipmentActionHandlers,
+  EquipmentCommentHandlers,
+} from "@/types/Type";
 
-export interface EquipmentSearchHandlers {
-  onSearchChange: (value: string) => void;
-  onStatusChange: (status: string) => void;
-  onSortChange: (sort: string) => void;
-}
-
-export interface EquipmentActionHandlers {
-  onRequestBorrow: (equipmentId: string, data?: any) => void;
-  onViewDetails: (equipmentId: string) => void;
-}
-
-export interface EquipmentCommentHandlers {
-  onCommentSubmit: (content: string, equipmentId: string) => void;
-  onCommentEdit: (commentId: string, content: string) => void;
-  onCommentDelete: (commentId: string) => void;
-}
+export type {
+  EquipmentSearchHandlers,
+  EquipmentActionHandlers,
+  EquipmentCommentHandlers,
+};
 
 /**
  * Create search handlers for equipment filtering

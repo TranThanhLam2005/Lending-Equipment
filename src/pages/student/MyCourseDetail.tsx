@@ -1,107 +1,103 @@
 // import libraries
-import { useState, memo } from "react";
-import { useLoaderData } from "react-router-dom";
-import { format, parseISO } from 'date-fns';
+import {useLoaderData, useNavigate} from "react-router-dom";
 
 // import components
-import EquipmentCard from "@/components/ui/EquipmentCard";
-import { useStore } from '@/hooks/hooks';
+import CourseDetailView from "@/components/ui/course/CourseDetailView";
+import EquipmentListView from "@/components/ui/equipment/EquipmentListView";
+// import hooks
+import {useCourseDetail} from "@/hooks/course/useCourseDetail";
+import {useEquipmentList} from "@/hooks/equipment/useEquipmentList";
+// import handlers
+import {createEquipmentSearchHandlers} from "@/handlers";
 
-// import icons
-import { CalendarDays, MapPin, Info, User2, Home } from "lucide-react";
-
+// import config
+import {ROUTES} from "@/api/config";
 
 const MyCourseDetail = () => {
-    const data = useLoaderData() as { course: any };
-    const [state, dispatch] = useStore();
-    const { isSidebarOpen } = state;
+  const data = useLoaderData() as any;
+  const navigate = useNavigate();
 
-    const formattedDateEnd = format(parseISO(data.DateEnd), 'dd MMMM yyyy');
-    const formattedDateStart = format(parseISO(data.DateStart), 'dd MMMM yyyy');
+  // Use headless hook for course detail
+  const {courseData} = useCourseDetail({
+    initialData: data,
+  });
 
-    return (
-        <div>
-            <div className="text-2xl md:text-4xl font-medium mb-6 md:mb-4">{data.CourseName}</div>
-            <div className="flex md:flex-row flex-col items-start md:space-x-4 rounded-sm shadow-sm">
-                <div className="border-r border-gray-200 mb-4 md:mb-0">
-                    <img
-                        src="https://media.licdn.com/dms/image/v2/D5603AQEe4ZoLQ3_cbA/profile-displayphoto-shrink_200_200/B56ZbFRglsGsAY-/0/1747066424476?e=2147483647&v=beta&t=dtj7XdWmVigvP5yXH-uSyEDj6h3VRJhh0rFD2vNbNBM"
-                        alt="Equipment"
-                        className="w-screen h-[240px] md:w-[500px] md:h-[278px] rounded-tl-sm md:rounded-bl-sm rounded-tr-sm md:rounded-tr-none shadow-lg" />
-                </div>
-                <div className="flex-1">
-                    <h2 className="text-2xl mb-2 border-b pb-3 md:block hidden">Course Information</h2>
-                    <div className="grid grid-cols-2 gap-y-5 text-sm text--[#475467] p-3 md:p-0">
-                        <DetailInfo
-                            icon={Home}
-                            label="ID:"
-                            info={data.CourseID}
-                        />
-                        <DetailInfo
-                            icon={User2}
-                            label="Staff:"
-                            info={data.AcademicStaffName}
-                        />
-                        <DetailInfo
-                            icon={CalendarDays}
-                            label="Date Start:"
-                            info={formattedDateStart}
-                        />
-                        <DetailInfo
-                            icon={CalendarDays}
-                            label="Date End:"
-                            info={formattedDateEnd}
-                        />
-                        <DetailInfo
-                            icon={MapPin}
-                            label="Room:"
-                            info={data.Room}
-                        />
-                        <DetailInfo
-                            icon={CalendarDays}
-                            label="Lecture Date:"
-                            info={data.LectureDate}
-                        />
-                        <DetailInfo
-                            icon={Info}
-                            label="Description:"
-                            info={data.Description}
-                            className="md:block hidden"
-                        />
-                    </div>
-                </div>
-            </div>
+  // Use headless hook for equipment list
+  const {
+    equipmentList,
+    displayData,
+    filters,
+    setSearchTerm,
+    setSearchStatus,
+    setSearchOrder,
+    statusOptions,
+    sortOptions,
+    error: equipmentError,
+  } = useEquipmentList({
+    initialData: courseData.Equipments || [],
+  });
 
-            <div className="text-xl md:text-3xl my-6 md:my-4 font-medium ">Related Equipment</div>
+  // Create event handlers
+  const searchHandlers = createEquipmentSearchHandlers(
+    setSearchTerm,
+    setSearchStatus,
+    setSearchOrder
+  );
 
-            <div className={`grid grid-cols-1 ${isSidebarOpen ? "lg:grid-cols-3" : "lg:grid-cols-4"} sm:grid-cols-2 md:grid-cols-3 gap-x-2 gap-y-10 justify-items-center`}>
-                {data.Equipments.map((item, index) => (
-                    <EquipmentCard
-                        key={index}
-                        name={item.Name}
-                        type={item.Type}
-                        status={item.Status}
-                        condition={item.Condition}
-                        purchaseDate={item.PurchaseDate}
-                        isRequest
-                    />
-                ))}
-            </div>
-        </div>
-    );
-}
-const DetailInfo = memo(({ icon: Icon, label, info, className = "" }) => {
-    return (
-        <div className={`space-x-2 ${className}`}>
-            <div className="flex items-center ">
-                <Icon size={24} className="flex-shrink-0" />
-                <div className="flex flex-col items-start ml-2">
-                    <div>{label}</div>
-                    <div className="line-clamp-2">{info}</div>
-                </div>
-            </div>
-        </div>
-    );
-})
+  const handleRequestBorrow = (equipmentId: string) => {
+    // Navigate to equipment detail page
+    navigate(ROUTES.STUDENT_EQUIPMENT_DETAIL(equipmentId));
+  };
+
+  const handleViewDetails = (equipmentId: string) => {
+    navigate(ROUTES.STUDENT_EQUIPMENT_DETAIL(equipmentId));
+  };
+
+  return (
+    <CourseDetailView
+      courseId={courseData.CourseID}
+      courseName={courseData.CourseName}
+      description={courseData.Description}
+      dateStart={courseData.DateStart}
+      dateEnd={courseData.DateEnd}
+      lectureDate={courseData.LectureDate}
+      room={courseData.Room}
+      instructorName={courseData.AcademicStaffName}
+    >
+      {/* Equipment List Section */}
+      <div>
+        {equipmentError && (
+          <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 rounded-xl flex items-center gap-2">
+            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <path
+                fillRule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                clipRule="evenodd"
+              />
+            </svg>
+            {equipmentError}
+          </div>
+        )}
+
+        <EquipmentListView
+          equipmentList={displayData}
+          allEquipment={equipmentList}
+          searchTerm={filters.searchTerm}
+          searchStatus={filters.searchStatus}
+          searchOrder={filters.searchOrder}
+          statusOptions={statusOptions}
+          sortOptions={sortOptions}
+          onSearchChange={searchHandlers.onSearchChange}
+          onStatusChange={searchHandlers.onStatusChange}
+          onSortChange={searchHandlers.onSortChange}
+          onRequestBorrow={handleRequestBorrow}
+          onViewDetails={handleViewDetails}
+          isRequest={true}
+          title="Course Equipment"
+        />
+      </div>
+    </CourseDetailView>
+  );
+};
 
 export default MyCourseDetail;

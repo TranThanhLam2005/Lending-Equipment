@@ -5,35 +5,14 @@
 
 import {useState, useEffect} from "react";
 import {equipmentService, userService} from "@/api";
-import type {Equipment, User} from "@/api";
+import type {
+  Equipment,
+  User,
+  UseEquipmentDetailOptions,
+  UseEquipmentDetailReturn,
+} from "@/types/Type";
 
-export interface UseEquipmentDetailOptions {
-  equipmentId: string;
-  initialEquipment?: Equipment;
-  initialUser?: User;
-}
-
-export interface UseEquipmentDetailReturn {
-  // Data
-  equipment: Equipment | null;
-  user: User | null;
-  isLoading: boolean;
-  error: string | null;
-
-  // Modal states
-  isLendingModalOpen: boolean;
-  isConfirmModalOpen: boolean;
-
-  // Modal actions
-  openLendingModal: () => void;
-  closeLendingModal: () => void;
-  openConfirmModal: () => void;
-  closeConfirmModal: () => void;
-
-  // Equipment actions
-  requestBorrow: (borrowData: any) => Promise<void>;
-  refreshEquipment: () => Promise<void>;
-}
+export type {UseEquipmentDetailOptions, UseEquipmentDetailReturn};
 
 export const useEquipmentDetail = (
   options: UseEquipmentDetailOptions
