@@ -46,7 +46,8 @@ const MyCourseDetail = () => {
 
   const handleRequestBorrow = (equipmentId: string) => {
     // Navigate to equipment detail page
-    navigate(ROUTES.STUDENT_EQUIPMENT_DETAIL(equipmentId));
+    // navigate(ROUTES.STUDENT_EQUIPMENT_DETAIL(equipmentId));
+    console.log("Request borrow for equipment ID:", equipmentId);
   };
 
   const handleViewDetails = (equipmentId: string) => {

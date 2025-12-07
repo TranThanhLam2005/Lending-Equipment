@@ -4,12 +4,13 @@
  */
 
 import {useState, useEffect} from "react";
-import {equipmentService, userService} from "@/api";
+import {equipmentService, lendingService, userService} from "@/api";
 import type {
   Equipment,
   User,
   UseEquipmentDetailOptions,
   UseEquipmentDetailReturn,
+  LendingRecord,
 } from "@/types/Type";
 
 export type {UseEquipmentDetailOptions, UseEquipmentDetailReturn};
@@ -59,12 +60,12 @@ export const useEquipmentDetail = (
   }, [equipmentId, initialEquipment, initialUser]);
 
   // Request borrow action
-  const requestBorrow = async (borrowData: any) => {
+  const requestBorrow = async (borrowData: LendingRecord) => {
     setIsLoading(true);
     setError(null);
 
     try {
-      await equipmentService.requestBorrow(equipmentId, borrowData);
+      await lendingService.requestBorrow(borrowData);
       setIsLendingModalOpen(false);
       await refreshEquipment();
     } catch (err) {

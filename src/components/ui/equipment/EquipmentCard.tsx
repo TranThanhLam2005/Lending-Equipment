@@ -48,7 +48,6 @@ const EquipmentCard = ({
       onViewDetails(id);
     }
   };
-
   return (
     <Link
       to={ROUTES.STUDENT_EQUIPMENT_DETAIL(id)}
@@ -108,7 +107,7 @@ const EquipmentCard = ({
         </div>
 
         {/* Equipment Button */}
-        {isRequest && (
+        {isRequest && status === "Available" && (
           <div className="flex flex-col gap-1.5 sm:gap-2 mt-auto">
             <Button
               variant="primary"

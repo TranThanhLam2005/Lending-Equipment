@@ -1,13 +1,21 @@
 /**
- * EquipmentDetail Page - Headless UI Pattern
- * Demonstrates separation of concerns:
- * - Data fetching: useEquipmentDetail hook
- * - Event handling: Modal and action handlers
- * - UI rendering: EquipmentDetailView component
+ * EquipmentDetail Page
+ *
+ * Implements Headless UI Pattern:
+ * - Data fetching & state: useEquipmentDetail hook
+ * - Business logic: Local handlers for modal flow
+ * - Presentation: EquipmentDetailView component
+ *
+ * Flow:
+ * 1. User clicks "Request Borrow" → Opens LendingModal
+ * 2. User enters purpose → handleLendingModalAccept stores purpose
+ * 3. LendingModal closes → ConfirmModal opens
+ * 4. User confirms → handleBorrowConfirmation submits request
  */
 
 // import libraries
 import {useLoaderData} from "react-router-dom";
+import {useRef} from "react";
 
 // import hooks
 import {useEquipmentDetail} from "@/hooks/equipment/useEquipmentDetail";
@@ -16,11 +24,18 @@ import {useEquipmentDetail} from "@/hooks/equipment/useEquipmentDetail";
 import EquipmentDetailView from "@/components/ui/equipment/EquipmentDetailView";
 import LoadingPage from "@/components/ui/common/LoadingPage";
 
+/**
+ * EquipmentDetail Page Component
+ */
 const EquipmentDetail = () => {
-  // Load initial data from route loader
+  // ============================================================================
+  // DATA LOADING
+  // ============================================================================
   const loaderData = useLoaderData() as {equipment: any; user: any};
 
-  // Use headless hook for business logic and state management
+  // ============================================================================
+  // HOOKS - Equipment data and modal state management
+  // ============================================================================
   const {
     equipment,
     user,
@@ -39,32 +54,67 @@ const EquipmentDetail = () => {
     initialUser: loaderData.user,
   });
 
-  // Handle confirm borrow action
-  const handleConfirmBorrow = async () => {
+  // ============================================================================
+  // STATE - Purpose storage across renders and modal transitions
+  // ============================================================================
+  const lendingPurposeRef = useRef("");
+
+  // ============================================================================
+  // EVENT HANDLERS
+  // ============================================================================
+
+  /**
+   * Handle lending modal acceptance
+   * Stores purpose and transitions from LendingModal to ConfirmModal
+   */
+  const handleLendingModalAccept = (purpose: string) => {
+    lendingPurposeRef.current = purpose;
+    closeLendingModal();
+    openConfirmModal();
+  };
+
+  /**
+   * Handle borrow confirmation
+   * Submits lending request with all required data
+   */
+  const handleBorrowConfirmation = async () => {
     try {
-      // TODO: Collect borrow data from lending modal
-      const borrowData = {
-        equipmentId: equipment?.ID,
-        // Add other necessary fields
+      // Construct lending record data matching backend API structure
+      const lendingRecordData = {
+        BorrowerID: user?.CitizenID || "",
+        SuperviseID: equipment?.AcademicStaffCitizenID || "",
+        EquipmentID: equipment?.ID || "",
+        BorrowDate: new Date().toISOString(),
+        ReturnDate: new Date(
+          Date.now() + 14 * 24 * 60 * 60 * 1000
+        ).toISOString(), // 2 weeks from now
+        Purpose: lendingPurposeRef.current,
+        Status: "Pending",
       };
 
-      await requestBorrow(borrowData);
-      closeConfirmModal();
+      // Submit lending request
+      await requestBorrow(lendingRecordData);
 
-      // Show success message (you can add a toast notification here)
-      console.log("Borrow request submitted successfully");
+      // Close modal and reset state
+      closeConfirmModal();
+      lendingPurposeRef.current = "";
+
+      // TODO: Add success toast notification
+      console.log("Lending request submitted successfully");
     } catch (err) {
-      console.error("Failed to submit borrow request:", err);
-      // Handle error (you can add error notification here)
+      // TODO: Add error toast notification
+      console.error("Failed to submit lending request:", err);
     }
   };
 
-  // Show loading state
+  // ============================================================================
+  // RENDER - Loading and error states
+  // ============================================================================
+
   if (isLoading && !equipment) {
     return <LoadingPage />;
   }
 
-  // Show error state
   if (error || !equipment || !user) {
     return (
       <div className="text-center py-12">
@@ -75,7 +125,9 @@ const EquipmentDetail = () => {
     );
   }
 
-  // Render pure presentational component
+  // ============================================================================
+  // RENDER - Main view with all handlers
+  // ============================================================================
   return (
     <EquipmentDetailView
       equipment={equipment}
@@ -84,9 +136,9 @@ const EquipmentDetail = () => {
       isConfirmModalOpen={isConfirmModalOpen}
       onOpenLendingModal={openLendingModal}
       onCloseLendingModal={closeLendingModal}
-      onOpenConfirmModal={openConfirmModal}
       onCloseConfirmModal={closeConfirmModal}
-      onConfirmBorrow={handleConfirmBorrow}
+      onConfirmBorrow={handleBorrowConfirmation}
+      onAcceptLending={handleLendingModalAccept}
     />
   );
 };

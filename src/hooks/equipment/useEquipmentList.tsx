@@ -16,6 +16,8 @@ export const STATUS_OPTIONS = [
   {text: "All"},
   {text: "Available"},
   {text: "Borrowed"},
+  {text: "Under Maintenance"},
+  {text: "Pending"}
 ];
 
 export const SORT_OPTIONS = [

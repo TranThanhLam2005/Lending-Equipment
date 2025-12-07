@@ -1,9 +1,16 @@
 /**
+ * EquipmentDetailView Component
  * Pure presentational component for equipment detail page
- * All data and handlers passed as props
+ * All data and handlers passed as props for headless UI pattern
  */
 
+// import libraries
 import {format, parseISO} from "date-fns";
+
+// import types
+import type {EquipmentDetailViewProps} from "@/types/Type";
+
+// import components
 import {Button} from "@/components/ui/common/Button";
 import DetailInfo from "@/components/ui/common/DetailInfo";
 import ChatBox from "@/components/ui/common/ChatBox";
@@ -21,43 +28,9 @@ import {
   CheckCircle,
 } from "lucide-react";
 
-export interface EquipmentDetailViewProps {
-  // Equipment data
-  equipment: {
-    ID: string;
-    Name: string;
-    Type: string;
-    Status: string;
-    Condition: string;
-    PurchaseDate: string;
-    DateAvailable?: string;
-    Venue?: string;
-    Description?: string;
-    historyComments?: any[];
-  };
-
-  // User data
-  user: {
-    ID: string;
-    Username: string;
-    Name?: string;
-  };
-
-  // Image URL
-  imageUrl?: string;
-
-  // Modal states
-  isLendingModalOpen: boolean;
-  isConfirmModalOpen: boolean;
-
-  // Event handlers
-  onOpenLendingModal: () => void;
-  onCloseLendingModal: () => void;
-  onOpenConfirmModal: () => void;
-  onCloseConfirmModal: () => void;
-  onConfirmBorrow: () => void;
-}
-
+/**
+ * EquipmentDetailView Component
+ */
 const EquipmentDetailView = ({
   equipment,
   user,
@@ -66,9 +39,9 @@ const EquipmentDetailView = ({
   isConfirmModalOpen,
   onOpenLendingModal,
   onCloseLendingModal,
-  onOpenConfirmModal,
   onCloseConfirmModal,
   onConfirmBorrow,
+  onAcceptLending,
 }: EquipmentDetailViewProps) => {
   const formatPurchaseDate = format(
     parseISO(equipment.PurchaseDate),
@@ -77,11 +50,6 @@ const EquipmentDetailView = ({
   const formatAvailableDate = equipment.DateAvailable
     ? format(parseISO(equipment.DateAvailable), "EEEE, MMMM dd, yyyy")
     : "N/A";
-
-  const handleAcceptLending = () => {
-    onCloseLendingModal();
-    onOpenConfirmModal();
-  };
 
   return (
     <div className="px-3 sm:px-4 md:px-6 lg:px-0">
@@ -145,16 +113,18 @@ const EquipmentDetailView = ({
             />
           </div>
 
-          <div className="flex justify-end">
-            <Button
-              variant="primary"
-              size="medium"
-              onClick={onOpenLendingModal}
-              className="w-full sm:w-auto"
-            >
-              Request Equipment
-            </Button>
-          </div>
+          {equipment.Status === "Available" && (
+            <div className="flex justify-end">
+              <Button
+                variant="primary"
+                size="medium"
+                onClick={onOpenLendingModal}
+                className="w-full sm:w-auto"
+              >
+                Request Equipment
+              </Button>
+            </div>
+          )}
         </div>
       </div>
 
@@ -173,7 +143,7 @@ const EquipmentDetailView = ({
         <LendingModal
           title="Lending Request"
           data={equipment}
-          onAccept={handleAcceptLending}
+          onAccept={onAcceptLending}
           onCancel={onCloseLendingModal}
         />
       )}

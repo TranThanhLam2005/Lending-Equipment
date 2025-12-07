@@ -12,8 +12,6 @@ import Input from "@/components/ui/common/Input";
 // import icons
 import {Package, CheckCircle, XCircle, AlertCircle} from "lucide-react";
 
-
-
 const EquipmentListView = ({
   equipmentList,
   allEquipment,
@@ -48,9 +46,11 @@ const EquipmentListView = ({
   ).length;
 
   const maintenanceCount = statsData.filter(
-    (item) =>
-      item.Status?.toLowerCase() === "maintenance" ||
-      item.Condition?.toLowerCase() === "needs repair"
+    (item) => item.Status?.toLowerCase() === "under maintenance"
+  ).length;
+
+  const pendingCount = statsData.filter(
+    (item) => item.Status?.toLowerCase() === "pending"
   ).length;
 
   // Condition breakdown
@@ -117,7 +117,7 @@ const EquipmentListView = ({
         {/* Equipment Statistics */}
         {showStatistics && totalEquipment > 0 && (
           <div className="mt-6 pt-6 border-t border-gray-100">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
               {/* Total Equipment */}
               <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
                 <div className="p-2 bg-gray-900 text-white rounded-lg">
@@ -174,6 +174,20 @@ const EquipmentListView = ({
                   </p>
                   <p className="text-2xl font-bold text-gray-900">
                     {maintenanceCount}
+                  </p>
+                </div>
+              </div>
+              {/* Pending Equipment */}
+              <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                <div className="p-2 bg-gray-900 text-white rounded-lg">
+                  <XCircle className="w-5 h-5" />
+                </div>
+                <div>
+                  <p className="text-xs text-gray-700 font-medium uppercase tracking-wider">
+                    Pending
+                  </p>
+                  <p className="text-2xl font-bold text-gray-900">
+                    {pendingCount}
                   </p>
                 </div>
               </div>

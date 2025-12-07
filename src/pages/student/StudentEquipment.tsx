@@ -57,7 +57,7 @@ const StudentEquipment = () => {
 
   const handleRequestBorrow = (equipmentId: string) => {
     // Navigate to detail page where user can request borrow
-    navigate(ROUTES.STUDENT_EQUIPMENT_DETAIL(equipmentId));
+    // navigate(ROUTES.STUDENT_EQUIPMENT_DETAIL(equipmentId));
   };
 
   // Show error state
