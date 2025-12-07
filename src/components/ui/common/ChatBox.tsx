@@ -1,101 +1,23 @@
 // import libraries
-import {useState, useEffect, useMemo, memo, useRef} from "react";
+import {memo} from "react";
 
 // import components
 import Input from "@/components/ui/common/Input";
 import Comment from "@/components/ui/common/Comment";
-import {socket} from "@/utils/socket";
 
-interface ChatBoxProps {
-  equipmentId: string;
-  commentHistory: any[];
-  user: {
-    ID: string;
-    Username: string;
-    Name?: string;
-    FullName?: string;
-    Role?: string;
-  };
-}
+// import hooks
+import {useChatBox} from "@/hooks/useChatBox";
+
+// import types
+import type {ChatBoxProps} from "@/types/Type";
 
 const ChatBox = memo(({equipmentId, commentHistory, user}: ChatBoxProps) => {
-  const messagesContainerRef = useRef<HTMLDivElement>(null);
-
-  const historyComments = useMemo(() => {
-    return commentHistory.map((comment) => ({
-      content: comment.content,
-      groupID: equipmentId,
-      createAt: comment.createAt,
-      sender: {
-        username: comment.userName,
-        fullName: comment.fullName,
-        role: comment.role,
-      },
-    }));
-  }, [commentHistory, equipmentId]);
-
-  const [messages, setMessages] = useState<
-    {
-      content: string;
-      groupID: string;
-      createAt: string;
-      sender?: {
-        username: string;
-        fullName: string;
-        role: string;
-      };
-    }[]
-  >(historyComments);
-
-  // Scroll to bottom when messages change
-  useEffect(() => {
-    if (messagesContainerRef.current) {
-      messagesContainerRef.current.scrollTop =
-        messagesContainerRef.current.scrollHeight;
-    }
-  }, [messages]);
-
-  useEffect(() => {
-    socket.connect();
-
-    // Join the equipment-specific room
-    socket.emit("join-room", equipmentId);
-
-    // Listen for messages
-    socket.on("receive-message", (msg) => {
-      return setMessages((prevMessages) => [...prevMessages, msg]);
-    });
-
-    // Clean up on unmount
-    return () => {
-      socket.off("receive-message");
-      socket.disconnect();
-    };
-  }, []);
-
-  const handleSendMessage = (msg: string) => {
-    if (msg.trim() && user) {
-      socket.emit("send-message", {
-        content: msg,
-        groupID: equipmentId,
-        createAt: new Date().toISOString(),
-      });
-
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        {
-          content: msg,
-          groupID: equipmentId,
-          createAt: new Date().toISOString(),
-          sender: {
-            username: user.Username,
-            fullName: user.FullName || user.Name || user.Username,
-            role: user.Role || "Student",
-          },
-        },
-      ]);
-    }
-  };
+  // Use the centralized hook
+  const {messages, messagesContainerRef, handleSendMessage} = useChatBox({
+    equipmentId,
+    commentHistory,
+    user,
+  });
 
   return (
     <div className="flex flex-col bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">

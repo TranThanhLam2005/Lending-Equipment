@@ -2,28 +2,11 @@
 import {memo} from "react";
 import {format, parseISO} from "date-fns";
 
+// import types
+import type {CommentProps} from "@/types/Type";
+
 // import icons
 import {CalendarDays} from "lucide-react";
-
-interface CommentProps {
-  message: {
-    content: string;
-    createAt: string;
-    sender?: {
-      fullName: string;
-      username: string;
-      role: string;
-    };
-  };
-  isMine: boolean;
-  user?: {
-    ID: string;
-    Username: string;
-    Name?: string;
-    FullName?: string;
-    Role?: string;
-  };
-}
 
 const Comment = memo(({message, isMine, user}: CommentProps) => {
   const formatCreateAt = format(
