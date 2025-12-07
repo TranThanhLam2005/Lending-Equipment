@@ -49,11 +49,4 @@ export const equipmentService = {
 
     return apiClient.get<Equipment[]>(endpoint);
   },
-
-  /**
-   * Request to borrow equipment
-   */
-  async requestBorrow(equipmentId: string, borrowData: any) {
-    return apiClient.post(`/equipment/${equipmentId}/borrow`, borrowData);
-  },
 };

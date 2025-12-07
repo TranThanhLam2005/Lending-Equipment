@@ -1,6 +1,10 @@
-import type {ModalHandlers, FormHandlers} from "@/types/Type";
+import type {
+  ModalHandlers,
+  FormHandlers,
+  ChatMessageHandlers,
+} from "@/types/Type";
 
-export type {ModalHandlers, FormHandlers};
+export type {ModalHandlers, FormHandlers, ChatMessageHandlers};
 
 /**
  * Create modal handlers
@@ -50,4 +54,21 @@ export const createFormHandlers = <T extends Record<string, any>>(
   onReset: () => {
     setFormData(initialData);
   },
+});
+
+/**
+ * Create chat message handlers
+ */
+export const createChatMessageHandlers = (
+  onSendMessageAction: (message: string) => void,
+  onReceiveMessageAction?: (message: any) => void,
+  onJoinRoomAction?: (roomId: string) => void,
+  onLeaveRoomAction?: (roomId: string) => void
+): ChatMessageHandlers => ({
+  onSendMessage: (message: string) => {
+    onSendMessageAction(message);
+  },
+  onReceiveMessage: onReceiveMessageAction,
+  onJoinRoom: onJoinRoomAction,
+  onLeaveRoom: onLeaveRoomAction,
 });

@@ -20,6 +20,10 @@ export interface Equipment {
   DateAvailable?: string;
   Venue?: string;
   Description?: string;
+  SupervisorID?: string;
+  AcademicStaffName?: string;
+  AcademicStaffCitizenID?: string;
+  CurrentUserName?: string;
 }
 
 /**
@@ -46,6 +50,8 @@ export interface User {
   Email: string;
   Role: "Student" | "Staff" | "Admin";
   Name: string;
+  CitizenID?: string;
+  FullName?: string;
 }
 
 /**
@@ -62,6 +68,49 @@ export interface Comment {
     Username: string;
     Name?: string;
   };
+}
+
+/**
+ * Chat message entity
+ */
+export interface ChatMessage {
+  content: string;
+  groupID: string;
+  createAt: string;
+  sender?: {
+    username: string;
+    fullName: string;
+    role: string;
+  };
+}
+
+/**
+ * Chat user entity
+ */
+export interface ChatUser {
+  ID: string;
+  Username: string;
+  Name?: string;
+  FullName?: string;
+  Role?: string;
+}
+
+/**
+ * Lending record entity
+ */
+export interface LendingRecord {
+  ID?: string;
+  BorrowerID: string;
+  SuperviseID: string;
+  EquipmentID: string;
+  BorrowDate: string;
+  ReturnDate?: string;
+  DueDate?: string;
+  Purpose: string;
+  Status: string,
+  EquipmentName?: string;
+  SupervisorName?: string;
+  BorrowerName?: string;
 }
 
 // ============================================================================
@@ -158,6 +207,16 @@ export interface EquipmentCommentHandlers {
   onCommentSubmit: (content: string, equipmentId: string) => void;
   onCommentEdit: (commentId: string, content: string) => void;
   onCommentDelete: (commentId: string) => void;
+}
+
+/**
+ * Chat message handlers
+ */
+export interface ChatMessageHandlers {
+  onSendMessage: (message: string) => void;
+  onReceiveMessage?: (message: ChatMessage) => void;
+  onJoinRoom?: (roomId: string) => void;
+  onLeaveRoom?: (roomId: string) => void;
 }
 
 /**
@@ -277,7 +336,7 @@ export interface UseEquipmentDetailReturn {
   closeLendingModal: () => void;
   openConfirmModal: () => void;
   closeConfirmModal: () => void;
-  requestBorrow: (borrowData: any) => Promise<void>;
+  requestBorrow: (borrowData: LendingRecord) => Promise<void>;
   refreshEquipment: () => Promise<void>;
 }
 
@@ -319,6 +378,24 @@ export interface UseCommentsReturn {
   updateComment: (commentId: string, content: string) => Promise<void>;
   deleteComment: (commentId: string) => Promise<void>;
   refreshComments: () => Promise<void>;
+}
+
+/**
+ * ChatBox hook options
+ */
+export interface UseChatBoxOptions {
+  equipmentId: string;
+  commentHistory: any[];
+  user: ChatUser;
+}
+
+/**
+ * ChatBox hook return
+ */
+export interface UseChatBoxReturn {
+  messages: ChatMessage[];
+  messagesContainerRef: React.RefObject<HTMLDivElement | null>;
+  handleSendMessage: (msg: string) => void;
 }
 
 // ============================================================================
@@ -375,6 +452,38 @@ export interface CourseDetailViewProps {
 }
 
 /**
+ * Equipment detail view props
+ */
+export interface EquipmentDetailViewProps {
+  equipment: {
+    ID: string;
+    Name: string;
+    Type: string;
+    Status: string;
+    Condition: string;
+    PurchaseDate: string;
+    DateAvailable?: string;
+    Venue?: string;
+    Description?: string;
+    historyComments?: any[];
+  };
+  user: {
+    ID: string;
+    Username: string;
+    Name?: string;
+    FullName?: string;
+  };
+  imageUrl?: string;
+  isLendingModalOpen: boolean;
+  isConfirmModalOpen: boolean;
+  onOpenLendingModal: () => void;
+  onCloseLendingModal: () => void;
+  onCloseConfirmModal: () => void;
+  onConfirmBorrow: () => void;
+  onAcceptLending: (purpose: string) => void;
+}
+
+/**
  * Equipment list view props
  */
 export interface EquipmentListViewProps {
@@ -410,6 +519,48 @@ export interface EquipmentCardProps {
   isRequest?: boolean;
   onRequestBorrow?: (id: string) => void;
   onViewDetails?: (id: string) => void;
+}
+
+/**
+ * ChatBox component props
+ */
+export interface ChatBoxProps {
+  equipmentId: string;
+  commentHistory: any[];
+  user: ChatUser;
+}
+
+/**
+ * Comment component props
+ */
+export interface CommentProps {
+  message: ChatMessage;
+  isMine: boolean;
+  user?: ChatUser;
+}
+
+/**
+ * LendingModal component props
+ */
+export interface LendingModalProps {
+  title: string;
+  data: {
+    CurrentUserName?: string;
+    AcademicStaffName?: string;
+    Name?: string;
+    [key: string]: any;
+  };
+  onAccept: (purpose: string) => void;
+  onCancel: () => void;
+}
+
+/**
+ * LendingModal InfoRow component props
+ */
+export interface LendingModalInfoRowProps {
+  icon: any;
+  label: string;
+  value: string;
 }
 
 // ============================================================================
@@ -479,4 +630,65 @@ export type StatusOption =
   | "Borrowed"
   | "Active"
   | "Completed"
-  | "Upcoming";
+  | "Upcoming"
+  | "Returned"
+  | "Overdue";
+
+// ============================================================================
+// LENDING RECORD TYPES - Headless UI for lending records
+// ============================================================================
+
+/**
+ * Lending record filters
+ */
+export interface LendingRecordFilters {
+  searchTerm: string;
+  searchStatus: string;
+  searchOrder: string;
+}
+
+/**
+ * Lending record options for hook
+ */
+export interface UseLendingRecordOptions {
+  initialData?: LendingRecord[];
+}
+
+/**
+ * Lending record list view props
+ */
+export interface LendingRecordListViewProps {
+  records: LendingRecord[];
+  allRecords: LendingRecord[];
+  searchTerm: string;
+  searchStatus: string;
+  searchOrder: string;
+  statusOptions: DropdownItem[];
+  sortOptions: DropdownItem[];
+  onSearchChange: (value: string) => void;
+  onStatusChange: (value: string) => void;
+  onSortChange: (value: string) => void;
+  onReturnEquipment?: (recordId: string) => void;
+  onDeleteRecord?: (recordId: string) => void;
+  onViewDetails?: (recordId: string) => void;
+  title?: string;
+  showStatistics?: boolean;
+}
+
+/**
+ * Lending record search handlers
+ */
+export interface LendingRecordSearchHandlers {
+  onSearchChange: (value: string) => void;
+  onStatusChange: (status: string) => void;
+  onSortChange: (sort: string) => void;
+}
+
+/**
+ * Lending record action handlers
+ */
+export interface LendingRecordActionHandlers {
+  onReturnEquipment: (recordId: string) => Promise<void>;
+  onDeleteRecord: (recordId: string) => Promise<void>;
+  onViewDetails?: (recordId: string) => void;
+}

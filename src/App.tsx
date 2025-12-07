@@ -4,9 +4,10 @@ import {RouterProvider} from "react-router-dom";
 
 // import components
 import router from "@/routes/Route";
+import LoadingPage from "@/components/ui/common/LoadingPage";
 function App() {
   return (
-    <Suspense>
+    <Suspense fallback={<LoadingPage />}>
       <RouterProvider router={router} />
     </Suspense>
   );

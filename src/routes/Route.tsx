@@ -7,7 +7,12 @@ import {Suspense} from "react";
 import {ROUTES} from "../api/config";
 
 // import services and auth
-import {equipmentService, courseService, userService} from "../api";
+import {
+  equipmentService,
+  courseService,
+  userService,
+  lendingService,
+} from "../api";
 import type {LoaderFunctionArgs} from "react-router-dom";
 import {authService} from "../api/auth.service";
 
@@ -42,12 +47,20 @@ const router = createBrowserRouter([
   // Public Route
   {
     path: ROUTES.HOME,
-    element: <LandingPage />,
+    element: (
+      <Suspense fallback={<LoadingPage />}>
+        <LandingPage />
+      </Suspense>
+    ),
     errorElement: <ErrorPage />,
   },
   {
     path: ROUTES.VISITOR,
-    element: <Visitor />,
+    element: (
+      <Suspense fallback={<LoadingPage />}>
+        <Visitor />
+      </Suspense>
+    ),
     loader: async () => {
       const res = await equipmentService.getAll();
       return res.data;
@@ -56,21 +69,37 @@ const router = createBrowserRouter([
   },
   {
     path: ROUTES.LOGIN,
-    element: <Login />,
+    element: (
+      <Suspense fallback={<LoadingPage />}>
+        <Login />
+      </Suspense>
+    ),
   },
   {
     path: ROUTES.FORGOT_PASSWORD,
-    element: <ForgotPassword />,
+    element: (
+      <Suspense fallback={<LoadingPage />}>
+        <ForgotPassword />
+      </Suspense>
+    ),
   },
 
   // Private Routes with Default Layout
   {
     path: ROUTES.HOME,
-    element: <DefaultLayout />,
+    element: (
+      <Suspense fallback={<LoadingPage />}>
+        <DefaultLayout />
+      </Suspense>
+    ),
     children: [
       {
         path: ROUTES.STUDENT_DASHBOARD,
-        element: <StudentDashBoard />,
+        element: (
+          <Suspense fallback={<LoadingPage />}>
+            <StudentDashBoard />
+          </Suspense>
+        ),
         loader: async () => {
           await authService.verifySession();
           return null;
@@ -78,7 +107,11 @@ const router = createBrowserRouter([
       },
       {
         path: ROUTES.MY_COURSE,
-        element: <MyCourse />,
+        element: (
+          <Suspense fallback={<LoadingPage />}>
+            <MyCourse />
+          </Suspense>
+        ),
         loader: async () => {
           await authService.verifySession();
           const res = await courseService.getParticipantCourses();
@@ -105,7 +138,11 @@ const router = createBrowserRouter([
       },
       {
         path: ROUTES.STUDENT_EQUIPMENT,
-        element: <StudentEquipment />,
+        element: (
+          <Suspense fallback={<LoadingPage />}>
+            <StudentEquipment />
+          </Suspense>
+        ),
         loader: async () => {
           await authService.verifySession();
           const res = await equipmentService.getParticipantEquipment();
@@ -131,11 +168,16 @@ const router = createBrowserRouter([
       },
       {
         path: ROUTES.STUDENT_RECORD,
-        element: <StudentRecord />,
-        // loader: async () => {
-        //     const res = await fetch('/api/record');
-        //     return res.json();
-        // },
+        element: (
+          <Suspense fallback={<LoadingPage />}>
+            <StudentRecord />
+          </Suspense>
+        ),
+        loader: async () => {
+          await authService.verifySession();
+          const res = await lendingService.getUserLendingRecords();
+          return res.data;
+        },
       },
       {
         path: ROUTES.ACCOUNT,

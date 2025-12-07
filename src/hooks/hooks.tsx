@@ -1,6 +1,10 @@
-import { useContext } from 'react';
-import Context from '@/store/Context';
+import {useContext} from "react";
+import Context from "@/store/Context";
 
 export const useStore = () => {
-    return useContext(Context);
+  const context = useContext(Context);
+  if (!context) {
+    throw new Error("useStore must be used within a Provider");
+  }
+  return context;
 };

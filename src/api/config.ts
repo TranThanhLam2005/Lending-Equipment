@@ -2,7 +2,7 @@
 // Backend API Configuration
 // ============================================
 // Update these values based on your environment
-const API_HOST = "172.20.176.1";
+const API_HOST = "192.168.1.126";
 const API_PORT = 3000;
 
 // Constructed Backend Base URL
@@ -80,6 +80,11 @@ export const API_ENDPOINTS = {
     CREATE: "/comments/create",
     UPDATE: (id: string) => `/comments/${id}`,
     DELETE: (id: string) => `/comments/${id}`,
+  },
+  // Lending Record endpoints
+  LENDING_RECORDS: {
+    ADD_LENDING_RECORD: `${USER_SERVICE_URL}/add_lending_record`,
+    GET_LENDINGS_BY_USER: `${USER_SERVICE_URL}/get_lending_records`,
   },
 } as const;
 
