@@ -24,7 +24,7 @@ const buttonVariants = cva(
       },
       size: {
         default:
-          "w-full rounded-sm h-7 text-xs md:text-base md:h-9 px-4 py-2 has-[>svg]:px-3",
+          "w-full rounded-sm h-8 text-xs md:text-base md:h-9 px-4 py-2 has-[>svg]:px-3",
         primary:
           "w-full h-9 md:h-12 px-3 py-2 md:px-4 md:py-3 has-[>svg]:px-3 text-sm md:text-base",
         sm: "h-5 rounded-full gap-1.5 p-5 text-base has-[>svg]:px-2.5",
@@ -45,6 +45,7 @@ function Button({
   variant,
   size,
   asChild = false,
+  type = "button",
   ...props
 }: React.ComponentProps<"button"> &
   VariantProps<typeof buttonVariants> & {
@@ -56,6 +57,7 @@ function Button({
     <>
       <Comp
         data-slot="button"
+        type={type}
         className={cn(buttonVariants({variant, size, className}))}
         {...props}
       />
