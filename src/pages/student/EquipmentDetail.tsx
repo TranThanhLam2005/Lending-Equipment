@@ -3,26 +3,28 @@
  *
  * Implements Headless UI Pattern:
  * - Data fetching & state: useEquipmentDetail hook
- * - Business logic: Local handlers for modal flow
+ * - Business logic: Lending modal handlers from lending.handlers.ts
  * - Presentation: EquipmentDetailView component
  *
  * Flow:
  * 1. User clicks "Request Borrow" → Opens LendingModal
- * 2. User enters purpose → handleLendingModalAccept stores purpose
- * 3. LendingModal closes → ConfirmModal opens
- * 4. User confirms → handleBorrowConfirmation submits request
+ * 2. User enters purpose → Handler submits request directly
+ * 3. Modal closes automatically on success
  */
 
 // import libraries
+import {useState} from "react";
 import {useLoaderData} from "react-router-dom";
-import {useRef} from "react";
 
 // import hooks
 import {useEquipmentDetail} from "@/hooks/equipment/useEquipmentDetail";
 
+// import handlers
+import {createLendingModalHandlers} from "@/handlers";
+
 // import components
 import EquipmentDetailView from "@/components/ui/equipment/EquipmentDetailView";
-import LoadingPage from "@/components/ui/common/LoadingPage";
+import ConfirmModal from "@/components/ui/common/ConfirmModal";
 
 /**
  * EquipmentDetail Page Component
@@ -34,86 +36,65 @@ const EquipmentDetail = () => {
   const loaderData = useLoaderData() as {equipment: any; user: any};
 
   // ============================================================================
+  // SUCCESS/ERROR MODAL STATE
+  // ============================================================================
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showErrorModal, setShowErrorModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  // ============================================================================
   // HOOKS - Equipment data and modal state management
   // ============================================================================
   const {
     equipment,
     user,
-    isLoading,
     error,
     isLendingModalOpen,
-    isConfirmModalOpen,
     openLendingModal,
     closeLendingModal,
-    openConfirmModal,
-    closeConfirmModal,
     requestBorrow,
   } = useEquipmentDetail({
-    equipmentId: loaderData.equipment?.ID,
     initialEquipment: loaderData.equipment,
     initialUser: loaderData.user,
   });
 
   // ============================================================================
-  // STATE - Purpose storage across renders and modal transitions
+  // SUCCESS/ERROR HANDLERS
   // ============================================================================
-  const lendingPurposeRef = useRef("");
-
-  // ============================================================================
-  // EVENT HANDLERS
-  // ============================================================================
-
-  /**
-   * Handle lending modal acceptance
-   * Stores purpose and transitions from LendingModal to ConfirmModal
-   */
-  const handleLendingModalAccept = (purpose: string) => {
-    lendingPurposeRef.current = purpose;
-    closeLendingModal();
-    openConfirmModal();
+  const handleSuccess = () => {
+    setShowSuccessModal(true);
   };
 
-  /**
-   * Handle borrow confirmation
-   * Submits lending request with all required data
-   */
-  const handleBorrowConfirmation = async () => {
-    try {
-      // Construct lending record data matching backend API structure
-      const lendingRecordData = {
-        BorrowerID: user?.CitizenID || "",
-        SuperviseID: equipment?.AcademicStaffCitizenID || "",
-        EquipmentID: equipment?.ID || "",
-        BorrowDate: new Date().toISOString(),
-        ReturnDate: new Date(
-          Date.now() + 14 * 24 * 60 * 60 * 1000
-        ).toISOString(), // 2 weeks from now
-        Purpose: lendingPurposeRef.current,
-        Status: "Pending",
-      };
+  const handleError = (error: string) => {
+    setErrorMessage(error);
+    setShowErrorModal(true);
+  };
 
-      // Submit lending request
-      await requestBorrow(lendingRecordData);
+  const handleSuccessConfirm = () => {
+    setShowSuccessModal(false);
+    window.location.reload();
+  };
 
-      // Close modal and reset state
-      closeConfirmModal();
-      lendingPurposeRef.current = "";
-
-      // TODO: Add success toast notification
-      console.log("Lending request submitted successfully");
-    } catch (err) {
-      // TODO: Add error toast notification
-      console.error("Failed to submit lending request:", err);
-    }
+  const handleErrorConfirm = () => {
+    setShowErrorModal(false);
+    setErrorMessage("");
   };
 
   // ============================================================================
-  // RENDER - Loading and error states
+  // EVENT HANDLERS - Create lending modal handlers
   // ============================================================================
+  const lendingModalHandlers = createLendingModalHandlers(
+    requestBorrow,
+    equipment,
+    user,
+    closeLendingModal,
+    handleSuccess,
+    handleError
+  );
 
-  if (isLoading && !equipment) {
-    return <LoadingPage />;
-  }
+  // ============================================================================
+  // RENDER - Error state
+  // ============================================================================
 
   if (error || !equipment || !user) {
     return (
@@ -126,20 +107,40 @@ const EquipmentDetail = () => {
   }
 
   // ============================================================================
-  // RENDER - Main view with all handlers
+  // RENDER - Main view with lending modal handlers
   // ============================================================================
   return (
-    <EquipmentDetailView
-      equipment={equipment}
-      user={user}
-      isLendingModalOpen={isLendingModalOpen}
-      isConfirmModalOpen={isConfirmModalOpen}
-      onOpenLendingModal={openLendingModal}
-      onCloseLendingModal={closeLendingModal}
-      onCloseConfirmModal={closeConfirmModal}
-      onConfirmBorrow={handleBorrowConfirmation}
-      onAcceptLending={handleLendingModalAccept}
-    />
+    <>
+      <EquipmentDetailView
+        equipment={equipment}
+        user={user}
+        isLendingModalOpen={isLendingModalOpen}
+        onOpenLendingModal={openLendingModal}
+        lendingModalHandlers={lendingModalHandlers}
+      />
+
+      {showSuccessModal && (
+        <ConfirmModal
+          type="confirm"
+          title="Request Submitted!"
+          message="Your borrow request has been submitted successfully. The page will reload to show updated information."
+          onConfirm={handleSuccessConfirm}
+          singleButton={true}
+        />
+      )}
+
+      {showErrorModal && (
+        <ConfirmModal
+          type="delete"
+          title="Request Failed"
+          message={
+            errorMessage || "Failed to submit borrow request. Please try again."
+          }
+          onConfirm={handleErrorConfirm}
+          singleButton={true}
+        />
+      )}
+    </>
   );
 };
 

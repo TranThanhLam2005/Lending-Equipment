@@ -36,7 +36,6 @@ const Visitor = () => {
     setSearchOrder,
     statusOptions,
     sortOptions,
-    error,
   } = useEquipmentList({
     initialData: initialData as any[],
   });
@@ -59,29 +58,6 @@ const Visitor = () => {
   const availableEquipment = displayData.filter(
     (item) => item.Status === "Available"
   ).length;
-
-  // Animation variants
-  const containerVariants = {
-    hidden: {opacity: 0},
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: {y: 20, opacity: 0},
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.5,
-        ease: [0.4, 0, 0.2, 1],
-      },
-    },
-  };
 
   return (
     <div className="min-h-screen bg-white">
@@ -203,23 +179,6 @@ const Visitor = () => {
       {/* Main Content */}
       <FadeInSection delay={0.3}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          {error && (
-            <motion.div
-              initial={{opacity: 0, x: -20}}
-              animate={{opacity: 1, x: 0}}
-              className="mb-6 p-4 bg-black border border-gray-800 text-white rounded-xl flex items-center gap-2"
-            >
-              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                <path
-                  fillRule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              {error}
-            </motion.div>
-          )}
-
           <EquipmentListView
             equipmentList={displayData}
             searchTerm={filters.searchTerm}

@@ -1,6 +1,4 @@
 // import libraries
-import {useState} from "react";
-
 // import components
 import {Button} from "@/components/ui/common/Button";
 
@@ -12,7 +10,8 @@ interface ConfirmModalProps {
   title: string;
   message: string;
   onConfirm: () => void;
-  onCancel: () => void;
+  onCancel?: () => void; // Make optional for single-button mode
+  singleButton?: boolean; // Show only confirm button
 }
 
 function ConfirmModal({
@@ -21,8 +20,8 @@ function ConfirmModal({
   message,
   onConfirm,
   onCancel,
+  singleButton = false,
 }: ConfirmModalProps) {
-  const [isLoading, setIsLoading] = useState(false);
   const handlePropagation = (e: React.MouseEvent) => {
     e.stopPropagation();
   };
@@ -30,7 +29,7 @@ function ConfirmModal({
   return (
     <div
       className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999] flex items-center justify-center p-4"
-      onClick={onCancel}
+      onClick={singleButton ? undefined : onCancel}
     >
       <div
         className="flex flex-col items-center justify-center bg-white rounded-2xl shadow-2xl w-full max-w-md p-8 border-2 border-gray-200"
@@ -51,26 +50,22 @@ function ConfirmModal({
             {message}
           </p>
         </div>
-        <div className="flex gap-3 w-full mt-2">
-          <Button
-            variant="outline"
-            className="flex-1"
-            onClick={onCancel}
-            disabled={isLoading}
-          >
-            Cancel
-          </Button>
+        <div
+          className={`flex gap-3 w-full mt-2 ${
+            singleButton ? "justify-center" : ""
+          }`}
+        >
+          {!singleButton && onCancel && (
+            <Button variant="outline" className="flex-1" onClick={onCancel}>
+              Cancel
+            </Button>
+          )}
           <Button
             variant="primary"
-            className="flex-1"
-            onClick={async () => {
-              setIsLoading(true);
-              await onConfirm();
-              setIsLoading(false);
-            }}
-            disabled={isLoading}
+            className={singleButton ? "w-32" : "flex-1"}
+            onClick={onConfirm}
           >
-            {isLoading ? "Loading..." : "Confirm"}
+            Confirm
           </Button>
         </div>
       </div>

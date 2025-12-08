@@ -55,3 +55,57 @@ export const createLendingRecordActionHandlers = (
     }
   },
 });
+
+/**
+ * Create lending modal handlers for equipment borrowing flow
+ */
+export const createLendingModalHandlers = (
+  requestBorrow: (lendingData: any) => Promise<void>,
+  equipment: any,
+  user: any,
+  closeLendingModal: () => void,
+  onSuccess?: () => void,
+  onError?: (error: string) => void
+) => ({
+  onAccept: async (purpose: string) => {
+    try {
+      // Construct lending record data matching backend API structure
+      const lendingRecordData = {
+        BorrowerID: user?.CitizenID || "",
+        SuperviseID: equipment?.AcademicStaffCitizenID || "",
+        EquipmentID: equipment?.ID || "",
+        BorrowDate: new Date().toISOString(),
+        ReturnDate: new Date(
+          Date.now() + 14 * 24 * 60 * 60 * 1000
+        ).toISOString(), // 2 weeks from now
+        Purpose: purpose,
+        Status: "Pending",
+      };
+
+      // Submit lending request
+      await requestBorrow(lendingRecordData);
+
+      // Close modal
+      closeLendingModal();
+
+      // Call success callback
+      if (onSuccess) {
+        onSuccess();
+      }
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : "Failed to submit lending request";
+      console.error("Failed to submit lending request:", err);
+
+      // Call error callback
+      if (onError) {
+        onError(errorMessage);
+      }
+
+      throw err;
+    }
+  },
+  onCancel: () => {
+    closeLendingModal();
+  },
+});

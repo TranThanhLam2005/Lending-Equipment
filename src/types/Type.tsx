@@ -107,7 +107,7 @@ export interface LendingRecord {
   ReturnDate?: string;
   DueDate?: string;
   Purpose: string;
-  Status: string,
+  Status: string;
   EquipmentName?: string;
   SupervisorName?: string;
   BorrowerName?: string;
@@ -272,7 +272,6 @@ export interface UseEquipmentListOptions {
  * Equipment detail hook options
  */
 export interface UseEquipmentDetailOptions {
-  equipmentId: string;
   initialEquipment?: Equipment;
   initialUser?: User;
 }
@@ -309,17 +308,12 @@ export interface UseCommentsOptions {
 export interface UseEquipmentListReturn {
   equipmentList: Equipment[];
   displayData: Equipment[];
-  isLoading: boolean;
-  error: string | null;
   filters: EquipmentFilters;
   setSearchTerm: (term: string) => void;
   setSearchStatus: (status: string) => void;
   setSearchOrder: (order: string) => void;
   statusOptions: {text: string}[];
   sortOptions: {text: string}[];
-  setEquipmentList: (list: Equipment[]) => void;
-  setError: (error: string | null) => void;
-  refreshData: () => void;
 }
 
 /**
@@ -328,16 +322,11 @@ export interface UseEquipmentListReturn {
 export interface UseEquipmentDetailReturn {
   equipment: Equipment | null;
   user: User | null;
-  isLoading: boolean;
   error: string | null;
   isLendingModalOpen: boolean;
-  isConfirmModalOpen: boolean;
   openLendingModal: () => void;
   closeLendingModal: () => void;
-  openConfirmModal: () => void;
-  closeConfirmModal: () => void;
-  requestBorrow: (borrowData: LendingRecord) => Promise<void>;
-  refreshEquipment: () => Promise<void>;
+  requestBorrow: (borrowData: any) => Promise<void>;
 }
 
 /**
@@ -475,12 +464,11 @@ export interface EquipmentDetailViewProps {
   };
   imageUrl?: string;
   isLendingModalOpen: boolean;
-  isConfirmModalOpen: boolean;
   onOpenLendingModal: () => void;
-  onCloseLendingModal: () => void;
-  onCloseConfirmModal: () => void;
-  onConfirmBorrow: () => void;
-  onAcceptLending: (purpose: string) => void;
+  lendingModalHandlers: {
+    onAccept: (purpose: string) => Promise<void>;
+    onCancel: () => void;
+  };
 }
 
 /**
@@ -551,6 +539,14 @@ export interface LendingModalProps {
     [key: string]: any;
   };
   onAccept: (purpose: string) => void;
+  onCancel: () => void;
+}
+
+/**
+ * Lending modal handlers interface
+ */
+export interface LendingModalHandlers {
+  onAccept: (purpose: string) => Promise<void>;
   onCancel: () => void;
 }
 

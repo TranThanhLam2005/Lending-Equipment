@@ -15,7 +15,6 @@ import {Button} from "@/components/ui/common/Button";
 import DetailInfo from "@/components/ui/common/DetailInfo";
 import ChatBox from "@/components/ui/common/ChatBox";
 import LendingModal from "@/components/ui/common/LendingModal";
-import ConfirmModal from "@/components/ui/common/ConfirmModal";
 
 // import icons
 import {
@@ -36,12 +35,8 @@ const EquipmentDetailView = ({
   user,
   imageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBbQ5tc4F35cTBlYWIIWxfLoDupmR00CG5fQ&s",
   isLendingModalOpen,
-  isConfirmModalOpen,
   onOpenLendingModal,
-  onCloseLendingModal,
-  onCloseConfirmModal,
-  onConfirmBorrow,
-  onAcceptLending,
+  lendingModalHandlers,
 }: EquipmentDetailViewProps) => {
   const formatPurchaseDate = format(
     parseISO(equipment.PurchaseDate),
@@ -143,18 +138,8 @@ const EquipmentDetailView = ({
         <LendingModal
           title="Lending Request"
           data={equipment}
-          onAccept={onAcceptLending}
-          onCancel={onCloseLendingModal}
-        />
-      )}
-
-      {isConfirmModalOpen && (
-        <ConfirmModal
-          type="confirm"
-          title="Confirm Lending Request"
-          message="Are you sure you want to send this lending request?"
-          onConfirm={onConfirmBorrow}
-          onCancel={onCloseConfirmModal}
+          onAccept={lendingModalHandlers.onAccept}
+          onCancel={lendingModalHandlers.onCancel}
         />
       )}
     </div>

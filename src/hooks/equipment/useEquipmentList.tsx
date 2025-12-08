@@ -1,6 +1,10 @@
 /**
  * Headless hook for equipment list with client-side search, filter, and sort
  * Separates business logic from UI
+ *
+ * Features:
+ * - Works with route loader data
+ * - Client-side filtering and sorting
  */
 
 import {useState, useMemo} from "react";
@@ -17,7 +21,7 @@ export const STATUS_OPTIONS = [
   {text: "Available"},
   {text: "Borrowed"},
   {text: "Under Maintenance"},
-  {text: "Pending"}
+  {text: "Pending"},
 ];
 
 export const SORT_OPTIONS = [
@@ -31,8 +35,7 @@ export const SORT_OPTIONS = [
 export const useEquipmentList = (options: UseEquipmentListOptions = {}) => {
   const {initialData = []} = options;
 
-  const [equipmentList, setEquipmentList] = useState<Equipment[]>(initialData);
-  const [error, setError] = useState<string | null>(null);
+  const [equipmentList] = useState<Equipment[]>(initialData);
 
   // Filter states
   const [searchTerm, setSearchTerm] = useState("");
@@ -90,8 +93,6 @@ export const useEquipmentList = (options: UseEquipmentListOptions = {}) => {
     // Data
     equipmentList,
     displayData,
-    isLoading: false, // No longer async, always false
-    error,
 
     // Filter states
     filters: {
@@ -108,10 +109,5 @@ export const useEquipmentList = (options: UseEquipmentListOptions = {}) => {
     // Options
     statusOptions: STATUS_OPTIONS,
     sortOptions: SORT_OPTIONS,
-
-    // Methods
-    setEquipmentList,
-    setError,
-    refreshData: () => setEquipmentList([...equipmentList]),
   };
 };

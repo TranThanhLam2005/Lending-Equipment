@@ -25,6 +25,24 @@ export const equipmentService = {
   },
 
   /**
+   * Get supervisor equipment information
+   */
+  async getSupervisorEquipment() {
+    return apiClient.get<Equipment[]>(
+      API_ENDPOINTS.EQUIPMENT.GET_SUPERVISOR_EQUIPMENT
+    );
+  },
+
+  /**
+   * Get supervisor info by equipment ID
+   */
+  async getSupervisorByEquipmentID(equipmentID: string) {
+    return apiClient.get<Equipment>(
+      API_ENDPOINTS.EQUIPMENT.GET_SUPERVISOR_BY_EQUIPMENT(equipmentID)
+    );
+  },
+
+  /**
    * Query equipment with filters
    * @param params - Search parameters
    * @param isVisitor - If true, uses public visitor endpoint

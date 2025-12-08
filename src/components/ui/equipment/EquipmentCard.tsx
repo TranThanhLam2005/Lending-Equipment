@@ -48,11 +48,9 @@ const EquipmentCard = ({
       onViewDetails(id);
     }
   };
-  return (
-    <Link
-      to={ROUTES.STUDENT_EQUIPMENT_DETAIL(id)}
-      className="group relative bg-white border border-gray-200 rounded-2xl overflow-hidden hover:shadow-2xl hover:border-gray-900 transition-all duration-300 hover:-translate-y-1 flex flex-col h-full"
-    >
+
+  const cardContent = (
+    <>
       {/* Equipment Image */}
       <div className="relative bg-gray-50 overflow-hidden flex-shrink-0">
         <img
@@ -107,16 +105,18 @@ const EquipmentCard = ({
         </div>
 
         {/* Equipment Button */}
-        {isRequest && status === "Available" && (
+        {isRequest && (
           <div className="flex flex-col gap-1.5 sm:gap-2 mt-auto">
-            <Button
-              variant="primary"
-              size="lg"
-              className="w-full bg-black text-white hover:bg-gray-800 border-none text-xs sm:text-sm h-8 sm:h-9 md:h-10"
-              onClick={handleRequestClick}
-            >
-              Request Borrow
-            </Button>
+            {status === "Available" && (
+              <Button
+                variant="primary"
+                size="lg"
+                className="w-full bg-black text-white hover:bg-gray-800 border-none text-xs sm:text-sm h-8 sm:h-9 md:h-10"
+                onClick={handleRequestClick}
+              >
+                Request Borrow
+              </Button>
+            )}
             <Button
               variant="outline"
               size="lg"
@@ -127,17 +127,24 @@ const EquipmentCard = ({
             </Button>
           </div>
         )}
-        {!isRequest && (
-          <Button
-            variant="outline"
-            size="medium"
-            className="w-full border-gray-300 text-gray-700 hover:bg-gray-900 hover:text-white hover:border-gray-900 text-xs sm:text-sm h-8 sm:h-9 md:h-10 mt-auto"
-            onClick={handleViewClick}
-          >
-            View Details
-          </Button>
-        )}
       </div>
+    </>
+  );
+
+  if (!isRequest) {
+    return (
+      <div className="group relative bg-white border border-gray-200 rounded-2xl overflow-hidden flex flex-col h-full cursor-default">
+        {cardContent}
+      </div>
+    );
+  }
+
+  return (
+    <Link
+      to={ROUTES.STUDENT_EQUIPMENT_DETAIL(id)}
+      className="group relative bg-white border border-gray-200 rounded-2xl overflow-hidden hover:shadow-2xl hover:border-gray-900 transition-all duration-300 hover:-translate-y-1 flex flex-col h-full"
+    >
+      {cardContent}
     </Link>
   );
 };

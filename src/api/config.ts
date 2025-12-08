@@ -62,6 +62,8 @@ export const API_ENDPOINTS = {
       `${USER_SERVICE_URL}/get_participant_equipment_detail/${id}`,
     QUERY: `${USER_SERVICE_URL}/query_participant_equipment`,
     QUERY_VISITOR: `${VISITOR_SERVICE_URL}/query_equipment`,
+    GET_SUPERVISOR_BY_EQUIPMENT: (equipmentID: string) =>
+      `${USER_SERVICE_URL}/get_supervise_info?equipmentID=${equipmentID}`,
   },
   // Course endpoints
   COURSES: {
