@@ -159,34 +159,24 @@ const searchHandlers = createEquipmentSearchHandlers(
 
 ```typescript
 const StudentEquipment = () => {
-  // ============================================================================
   // GLOBAL STATE
-  // ============================================================================
   const {isSidebarOpen} = useStore();
   const navigate = useNavigate();
 
-  // ============================================================================
   // MODAL STATE
-  // ============================================================================
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalData, setModalData] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
 
-  // ============================================================================
   // DATA LOADING - Load initial data from route loader
-  // ============================================================================
   const initialData = useLoaderData();
 
-  // ============================================================================
   // HOOKS - Equipment list with search, filter, sort
-  // ============================================================================
   const {displayData, filters, ...rest} = useEquipmentList({
     initialData: initialData,
   });
 
-  // ============================================================================
   // EVENT HANDLERS - Search, navigation, borrow
-  // ============================================================================
   const searchHandlers = createEquipmentSearchHandlers(...);
   const handleRequestBorrow = async (equipmentId) => {
     const {modalData, currentUser} =
@@ -194,9 +184,7 @@ const StudentEquipment = () => {
     // ... set modal state
   };
 
-  // ============================================================================
   // RENDER - Main UI
-  // ============================================================================
   return (
     <>
       <EquipmentListView {...props} />
