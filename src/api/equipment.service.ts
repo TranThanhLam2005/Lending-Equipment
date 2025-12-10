@@ -25,15 +25,6 @@ export const equipmentService = {
   },
 
   /**
-   * Get supervisor equipment information
-   */
-  async getSupervisorEquipment() {
-    return apiClient.get<Equipment[]>(
-      API_ENDPOINTS.EQUIPMENT.GET_SUPERVISOR_EQUIPMENT
-    );
-  },
-
-  /**
    * Get supervisor info by equipment ID
    */
   async getSupervisorByEquipmentID(equipmentID: string) {
@@ -42,29 +33,31 @@ export const equipmentService = {
     );
   },
 
-  /**
-   * Query equipment with filters
-   * @param params - Search parameters
-   * @param isVisitor - If true, uses public visitor endpoint
-   */
-  async queryEquipment(params: EquipmentQueryParams, isVisitor = false) {
-    const searchParams = new URLSearchParams();
 
-    if (params.searchValue)
-      searchParams.append("searchValue", params.searchValue);
-    if (params.searchStatus)
-      searchParams.append("searchStatus", params.searchStatus);
-    if (params.searchOrder)
-      searchParams.append("searchOrder", params.searchOrder);
+  // Now we sort by javascript 
+  // /**
+  //  * Query equipment with filters
+  //  * @param params - Search parameters
+  //  * @param isVisitor - If true, uses public visitor endpoint
+  //  */
+  // async queryEquipment(params: EquipmentQueryParams, isVisitor = false) {
+  //   const searchParams = new URLSearchParams();
 
-    const queryString = searchParams.toString();
-    const baseEndpoint = isVisitor
-      ? API_ENDPOINTS.EQUIPMENT.QUERY_VISITOR
-      : API_ENDPOINTS.EQUIPMENT.QUERY;
-    const endpoint = queryString
-      ? `${baseEndpoint}?${queryString}`
-      : baseEndpoint;
+  //   if (params.searchValue)
+  //     searchParams.append("searchValue", params.searchValue);
+  //   if (params.searchStatus)
+  //     searchParams.append("searchStatus", params.searchStatus);
+  //   if (params.searchOrder)
+  //     searchParams.append("searchOrder", params.searchOrder);
 
-    return apiClient.get<Equipment[]>(endpoint);
-  },
+  //   const queryString = searchParams.toString();
+  //   const baseEndpoint = isVisitor
+  //     ? API_ENDPOINTS.EQUIPMENT.QUERY_VISITOR
+  //     : API_ENDPOINTS.EQUIPMENT.QUERY;
+  //   const endpoint = queryString
+  //     ? `${baseEndpoint}?${queryString}`
+  //     : baseEndpoint;
+
+  //   return apiClient.get<Equipment[]>(endpoint);
+  // },
 };

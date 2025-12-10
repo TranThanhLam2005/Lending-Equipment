@@ -31,28 +31,22 @@ export const createCourseSearchHandlers = (
  */
 export const createCourseActionHandlers = (
   navigate?: (path: string) => void,
-  onEnrollAction?: (courseId: string) => Promise<void>,
-  onUnenrollAction?: (courseId: string) => Promise<void>,
-  onRefresh?: () => Promise<void>
+  // onEnrollAction?: (courseId: string) => Promise<void>,
+  // onUnenrollAction?: (courseId: string) => Promise<void>,
 ): CourseActionHandlers => ({
-  onEnroll: async (courseId: string) => {
-    if (onEnrollAction) {
-      await onEnrollAction(courseId);
-    }
-  },
+  // onEnroll: async (courseId: string) => {
+  //   if (onEnrollAction) {
+  //     await onEnrollAction(courseId);
+  //   }
+  // },
   onViewDetails: (courseId: string) => {
     if (navigate) {
       navigate(ROUTES.MY_COURSE_DETAIL(courseId));
     }
   },
-  onUnenroll: async (courseId: string) => {
-    if (onUnenrollAction) {
-      await onUnenrollAction(courseId);
-    }
-  },
-  onRefresh: async () => {
-    if (onRefresh) {
-      await onRefresh();
-    }
-  },
+  // onUnenroll: async (courseId: string) => {
+  //   if (onUnenrollAction) {
+  //     await onUnenrollAction(courseId);
+  //   }
+  // },
 });

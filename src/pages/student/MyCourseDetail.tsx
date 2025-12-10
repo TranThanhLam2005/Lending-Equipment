@@ -53,6 +53,11 @@ const MyCourseDetail = () => {
     navigate(ROUTES.STUDENT_EQUIPMENT_DETAIL(equipmentId));
   };
 
+  const actionHandlers = {
+    onRequestBorrow: handleRequestBorrow,
+    onViewDetails: handleViewDetails,
+  };
+
   return (
     <CourseDetailView
       courseId={courseData.CourseID}
@@ -69,16 +74,11 @@ const MyCourseDetail = () => {
         <EquipmentListView
           equipmentList={displayData}
           allEquipment={equipmentList}
-          searchTerm={filters.searchTerm}
-          searchStatus={filters.searchStatus}
-          searchOrder={filters.searchOrder}
+          filters={filters}
           statusOptions={statusOptions}
           sortOptions={sortOptions}
-          onSearchChange={searchHandlers.onSearchChange}
-          onStatusChange={searchHandlers.onStatusChange}
-          onSortChange={searchHandlers.onSortChange}
-          onRequestBorrow={handleRequestBorrow}
-          onViewDetails={handleViewDetails}
+          searchHandlers={searchHandlers}
+          actionHandlers={actionHandlers}
           isRequest={true}
           title="Course Equipment"
         />

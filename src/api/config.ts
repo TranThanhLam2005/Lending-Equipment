@@ -1,8 +1,6 @@
-// ============================================
 // Backend API Configuration
-// ============================================
 // Update these values based on your environment
-const API_HOST = "192.168.1.126";
+const API_HOST = "10.247.211.173";
 const API_PORT = 3000;
 
 // Constructed Backend Base URL
@@ -20,9 +18,7 @@ export const SERVICE_URLS = {
   VISITOR_SERVICE_URL,
 } as const;
 
-// ============================================
 // Frontend Route Configuration
-// ============================================
 export const ROUTES = {
   // Public Routes
   HOME: "/",
@@ -43,9 +39,7 @@ export const ROUTES = {
   BROWSE_COURSE: "/course/browse_course",
 } as const;
 
-// ============================================
-// API Endpoints Configuration
-// ============================================
+// API Endpoints Configuration for backend services
 export const API_ENDPOINTS = {
   // Auth endpoints
   AUTH: {
@@ -90,9 +84,7 @@ export const API_ENDPOINTS = {
   },
 } as const;
 
-// ============================================
 // HTTP Configuration
-// ============================================
 export const DEFAULT_HEADERS = {
   "Content-Type": "application/json",
 };

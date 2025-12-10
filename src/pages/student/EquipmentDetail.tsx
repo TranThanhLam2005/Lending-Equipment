@@ -20,7 +20,7 @@ import {useLoaderData} from "react-router-dom";
 import {useEquipmentDetail} from "@/hooks/equipment/useEquipmentDetail";
 
 // import handlers
-import {createLendingModalHandlers} from "@/handlers";
+import {createLendingModalHandlers, submitBorrowRequest} from "@/handlers";
 
 // import components
 import EquipmentDetailView from "@/components/ui/equipment/EquipmentDetailView";
@@ -30,37 +30,23 @@ import ConfirmModal from "@/components/ui/common/ConfirmModal";
  * EquipmentDetail Page Component
  */
 const EquipmentDetail = () => {
-  // ============================================================================
-  // DATA LOADING
-  // ============================================================================
   const loaderData = useLoaderData() as {equipment: any; user: any};
 
-  // ============================================================================
-  // SUCCESS/ERROR MODAL STATE
-  // ============================================================================
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  // ============================================================================
-  // HOOKS - Equipment data and modal state management
-  // ============================================================================
   const {
     equipment,
     user,
-    error,
     isLendingModalOpen,
     openLendingModal,
     closeLendingModal,
-    requestBorrow,
   } = useEquipmentDetail({
     initialEquipment: loaderData.equipment,
     initialUser: loaderData.user,
   });
 
-  // ============================================================================
-  // SUCCESS/ERROR HANDLERS
-  // ============================================================================
   const handleSuccess = () => {
     setShowSuccessModal(true);
   };
@@ -80,11 +66,8 @@ const EquipmentDetail = () => {
     setErrorMessage("");
   };
 
-  // ============================================================================
-  // EVENT HANDLERS - Create lending modal handlers
-  // ============================================================================
   const lendingModalHandlers = createLendingModalHandlers(
-    requestBorrow,
+    submitBorrowRequest,
     equipment,
     user,
     closeLendingModal,
@@ -92,23 +75,14 @@ const EquipmentDetail = () => {
     handleError
   );
 
-  // ============================================================================
-  // RENDER - Error state
-  // ============================================================================
-
-  if (error || !equipment || !user) {
+  if (!equipment || !user) {
     return (
       <div className="text-center py-12">
-        <p className="text-red-500 text-lg">
-          {error || "Failed to load equipment details"}
-        </p>
+        <p className="text-red-500 text-lg">Failed to load equipment details</p>
       </div>
     );
   }
 
-  // ============================================================================
-  // RENDER - Main view with lending modal handlers
-  // ============================================================================
   return (
     <>
       <EquipmentDetailView

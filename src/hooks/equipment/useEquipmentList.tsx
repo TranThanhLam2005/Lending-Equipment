@@ -8,29 +8,7 @@
  */
 
 import {useState, useMemo} from "react";
-import type {
-  Equipment,
-  UseEquipmentListOptions,
-  EquipmentFilters,
-} from "@/types/Type";
-
-export type {UseEquipmentListOptions, EquipmentFilters};
-
-export const STATUS_OPTIONS = [
-  {text: "All"},
-  {text: "Available"},
-  {text: "Borrowed"},
-  {text: "Under Maintenance"},
-  {text: "Pending"},
-];
-
-export const SORT_OPTIONS = [
-  {text: "Default"},
-  {text: "Most Recent"},
-  {text: "Oldest"},
-  {text: "Name (A-Z)"},
-  {text: "Name (Z-A)"},
-];
+import type {Equipment, UseEquipmentListOptions} from "@/types/Type";
 
 export const useEquipmentList = (options: UseEquipmentListOptions = {}) => {
   const {initialData = []} = options;
@@ -41,6 +19,23 @@ export const useEquipmentList = (options: UseEquipmentListOptions = {}) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchStatus, setSearchStatus] = useState("All");
   const [searchOrder, setSearchOrder] = useState("Default");
+
+  // Filter options (simple string arrays)
+  const statusOptions = [
+    "All",
+    "Available",
+    "Borrowed",
+    "Under Maintenance",
+    "Pending",
+  ];
+
+  const sortOptions = [
+    "Default",
+    "Most Recent",
+    "Oldest",
+    "Name (A-Z)",
+    "Name (Z-A)",
+  ];
 
   // Client-side filtering and sorting
   const displayData = useMemo(() => {
@@ -107,7 +102,7 @@ export const useEquipmentList = (options: UseEquipmentListOptions = {}) => {
     setSearchOrder,
 
     // Options
-    statusOptions: STATUS_OPTIONS,
-    sortOptions: SORT_OPTIONS,
+    statusOptions,
+    sortOptions,
   };
 };

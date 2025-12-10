@@ -4,12 +4,15 @@
  */
 
 import {ROUTES} from "@/api/config";
+import {lendingService} from "@/api/lending.service";
+import {equipmentService} from "@/api/equipment.service";
+import {userService} from "@/api/user.service";
 import type {
   LendingRecordSearchHandlers,
   LendingRecordActionHandlers,
+  Equipment,
+  User,
 } from "@/types/Type";
-
-export type {LendingRecordSearchHandlers, LendingRecordActionHandlers};
 
 /**
  * Create search handlers for lending record filtering
@@ -55,6 +58,47 @@ export const createLendingRecordActionHandlers = (
     }
   },
 });
+
+/**
+ * Prepare borrow modal data
+ * Loads supervisor and user data, combines with equipment info
+ */
+export const prepareBorrowModalData = async (
+  equipment: Equipment
+): Promise<{
+  modalData: Equipment;
+  currentUser: User;
+}> => {
+  // Load supervisor info for this equipment
+  const supervisorData = await equipmentService.getSupervisorByEquipmentID(
+    equipment.ID
+  );
+
+  // Load current user info
+  const userData = await userService.getUserBySession();
+
+  // Combine data for modal
+  const modalData: Equipment = {
+    ...equipment,
+    SupervisorID: supervisorData.data.SupervisorID,
+    AcademicStaffName: supervisorData.data.AcademicStaffName,
+    AcademicStaffCitizenID: supervisorData.data.AcademicStaffCitizenID,
+    CurrentUserName: userData.data.FullName || userData.data.Username,
+  };
+
+  return {
+    modalData,
+    currentUser: userData.data,
+  };
+};
+
+/**
+ * Submit borrow request
+ * Wrapper for lending service API call
+ */
+export const submitBorrowRequest = async (lendingData: any): Promise<void> => {
+  await lendingService.requestBorrow(lendingData);
+};
 
 /**
  * Create lending modal handlers for equipment borrowing flow

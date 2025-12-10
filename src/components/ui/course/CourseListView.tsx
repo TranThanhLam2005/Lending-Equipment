@@ -3,6 +3,7 @@ import {BookOpen} from "lucide-react";
 
 // import components
 import Dropdown from "@/components/ui/common/Dropdown";
+import {Button} from "@/components/ui/common/Button";
 import Input from "@/components/ui/common/Input";
 import CourseCard from "@/components/ui/course/CourseCard";
 
@@ -253,12 +254,13 @@ const CourseListView = ({
               </h3>
               <p className="text-red-600">{error}</p>
               {actionHandlers.onRefresh && (
-                <button
+                <Button
                   onClick={actionHandlers.onRefresh}
-                  className="mt-4 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                  size="medium"
+                  className="mt-4"
                 >
                   Try Again
-                </button>
+                </Button>
               )}
             </div>
           </div>
@@ -306,19 +308,19 @@ const CourseListView = ({
           <h3 className="text-xl font-semibold text-gray-900 mb-2">
             No courses found
           </h3>
-          <p className="text-gray-500">
+          <p className="text-gray-500 mb-4">
             {isFiltered ? "Try adjusting your filters" : emptyMessage}
           </p>
           {isFiltered && (
-            <button
+            <Button
               onClick={() => {
                 searchHandlers.onSearchChange("");
                 searchHandlers.onStatusChange("All");
               }}
-              className="mt-4 px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-700 transition-colors"
+              size ="medium"
             >
               Clear Filters
-            </button>
+            </Button>
           )}
         </div>
       )}

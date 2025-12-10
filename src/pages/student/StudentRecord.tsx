@@ -10,7 +10,6 @@ import {
   createLendingRecordSearchHandlers,
   createLendingRecordActionHandlers,
 } from "@/handlers/lending.handlers";
-import {lendingService} from "@/api/lending.service";
 import LendingRecordListView from "@/components/ui/lending/LendingRecordListView";
 import type {LendingRecord} from "@/types/Type";
 
@@ -22,9 +21,7 @@ const StudentRecord = () => {
   const {
     records,
     allRecords,
-    searchTerm,
-    searchStatus,
-    searchOrder,
+    filters,
     setSearchTerm,
     setSearchStatus,
     setSearchOrder,
@@ -45,7 +42,10 @@ const StudentRecord = () => {
   // Action handlers - separated from UI
   const handleReturnEquipment = async (recordId: string) => {
     try {
-      await lendingService.returnEquipment(recordId);
+      // TODO: Implement API call when backend is ready
+      // await lendingService.returnEquipment(recordId);
+      console.log("Return equipment:", recordId);
+
       // Update local state after successful return
       setRecords((prev) =>
         prev.map((record) =>
@@ -59,7 +59,10 @@ const StudentRecord = () => {
 
   const handleDeleteRecord = async (recordId: string) => {
     try {
-      await lendingService.deleteLendingRecord(recordId);
+      // TODO: Implement API call when backend is ready
+      // await lendingService.deleteLendingRecord(recordId);
+      console.log("Delete record:", recordId);
+
       // Remove from local state after successful deletion
       setRecords((prev) => prev.filter((record) => record.ID !== recordId));
     } catch (error) {
@@ -78,13 +81,11 @@ const StudentRecord = () => {
     <LendingRecordListView
       records={records}
       allRecords={allRecords}
-      searchTerm={searchTerm}
-      searchStatus={searchStatus}
-      searchOrder={searchOrder}
+      filters={filters}
       statusOptions={statusOptions}
       sortOptions={sortOptions}
-      {...searchHandlers}
-      {...actionHandlers}
+      searchHandlers={searchHandlers}
+      actionHandlers={actionHandlers}
       title="Lending Record"
       showStatistics={true}
     />

@@ -3,10 +3,6 @@
  * Organized by domain: API Models, UI Props, Hooks, Handlers, and Store
  */
 
-// ============================================================================
-// API MODELS - Data structures from backend
-// ============================================================================
-
 /**
  * Equipment entity
  */
@@ -113,10 +109,6 @@ export interface LendingRecord {
   BorrowerName?: string;
 }
 
-// ============================================================================
-// API REQUEST/RESPONSE TYPES
-// ============================================================================
-
 /**
  * Login credentials
  */
@@ -157,10 +149,6 @@ export interface EquipmentQueryParams {
   searchOrder?: string;
 }
 
-// ============================================================================
-// FILTER TYPES - For search and filtering
-// ============================================================================
-
 /**
  * Equipment filters
  */
@@ -178,10 +166,6 @@ export interface CourseFilters {
   status: string;
   sortOrder: string;
 }
-
-// ============================================================================
-// HANDLER TYPES - Event handler interfaces
-// ============================================================================
 
 /**
  * Equipment search handlers
@@ -239,6 +223,23 @@ export interface CourseActionHandlers {
 }
 
 /**
+ * Equipment search handlers
+ */
+export interface EquipmentSearchHandlers {
+  onSearchChange: (value: string) => void;
+  onStatusChange: (status: string) => void;
+  onSortChange: (sort: string) => void;
+}
+
+/**
+ * Equipment action handlers
+ */
+export interface EquipmentActionHandlers {
+  onRequestBorrow?: (equipmentId: string) => void;
+  onViewDetails?: (equipmentId: string) => void;
+}
+
+/**
  * Modal handlers
  */
 export interface ModalHandlers {
@@ -256,10 +257,6 @@ export interface FormHandlers<T = any> {
   onChange: (field: string, value: any) => void;
   onReset: () => void;
 }
-
-// ============================================================================
-// HOOK OPTION TYPES - For custom hooks
-// ============================================================================
 
 /**
  * Equipment list hook options
@@ -298,10 +295,6 @@ export interface UseCommentsOptions {
   initialComments?: Comment[];
 }
 
-// ============================================================================
-// HOOK RETURN TYPES - What hooks return
-// ============================================================================
-
 /**
  * Equipment list hook return
  */
@@ -322,11 +315,9 @@ export interface UseEquipmentListReturn {
 export interface UseEquipmentDetailReturn {
   equipment: Equipment | null;
   user: User | null;
-  error: string | null;
   isLendingModalOpen: boolean;
   openLendingModal: () => void;
   closeLendingModal: () => void;
-  requestBorrow: (borrowData: any) => Promise<void>;
 }
 
 /**
@@ -341,7 +332,6 @@ export interface UseCourseListReturn {
   setSearchTerm: (term: string) => void;
   setSearchStatus: (status: string) => void;
   setSearchOrder: (order: string) => void;
-  refreshCourses: () => Promise<void>;
   statusOptions: string[];
   sortOptions: string[];
 }
@@ -351,7 +341,6 @@ export interface UseCourseListReturn {
  */
 export interface UseCourseDetailReturn {
   courseData: Course;
-  refreshCourse: () => Promise<void>;
   isLoading: boolean;
   error: string | null;
 }
@@ -386,10 +375,6 @@ export interface UseChatBoxReturn {
   messagesContainerRef: React.RefObject<HTMLDivElement | null>;
   handleSendMessage: (msg: string) => void;
 }
-
-// ============================================================================
-// COMPONENT PROPS - For UI components
-// ============================================================================
 
 /**
  * Course card props
@@ -478,16 +463,11 @@ export interface EquipmentListViewProps {
   equipmentList: Equipment[];
   allEquipment?: Equipment[];
   isSidebarOpen?: boolean;
-  searchTerm: string;
-  searchStatus: string;
-  searchOrder: string;
-  statusOptions: {text: string}[];
-  sortOptions: {text: string}[];
-  onSearchChange: (value: string) => void;
-  onStatusChange: (value: string) => void;
-  onSortChange: (value: string) => void;
-  onRequestBorrow?: (equipmentId: string) => void;
-  onViewDetails?: (equipmentId: string) => void;
+  filters: EquipmentFilters;
+  statusOptions: string[];
+  sortOptions: string[];
+  searchHandlers: EquipmentSearchHandlers;
+  actionHandlers: EquipmentActionHandlers;
   isRequest?: boolean;
   title?: string;
   showStatistics?: boolean;
@@ -559,10 +539,6 @@ export interface LendingModalInfoRowProps {
   value: string;
 }
 
-// ============================================================================
-// STORE TYPES - Application state management
-// ============================================================================
-
 /**
  * Application state
  */
@@ -585,10 +561,6 @@ export interface StoreContextValue {
   state: AppState;
   dispatch: React.Dispatch<ActionType>;
 }
-
-// ============================================================================
-// UTILITY TYPES
-// ============================================================================
 
 /**
  * API response wrapper
@@ -630,10 +602,6 @@ export type StatusOption =
   | "Returned"
   | "Overdue";
 
-// ============================================================================
-// LENDING RECORD TYPES - Headless UI for lending records
-// ============================================================================
-
 /**
  * Lending record filters
  */
@@ -656,17 +624,11 @@ export interface UseLendingRecordOptions {
 export interface LendingRecordListViewProps {
   records: LendingRecord[];
   allRecords: LendingRecord[];
-  searchTerm: string;
-  searchStatus: string;
-  searchOrder: string;
-  statusOptions: DropdownItem[];
-  sortOptions: DropdownItem[];
-  onSearchChange: (value: string) => void;
-  onStatusChange: (value: string) => void;
-  onSortChange: (value: string) => void;
-  onReturnEquipment?: (recordId: string) => void;
-  onDeleteRecord?: (recordId: string) => void;
-  onViewDetails?: (recordId: string) => void;
+  filters: LendingRecordFilters;
+  statusOptions: string[];
+  sortOptions: string[];
+  searchHandlers: LendingRecordSearchHandlers;
+  actionHandlers: LendingRecordActionHandlers;
   title?: string;
   showStatistics?: boolean;
 }

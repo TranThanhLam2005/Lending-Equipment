@@ -19,16 +19,11 @@ import {
 const LendingRecordListView = ({
   records,
   allRecords,
-  searchTerm,
-  searchStatus,
-  searchOrder,
+  filters,
   statusOptions,
   sortOptions,
-  onSearchChange,
-  onStatusChange,
-  onSortChange,
-  onReturnEquipment,
-  onDeleteRecord,
+  searchHandlers,
+  actionHandlers,
   title = "Lending Records",
   showStatistics = true,
 }: LendingRecordListViewProps) => {
@@ -36,7 +31,8 @@ const LendingRecordListView = ({
   const statsData = allRecords || records;
   const totalRecords = statsData.length;
   const displayCount = records.length;
-  const isFiltered = searchTerm.trim() !== "" || searchStatus !== "All";
+  const isFiltered =
+    filters.searchTerm.trim() !== "" || filters.searchStatus !== "All";
 
   // Calculate statistics
   const borrowedCount = statsData.filter(
@@ -99,7 +95,7 @@ const LendingRecordListView = ({
         <div title="Return Equipment">
           <CornerUpLeft
             className="w-6 h-6 cursor-pointer hover:text-gray-900 transition-colors"
-            onClick={() => onReturnEquipment?.(record.ID || "")}
+            onClick={() => actionHandlers.onReturnEquipment(record.ID || "")}
           />
         </div>
       );
@@ -108,7 +104,7 @@ const LendingRecordListView = ({
         <div title="Delete Record">
           <Trash
             className="w-6 h-6 cursor-pointer hover:text-gray-900 transition-colors"
-            onClick={() => onDeleteRecord?.(record.ID || "")}
+            onClick={() => actionHandlers.onDeleteRecord(record.ID || "")}
           />
         </div>
       );
@@ -117,16 +113,16 @@ const LendingRecordListView = ({
         <div title="Return Overdue Equipment">
           <AlertTriangle
             className="w-6 h-6 cursor-pointer text-red-600 hover:text-red-800 transition-colors"
-            onClick={() => onReturnEquipment?.(record.ID || "")}
+            onClick={() => actionHandlers.onReturnEquipment(record.ID || "")}
           />
         </div>
       );
-    }else if (statusLower === "pending"){
-        return (
+    } else if (statusLower === "pending") {
+      return (
         <div title="Delete Record">
           <Trash
             className="w-6 h-6 cursor-pointer hover:text-gray-900 transition-colors"
-            onClick={() => onDeleteRecord?.(record.ID || "")}
+            onClick={() => actionHandlers.onDeleteRecord(record.ID || "")}
           />
         </div>
       );
@@ -215,23 +211,23 @@ const LendingRecordListView = ({
               <Input
                 placeholder="Search by equipment, supervisor, or ID..."
                 type="text"
-                onChange={(e) => onSearchChange(e.target.value)}
-                value={searchTerm}
+                onChange={(e) => searchHandlers.onSearchChange(e.target.value)}
+                value={filters.searchTerm}
                 search
               />
             </div>
             <Dropdown
-              value={searchStatus}
+              value={filters.searchStatus}
               placeholder="Filter by status"
-              items={statusOptions}
-              valueSetter={onStatusChange}
+              items={statusOptions.map((text) => ({text}))}
+              valueSetter={searchHandlers.onStatusChange}
             />
           </div>
           <Dropdown
-            value={searchOrder}
+            value={filters.searchOrder}
             placeholder="Sort by"
-            items={sortOptions}
-            valueSetter={onSortChange}
+            items={sortOptions.map((text) => ({text}))}
+            valueSetter={searchHandlers.onSortChange}
           />
         </div>
 

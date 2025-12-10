@@ -8,8 +8,10 @@ import Notification from "@/components/ui/common/Notification";
 import {useStore} from "@/hooks/hooks";
 import {setSidebarOpen} from "@/store/actions";
 
-// import routes
-import {ROUTES} from "@/api/config";
+// import handlers
+import {handleLogout} from "@/handlers";
+
+
 
 // import icons
 import {
@@ -24,7 +26,6 @@ import {
   Monitor,
 } from "lucide-react";
 import Tippy from "@tippyjs/react/headless";
-import {authService} from "@/api/auth.service";
 
 const Header = () => {
   const [state, dispatch] = useStore() as [any, any];
@@ -34,11 +35,10 @@ const Header = () => {
 
   const navigate = useNavigate();
 
-  const handleLogout = async () => {
+  const onLogout = async () => {
     setShowGeneral(false);
     try {
-      await authService.logout();
-      navigate(ROUTES.HOME, {replace: true});
+      await handleLogout(navigate);
     } catch (error) {
       console.error("Logout error:", error);
     }
@@ -181,7 +181,7 @@ const Header = () => {
                 </div>
                 <div
                   className="md:hidden flex items-center space-x-3 p-3 hover:bg-gray-100 cursor-pointer rounded-xl transition-all group"
-                  onClick={handleLogout}
+                  onClick={onLogout}
                 >
                   <LogOut className="w-5 h-5 text-gray-600 group-hover:text-gray-900 transition-colors" />
                   <span className="flex-1 text-gray-700 group-hover:text-gray-900">

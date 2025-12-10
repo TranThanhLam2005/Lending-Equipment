@@ -10,8 +10,6 @@ import type {
   UseCourseDetailReturn,
 } from "@/types/Type";
 
-export type {UseCourseDetailOptions, UseCourseDetailReturn};
-
 export const useCourseDetail = (
   options: UseCourseDetailOptions
 ): UseCourseDetailReturn => {
@@ -21,14 +19,8 @@ export const useCourseDetail = (
   const [isLoading] = useState(false);
   const [error] = useState<string | null>(null);
 
-  const refreshCourse = async () => {
-    // Placeholder for future API refresh logic
-    console.log("Refreshing course...");
-  };
-
   return {
     courseData,
-    refreshCourse,
     isLoading,
     error,
   };

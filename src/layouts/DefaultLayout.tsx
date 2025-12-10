@@ -27,8 +27,6 @@ const DefaultLayout = () => {
   const [state] = useStore();
   const {isSidebarOpen} = state;
 
-  
-
   // Show loading page when navigation is in loading state
   const isLoading = navigation.state === "loading";
 

@@ -404,9 +404,7 @@ const workComponent = (
   return (
     <div className="flex flex-col md:flex-row justify-center items-start gap-x-50">
       <div className="relative flex flex-col items-center w-full md:w-auto mb-4 md:mb-0">
-        <div
-          className="flex items-center justify-center h-18 w-18 bg-gradient-to-l from-gray-900/20 to-gray-100/20 text-3xl font-bold text-black rounded-full shadow-xl"
-        >
+        <div className="flex items-center justify-center h-18 w-18 bg-gradient-to-l from-gray-900/20 to-gray-100/20 text-3xl font-bold text-black rounded-full shadow-xl">
           {number}
         </div>
         {/* Connector line */}

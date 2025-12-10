@@ -12,22 +12,6 @@ import type {
 
 export type {UseLendingRecordOptions, LendingRecordFilters};
 
-export const STATUS_OPTIONS = [
-  {text: "All"},
-  {text: "Borrowed"},
-  {text: "Returned"},
-  {text: "Overdue"},
-  {text: "Pending"},
-];
-
-export const SORT_OPTIONS = [
-  {text: "Default"},
-  {text: "Most Recent"},
-  {text: "Oldest"},
-  {text: "Due Date (Nearest)"},
-  {text: "Due Date (Farthest)"},
-];
-
 export const useLendingRecords = (options: UseLendingRecordOptions = {}) => {
   const {initialData = []} = options;
 
@@ -38,6 +22,16 @@ export const useLendingRecords = (options: UseLendingRecordOptions = {}) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchStatus, setSearchStatus] = useState("All");
   const [searchOrder, setSearchOrder] = useState("Default");
+
+  // Filter options (simple string arrays)
+  const statusOptions = ["All", "Borrowed", "Returned", "Overdue", "Pending"];
+  const sortOptions = [
+    "Default",
+    "Most Recent",
+    "Oldest",
+    "Due Date (Nearest)",
+    "Due Date (Farthest)",
+  ];
 
   // Client-side filtering and sorting
   const displayData = useMemo(() => {
@@ -91,16 +85,21 @@ export const useLendingRecords = (options: UseLendingRecordOptions = {}) => {
     return filtered;
   }, [records, searchTerm, searchStatus, searchOrder]);
 
+  // Consolidated filters object
+  const filters: LendingRecordFilters = {
+    searchTerm,
+    searchStatus,
+    searchOrder,
+  };
+
   return {
     // Data
     records: displayData,
     allRecords: records,
     error,
 
-    // Filter states
-    searchTerm,
-    searchStatus,
-    searchOrder,
+    // Filters
+    filters,
 
     // Filter setters
     setSearchTerm,
@@ -112,7 +111,7 @@ export const useLendingRecords = (options: UseLendingRecordOptions = {}) => {
     setError,
 
     // Options
-    statusOptions: STATUS_OPTIONS,
-    sortOptions: SORT_OPTIONS,
+    statusOptions,
+    sortOptions,
   };
 };

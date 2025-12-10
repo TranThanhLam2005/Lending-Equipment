@@ -14,7 +14,6 @@ import {CalendarDays, CheckCircle, Sparkles} from "lucide-react";
 // import types
 import type {EquipmentCardProps} from "@/types/Type";
 
-export type {EquipmentCardProps};
 
 /**
  * Pure presentational component for displaying equipment card

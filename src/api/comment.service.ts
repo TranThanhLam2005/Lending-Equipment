@@ -19,17 +19,18 @@ export const commentService = {
     return apiClient.post<Comment>(API_ENDPOINTS.COMMENTS.CREATE, data);
   },
 
-  /**
-   * Update a comment
-   */
-  async updateComment(id: string, data: UpdateCommentData) {
-    return apiClient.put<Comment>(API_ENDPOINTS.COMMENTS.UPDATE(id), data);
-  },
+  // Do not implement for now
+  // /**
+  //  * Update a comment
+  //  */
+  // async updateComment(id: string, data: UpdateCommentData) {
+  //   return apiClient.put<Comment>(API_ENDPOINTS.COMMENTS.UPDATE(id), data);
+  // },
 
-  /**
-   * Delete a comment
-   */
-  async deleteComment(id: string) {
-    return apiClient.delete(API_ENDPOINTS.COMMENTS.DELETE(id));
-  },
+  // /**
+  //  * Delete a comment
+  //  */
+  // async deleteComment(id: string) {
+  //   return apiClient.delete(API_ENDPOINTS.COMMENTS.DELETE(id));
+  // },
 };

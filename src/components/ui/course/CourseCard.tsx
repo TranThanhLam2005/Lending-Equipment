@@ -11,7 +11,6 @@ import {CalendarDays, MapPin, Info, User2, Eye, BookOpen} from "lucide-react";
 // import types
 import type {CourseCardProps} from "@/types/Type";
 
-export type {CourseCardProps};
 
 const CourseCard = ({
   id,

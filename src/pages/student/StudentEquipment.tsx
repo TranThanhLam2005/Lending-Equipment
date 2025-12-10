@@ -19,12 +19,12 @@ import {useLoaderData, useNavigate} from "react-router-dom";
 // import hooks and handlers
 import {useStore} from "@/hooks/hooks";
 import {useEquipmentList} from "@/hooks/equipment/useEquipmentList";
+import {createEquipmentSearchHandlers} from "@/handlers";
 import {
-  createEquipmentSearchHandlers,
-  prepareBorrowModalData,
+  createLendingModalHandlers,
   submitBorrowRequest,
+  prepareBorrowModalData,
 } from "@/handlers";
-import {createLendingModalHandlers} from "@/handlers";
 
 // import routes
 import {ROUTES} from "@/api/config";
@@ -39,16 +39,10 @@ import ConfirmModal from "@/components/ui/common/ConfirmModal";
 import type {Equipment, User} from "@/types/Type";
 
 const StudentEquipment = () => {
-  // ============================================================================
-  // GLOBAL STATE
-  // ============================================================================
   const [state] = useStore() as [any, any];
   const {isSidebarOpen} = state;
   const navigate = useNavigate();
 
-  // ============================================================================
-  // MODAL STATE
-  // ============================================================================
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalData, setModalData] = useState<Equipment | null>(null);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -57,14 +51,8 @@ const StudentEquipment = () => {
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  // ============================================================================
-  // DATA LOADING - Load initial data from route loader
-  // ============================================================================
   const initialData = useLoaderData();
 
-  // ============================================================================
-  // HOOKS - Equipment list with search, filter, sort
-  // ============================================================================
   const {
     equipmentList,
     displayData,
@@ -78,30 +66,28 @@ const StudentEquipment = () => {
     initialData: initialData as any[],
   });
 
-  // ============================================================================
-  // EVENT HANDLERS - Search functionality
-  // ============================================================================
   const searchHandlers = createEquipmentSearchHandlers(
     setSearchTerm,
     setSearchStatus,
     setSearchOrder
   );
 
-  // ============================================================================
-  // EVENT HANDLERS - Navigation
-  // ============================================================================
   const handleViewDetails = (equipmentId: string) => {
     navigate(ROUTES.STUDENT_EQUIPMENT_DETAIL(equipmentId));
   };
 
-  // ============================================================================
-  // EVENT HANDLERS - Borrow request flow
-  // ============================================================================
   const handleRequestBorrow = async (equipmentId: string) => {
     setIsLoadingModal(true);
     try {
+      // Find the equipment from the list
+      const equipment = equipmentList.find((eq) => eq.ID === equipmentId);
+
+      if (!equipment) {
+        throw new Error("Equipment not found");
+      }
+
       const {modalData: preparedData, currentUser: userData} =
-        await prepareBorrowModalData(equipmentId, equipmentList);
+        await prepareBorrowModalData(equipment);
 
       setModalData(preparedData);
       setCurrentUser(userData);
@@ -111,6 +97,11 @@ const StudentEquipment = () => {
     } finally {
       setIsLoadingModal(false);
     }
+  };
+
+  const actionHandlers = {
+    onRequestBorrow: handleRequestBorrow,
+    onViewDetails: handleViewDetails,
   };
 
   const closeLendingModal = () => {
@@ -151,9 +142,6 @@ const StudentEquipment = () => {
         )
       : null;
 
-  // ============================================================================
-  // RENDER - Main UI
-  // ============================================================================
   return (
     <>
       {isLoadingModal && <LoadingPage />}
@@ -162,16 +150,11 @@ const StudentEquipment = () => {
         equipmentList={displayData}
         allEquipment={equipmentList}
         isSidebarOpen={isSidebarOpen}
-        searchTerm={filters.searchTerm}
-        searchStatus={filters.searchStatus}
-        searchOrder={filters.searchOrder}
+        filters={filters}
         statusOptions={statusOptions}
         sortOptions={sortOptions}
-        onSearchChange={searchHandlers.onSearchChange}
-        onStatusChange={searchHandlers.onStatusChange}
-        onSortChange={searchHandlers.onSortChange}
-        onRequestBorrow={handleRequestBorrow}
-        onViewDetails={handleViewDetails}
+        searchHandlers={searchHandlers}
+        actionHandlers={actionHandlers}
         isRequest={true}
         title="Equipment"
       />

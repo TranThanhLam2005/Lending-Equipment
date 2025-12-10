@@ -8,7 +8,6 @@ import {format, parseISO} from "date-fns";
 import {CalendarDays, MapPin, Info, User2, Home, BookOpen} from "lucide-react";
 import type {CourseDetailViewProps} from "@/types/Type";
 
-export type {CourseDetailViewProps};
 
 const CourseDetailView = ({
   courseId,

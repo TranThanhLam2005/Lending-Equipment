@@ -13,10 +13,22 @@ export const lendingService = {
    */
   async getUserLendingRecords() {
     return apiClient.get<LendingRecord[]>(
-        API_ENDPOINTS.LENDING_RECORDS.GET_LENDINGS_BY_USER
+      API_ENDPOINTS.LENDING_RECORDS.GET_LENDINGS_BY_USER
     );
   },
 
+  /**
+   * Request to borrow equipment - creates a lending record
+   */
+
+  async requestBorrow(borrowData: LendingRecord) {
+    return apiClient.post(
+      API_ENDPOINTS.LENDING_RECORDS.ADD_LENDING_RECORD,
+      borrowData
+    );
+  },
+
+  // Do not implement for now
   // /**
   //  * Return equipment (mark lending record as returned)
   //  */
@@ -42,10 +54,4 @@ export const lendingService = {
    * Request to borrow equipment - creates a lending record
    * @param borrowData - Contains BorrowerID, SuperviseID, EquipmentID, BorrowDate, ReturnDate, Purpose, Status
    */
-  async requestBorrow(borrowData: LendingRecord) {
-    return apiClient.post(
-      API_ENDPOINTS.LENDING_RECORDS.ADD_LENDING_RECORD,
-      borrowData
-    );
-  },
 };

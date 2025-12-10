@@ -2,25 +2,21 @@
  * Headless hook for course list with client-side search, filter, and sort
  */
 
-import {useState, useEffect, useMemo} from "react";
-import {courseService} from "@/api";
+import {useState, useMemo} from "react";
 import type {
-  CourseFilters,
   UseCourseListOptions,
   UseCourseListReturn,
   Course,
 } from "@/types/Type";
-
-export type {CourseFilters, UseCourseListOptions, UseCourseListReturn};
 
 export const useCourseList = (
   options: UseCourseListOptions = {}
 ): UseCourseListReturn => {
   const {initialData = []} = options;
 
-  const [courses, setCourses] = useState<Course[]>(initialData);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [courses] = useState<Course[]>(initialData);
+  const [isLoading] = useState(false);
+  const [error] = useState<string | null>(null);
 
   // Filter states
   const [searchTerm, setSearchTerm] = useState("");
@@ -36,29 +32,6 @@ export const useCourseList = (
     "Name (A-Z)",
     "Name (Z-A)",
   ];
-
-  // Fetch courses if not provided
-  useEffect(() => {
-    if (initialData.length > 0) {
-      return;
-    }
-
-    refreshCourses();
-  }, []);
-
-  const refreshCourses = async () => {
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      const response = await courseService.getParticipantCourses();
-      setCourses(response.data);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to fetch courses");
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   // Client-side filtering and sorting
   const displayData = useMemo(() => {
@@ -133,7 +106,6 @@ export const useCourseList = (
     setSearchTerm,
     setSearchStatus: setSearchStatus,
     setSearchOrder: setSearchOrder,
-    refreshCourses,
     statusOptions,
     sortOptions,
   };

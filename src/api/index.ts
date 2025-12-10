@@ -8,16 +8,4 @@ export * from "./user.service";
 export * from "./comment.service";
 export * from "./lending.service";
 
-// Re-export types from central type definition
-export type {
-  Equipment,
-  Course,
-  User,
-  Comment,
-  LendingRecord,
-  LoginCredentials,
-  AuthResponse,
-  CreateCommentData,
-  UpdateCommentData,
-  EquipmentQueryParams,
-} from "@/types/Type";
+

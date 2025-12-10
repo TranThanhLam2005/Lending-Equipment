@@ -8,9 +8,11 @@ import {setSidebarOpen} from "@/store/actions";
 import {Button} from "@/components/ui/common/Button";
 import ConfirmModal from "@/components/ui/common/ConfirmModal";
 
+// import handlers
+import {handleLogout} from "@/handlers";
+
 // import routes
 import {ROUTES} from "@/api/config";
-import {authService} from "@/api/auth.service";
 
 // import icons
 import {
@@ -91,10 +93,8 @@ const Sidebar = () => {
 
   const logout = async () => {
     try {
-      await authService.logout();
-      console.log("Logout successful");
       dispatch(setSidebarOpen(false));
-      navigate(ROUTES.HOME, {replace: true});
+      await handleLogout(navigate);
     } catch (error) {
       console.error("Logout error:", error);
     }

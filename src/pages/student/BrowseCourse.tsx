@@ -26,7 +26,6 @@ const BrowseCourse = () => {
     setSearchTerm,
     setSearchStatus,
     setSearchOrder,
-    refreshCourses,
     statusOptions,
     sortOptions,
   } = useCourseList();
@@ -38,12 +37,7 @@ const BrowseCourse = () => {
     setSearchOrder
   );
 
-  const actionHandlers = createCourseActionHandlers(
-    navigate,
-    undefined,
-    undefined,
-    refreshCourses
-  );
+  const actionHandlers = createCourseActionHandlers(navigate);
 
   // Show loading page on initial load
   if (isLoading && displayData.length === 0) {

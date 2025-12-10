@@ -53,6 +53,10 @@ const Visitor = () => {
     // Could navigate to a public detail page if needed
   };
 
+  const actionHandlers = {
+    onViewDetails: handleViewDetails,
+  };
+
   // Calculate stats
   const totalEquipment = displayData.length;
   const availableEquipment = displayData.filter(
@@ -181,15 +185,11 @@ const Visitor = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <EquipmentListView
             equipmentList={displayData}
-            searchTerm={filters.searchTerm}
-            searchStatus={filters.searchStatus}
-            searchOrder={filters.searchOrder}
+            filters={filters}
             statusOptions={statusOptions}
             sortOptions={sortOptions}
-            onSearchChange={searchHandlers.onSearchChange}
-            onStatusChange={searchHandlers.onStatusChange}
-            onSortChange={searchHandlers.onSortChange}
-            onViewDetails={handleViewDetails}
+            searchHandlers={searchHandlers}
+            actionHandlers={actionHandlers}
             isRequest={false} // Hide borrow actions for visitors
             title=""
           />

@@ -7,6 +7,7 @@
 import type {EquipmentListViewProps} from "@/types/Type";
 // import components
 import EquipmentCard from "./EquipmentCard";
+import {Button} from "@/components/ui/common/Button";
 import Dropdown from "@/components/ui/common/Dropdown";
 import Input from "@/components/ui/common/Input";
 // import icons
@@ -16,16 +17,11 @@ const EquipmentListView = ({
   equipmentList,
   allEquipment,
   isSidebarOpen = false,
-  searchTerm,
-  searchStatus,
-  searchOrder,
+  filters,
   statusOptions,
   sortOptions,
-  onSearchChange,
-  onStatusChange,
-  onSortChange,
-  onRequestBorrow,
-  onViewDetails,
+  searchHandlers,
+  actionHandlers,
   isRequest = true,
   title = "Equipment",
   showStatistics = true,
@@ -34,7 +30,8 @@ const EquipmentListView = ({
   const statsData = allEquipment || equipmentList;
   const totalEquipment = statsData.length;
   const displayCount = equipmentList.length;
-  const isFiltered = searchTerm.trim() !== "" || searchStatus !== "All";
+  const isFiltered =
+    filters.searchTerm.trim() !== "" || filters.searchStatus !== "All";
 
   // Calculate statistics
   const availableCount = statsData.filter(
@@ -89,16 +86,16 @@ const EquipmentListView = ({
                 placeholder="Search by name, type, description, venue, or condition..."
                 type="text"
                 search
-                onChange={(e) => onSearchChange(e.target.value)}
-                value={searchTerm}
+                onChange={(e) => searchHandlers.onSearchChange(e.target.value)}
+                value={filters.searchTerm}
               />
             </div>
             <div className="sm:w-64">
               <Dropdown
-                value={searchStatus}
+                value={filters.searchStatus}
                 placeholder="Filter by status"
-                items={statusOptions}
-                valueSetter={onStatusChange}
+                items={statusOptions.map((text) => ({text}))}
+                valueSetter={searchHandlers.onStatusChange}
               />
             </div>
           </div>
@@ -106,10 +103,10 @@ const EquipmentListView = ({
           {/* Sort Dropdown */}
           <div className="sm:w-64">
             <Dropdown
-              value={searchOrder}
+              value={filters.searchOrder}
               placeholder="Sort by"
-              items={sortOptions}
-              valueSetter={onSortChange}
+              items={sortOptions.map((text) => ({text}))}
+              valueSetter={searchHandlers.onSortChange}
             />
           </div>
         </div>
@@ -271,8 +268,8 @@ const EquipmentListView = ({
             condition={item.Condition}
             purchaseDate={item.PurchaseDate}
             isRequest={isRequest}
-            onRequestBorrow={onRequestBorrow}
-            onViewDetails={onViewDetails}
+            onRequestBorrow={actionHandlers.onRequestBorrow}
+            onViewDetails={actionHandlers.onViewDetails}
           />
         ))}
       </div>
@@ -298,21 +295,21 @@ const EquipmentListView = ({
           <h3 className="text-xl font-semibold text-gray-900 mb-2">
             No equipment found
           </h3>
-          <p className="text-gray-500">
+          <p className="text-gray-500 mb-4">
             {isFiltered
               ? "Try adjusting your search or filters"
               : "No equipment available at the moment"}
           </p>
           {isFiltered && (
-            <button
+            <Button
               onClick={() => {
-                onSearchChange("");
-                onStatusChange("All");
+                searchHandlers.onSearchChange("");
+                searchHandlers.onStatusChange("All");
               }}
-              className="mt-4 px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-700 transition-colors"
+              size="medium"
             >
               Clear Filters
-            </button>
+            </Button>
           )}
         </div>
       )}

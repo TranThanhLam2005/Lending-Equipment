@@ -25,7 +25,6 @@ const MyCourse = () => {
     setSearchTerm,
     setSearchStatus,
     setSearchOrder,
-    refreshCourses,
     statusOptions,
     sortOptions,
   } = useCourseList({initialData: data});
@@ -37,12 +36,7 @@ const MyCourse = () => {
     setSearchOrder
   );
 
-  const actionHandlers = createCourseActionHandlers(
-    navigate,
-    undefined,
-    undefined,
-    refreshCourses
-  );
+  const actionHandlers = createCourseActionHandlers(navigate);
 
   return (
     <div>
