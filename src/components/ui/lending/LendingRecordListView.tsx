@@ -131,7 +131,7 @@ const LendingRecordListView = ({
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen">
       {/* Title Section */}
       {title && (
         <div className="mb-8">

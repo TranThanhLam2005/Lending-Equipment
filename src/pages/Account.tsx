@@ -7,7 +7,7 @@ const Account = () => {
 
   return (
     <div>
-      <div className="text-2xl md:text-4xl font-medium mb-4">Equipment</div>
+      <div className="text-2xl md:text-4xl font-medium mb-4">Account</div>
       <div className="flex flex-col md:flex-row gap-x-2">
         <div className="flex flex-col items-center md:w-64 rounded-lg shadow-lg bg-white p-4 gap-y-4 mb-4 md:mb-0">
           <img

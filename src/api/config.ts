@@ -1,6 +1,6 @@
 // Backend API Configuration
 // Update these values based on your environment
-const API_HOST = "10.247.211.173";
+const API_HOST = "10.247.200.140";
 const API_PORT = 3000;
 
 // Constructed Backend Base URL

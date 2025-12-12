@@ -168,29 +168,29 @@ const LandingPage = () => {
               Explore the Equipment You Can Borrow
             </h1>
             <h2 className="text-center text-lg text-gray-500 mt-3">
-              From laptops to VR headsets — everything you need to succeed in
-              class.
+              From lab equipment to cameras — everything you need to succeed in
+              class and projects.
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-2 mt-10 justify-items-center">
               {equipmentComponent(
-                "https://bizweb.dktcdn.net/100/444/581/products/1-6d8ef4a6-01b5-45fd-906c-272cf0d27a9d-bea26076-46a2-4edb-b69b-4087a5fa6844-8983484b-ddbc-46ea-b13e-29586d358501-11dd4b37-d8f0-489c-94d3-ee36f7f0443f-bcc4987d-4c2e-4a2c-a144-2123b6f50339.png?v=1734923193447",
-                "VR Headset",
-                "Experience the future of virtual reality with our state-of-the-art VR headset."
+                "https://emin.vn/s-cdn/65/651b51a87cba7581e1f375776d8cb71ab92c7cc0.jpg",
+                "Digital Oscilloscope",
+                "High-precision measurement tools for electronics and circuit analysis in engineering labs."
               )}
               {equipmentComponent(
-                "https://bizweb.dktcdn.net/100/444/581/products/1-6d8ef4a6-01b5-45fd-906c-272cf0d27a9d-bea26076-46a2-4edb-b69b-4087a5fa6844-8983484b-ddbc-46ea-b13e-29586d358501-11dd4b37-d8f0-489c-94d3-ee36f7f0443f-bcc4987d-4c2e-4a2c-a144-2123b6f50339.png?v=1734923193447",
-                "Laptop",
-                "High-performance laptops for all your computing needs, from gaming to professional work."
+                "https://petapixel.com/assets/uploads/2022/09/canon-5d-mark-iv-dslr-800x420.jpg",
+                "DSLR Camera",
+                "Professional cameras with lens kits for photography, videography, and media production projects."
               )}
               {equipmentComponent(
-                "https://bizweb.dktcdn.net/100/444/581/products/1-6d8ef4a6-01b5-45fd-906c-272cf0d27a9d-bea26076-46a2-4edb-b69b-4087a5fa6844-8983484b-ddbc-46ea-b13e-29586d358501-11dd4b37-d8f0-489c-94d3-ee36f7f0443f-bcc4987d-4c2e-4a2c-a144-2123b6f50339.png?v=1734923193447",
-                "Smartphone",
-                "Stay connected with the latest smartphones featuring cutting-edge technology."
+                "https://www.arduino.cc/wiki/static/a2a571381480c1484a4750793b5ad034/4b190/uno-r3-smd.jpg",
+                "Arduino Kit",
+                "Complete development kits for robotics, IoT projects, and embedded systems programming."
               )}
               {equipmentComponent(
-                "https://bizweb.dktcdn.net/100/444/581/products/1-6d8ef4a6-01b5-45fd-906c-272cf0d27a9d-bea26076-46a2-4edb-b69b-4087a5fa6844-8983484b-ddbc-46ea-b13e-29586d358501-11dd4b37-d8f0-489c-94d3-ee36f7f0443f-bcc4987d-4c2e-4a2c-a144-2123b6f50339.png?v=1734923193447",
-                "Tablet",
-                "Versatile tablets for work, play, and everything in between."
+                "https://www.makerbot.com/wp-content/uploads/2023/09/2019-11-21-SKETCH-SINGLE-PRINTER-HERO-10.png",
+                "3D Printer",
+                "FDM printers for rapid prototyping, design validation, and creating physical models."
               )}
             </div>
           </div>
@@ -206,43 +206,43 @@ const LandingPage = () => {
           </h2>
           <div className="flex flex-col items-center gap-20 mt-20">
             {featureDetail(
-              "https://bizweb.dktcdn.net/100/444/581/products/1-6d8ef4a6-01b5-45fd-906c-272cf0d27a9d-bea26076-46a2-4edb-b69b-4087a5fa6844-8983484b-ddbc-46ea-b13e-29586d358501-11dd4b37-d8f0-489c-94d3-ee36f7f0443f-bcc4987d-4c2e-4a2c-a144-2123b6f50339.png?v=1734923193447",
-              "Comprehensive Event Management",
-              "EventApp offers a complete suite of tools for managing every aspect of your event, from planning to execution. Create events, manage registrations, and engage with attendees seamlessly.",
-              "Create and Manage Events",
-              "Customizable Event Pages",
-              "Real-time Analytics",
-              "Seamless Registration Process",
+              "https://res.cloudinary.com/dvydxq82p/image/upload/v1765540245/Screenshot_2025-12-12_184613_ztjw7s.png",
+              "Comprehensive Course Management",
+              "EasyEd Track provides a complete platform for managing courses, schedules, and student enrollment. View course details, track attendance, and link equipment to specific courses for seamless integration.",
+              "Create and Manage Courses",
+              "Link Equipment to Courses",
+              "Track Student Enrollment",
+              "View Course Schedules & Details",
               true
             )}
             {featureDetail(
-              "https://bizweb.dktcdn.net/100/444/581/products/1-6d8ef4a6-01b5-45fd-906c-272cf0d27a9d-bea26076-46a2-4edb-b69b-4087a5fa6844-8983484b-ddbc-46ea-b13e-29586d358501-11dd4b37-d8f0-489c-94d3-ee36f7f0443f-bcc4987d-4c2e-4a2c-a144-2123b6f50339.png?v=1734923193447",
-              "Comprehensive Event Management",
-              "EventApp offers a complete suite of tools for managing every aspect of your event, from planning to execution. Create events, manage registrations, and engage with attendees seamlessly.",
-              "Create and Manage Events",
-              "Customizable Event Pages",
-              "Real-time Analytics",
-              "Seamless Registration Process",
+              "https://res.cloudinary.com/dvydxq82p/image/upload/v1765540331/Screenshot_2025-12-12_185203_cdc4e5.png",
+              "Smart Equipment Tracking",
+              "Keep track of all your school equipment in real-time. Monitor availability, condition status, and borrowing history. Get notified about due dates and manage maintenance schedules efficiently.",
+              "Real-time Availability Status",
+              "Borrowing History & Analytics",
+              "Automated Due Date Reminders",
+              "Equipment Condition Tracking",
               false
             )}
             {featureDetail(
-              "https://bizweb.dktcdn.net/100/444/581/products/1-6d8ef4a6-01b5-45fd-906c-272cf0d27a9d-bea26076-46a2-4edb-b69b-4087a5fa6844-8983484b-ddbc-46ea-b13e-29586d358501-11dd4b37-d8f0-489c-94d3-ee36f7f0443f-bcc4987d-4c2e-4a2c-a144-2123b6f50339.png?v=1734923193447",
-              "Comprehensive Event Management",
-              "EventApp offers a complete suite of tools for managing every aspect of your event, from planning to execution. Create events, manage registrations, and engage with attendees seamlessly.",
-              "Create and Manage Events",
-              "Customizable Event Pages",
-              "Real-time Analytics",
-              "Seamless Registration Process",
+              "https://res.cloudinary.com/dvydxq82p/image/upload/v1765540420/Screenshot_2025-12-12_185326_ievvv2.png",
+              "Effortless Student Borrowing",
+              "Students can easily browse available equipment, submit borrowing requests, and manage their lending records. View equipment linked to your courses and track your borrowing history with a simple, intuitive interface.",
+              "Browse & Search Equipment",
+              "Quick Borrowing Requests",
+              "View Personal Lending History",
+              "Course-Linked Equipment Access",
               true
             )}
             {featureDetail(
-              "https://bizweb.dktcdn.net/100/444/581/products/1-6d8ef4a6-01b5-45fd-906c-272cf0d27a9d-bea26076-46a2-4edb-b69b-4087a5fa6844-8983484b-ddbc-46ea-b13e-29586d358501-11dd4b37-d8f0-489c-94d3-ee36f7f0443f-bcc4987d-4c2e-4a2c-a144-2123b6f50339.png?v=1734923193447",
-              "Comprehensive Event Management",
-              "EventApp offers a complete suite of tools for managing every aspect of your event, from planning to execution. Create events, manage registrations, and engage with attendees seamlessly.",
-              "Create and Manage Events",
-              "Customizable Event Pages",
-              "Real-time Analytics",
-              "Seamless Registration Process",
+              "https://res.cloudinary.com/dvydxq82p/image/upload/v1765540245/Screenshot_2025-12-12_184647_axnwdo.png",
+              "Enhanced Communication & Feedback",
+              "Foster better collaboration between students and staff through integrated discussion boards and comment features. Share equipment reviews, report issues, and stay connected with real-time notifications.",
+              "Equipment Discussion Boards",
+              "Real-time Notifications",
+              "Comment & Review System",
+              "Staff-Student Messaging",
               false
             )}
           </div>
@@ -259,18 +259,18 @@ const LandingPage = () => {
             </h2>
             <div className="flex flex-col md:flex-row justify-center mt-10 gap-4">
               <img
-                src="https://eventify.solve.vn/LandingPage/desktop.png"
+                src="https://res.cloudinary.com/dvydxq82p/image/upload/v1765540245/Screenshot_2025-12-12_183226_ezmg8w.png"
                 alt="Desktop View"
                 className="w-164 rounded-2xl shadow-lg"
               />
               <div className="flex justify-center gap-2">
                 <img
-                  src="https://eventify.solve.vn/LandingPage/tablet.png"
+                  src="https://res.cloudinary.com/dvydxq82p/image/upload/v1765540688/Screenshot_2025-12-12_185801_jhuoxs.png"
                   alt="Tablet View"
                   className="w-60 rounded-2xl shadow-lg"
                 />
                 <img
-                  src="https://eventify.solve.vn/LandingPage/mobile.png"
+                  src="https://res.cloudinary.com/dvydxq82p/image/upload/v1765540246/Screenshot_2025-12-12_184805_cyzeiw.png"
                   alt="Mobile View"
                   className="w-40 rounded-2xl shadow-lg"
                 />
@@ -370,10 +370,11 @@ const LandingPage = () => {
         <FadeInSection>
           <div className="my-30 shadow-2xl rounded-2xl p-10 bg-white">
             <h1 className="text-center text-4xl font-bold">
-              Enter email for receive the notification
+              Stay Connected with EasyEd Track
             </h1>
             <h2 className="text-center text-lg mt-3">
-              Stay updated with the latest features and updates from EventApp
+              Subscribe to receive updates about new features, system
+              improvements, and important announcements
             </h2>
             <div className="flex justify-center items-center mt-10">
               <div className="flex gap-x-4">
@@ -477,7 +478,7 @@ const featureDetail = (
           <img
             src={Image}
             alt="Landing Image"
-            className="w-full h-64 rounded-2xl border-1 shadow-2xl"
+            className="w-full h-full rounded-2xl border-1 shadow-2xl"
           />
         </div>
         <div
