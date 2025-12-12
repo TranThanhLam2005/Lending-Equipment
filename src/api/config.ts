@@ -1,10 +1,10 @@
 // Backend API Configuration
 // Update these values based on your environment
-const API_HOST = "10.247.200.140";
-const API_PORT = 3000;
+const API_HOST = "lendingequipment-backend.onrender";
+const API_PORT = ".com";
 
 // Constructed Backend Base URL
-export const API_BASE_URL = `http://${API_HOST}:${API_PORT}`;
+export const API_BASE_URL = `https://${API_HOST}:${API_PORT}`;
 
 // Backend Service URLs (relative paths)
 const USER_SERVICE_URL = `/user`;
