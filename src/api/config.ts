@@ -4,7 +4,7 @@ const API_HOST = "lendingequipment-backend.onrender";
 const API_PORT = ".com";
 
 // Constructed Backend Base URL
-export const API_BASE_URL = `https://${API_HOST}:${API_PORT}`;
+export const API_BASE_URL = `https://${API_HOST}${API_PORT}`;
 
 // Backend Service URLs (relative paths)
 const USER_SERVICE_URL = `/user`;
