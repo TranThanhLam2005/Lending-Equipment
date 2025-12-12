@@ -4,9 +4,9 @@ import "./index.css";
 import App from "@/App";
 import Provider from "@/store/Provider";
 createRoot(document.getElementById("root")!).render(
-  //<StrictMode>
+  <StrictMode>
   <Provider>
     <App />
   </Provider>
-  //</StrictMode>,
+  </StrictMode>,
 );

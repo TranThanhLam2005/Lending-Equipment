@@ -1,5 +1,17 @@
-import {createContext} from 'react';
+import {createContext} from "react";
 
-const Context = createContext();
+type State = {
+  isSidebarOpen: boolean;
+};
+
+type Action = {
+  type: string;
+  payload?: any;
+};
+
+type ContextType = [State, React.Dispatch<Action>];
+
+const Context = createContext<ContextType | undefined>(undefined);
 
 export default Context;
+export type {State, Action, ContextType};

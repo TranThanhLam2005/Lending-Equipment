@@ -1,6 +1,6 @@
 import {apiClient} from "./client";
 import {API_ENDPOINTS} from "./config";
-import type {Equipment, EquipmentQueryParams} from "@/types/Type";
+import type {Equipment} from "@/types/Type";
 
 export const equipmentService = {
   /**

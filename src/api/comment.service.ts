@@ -1,6 +1,6 @@
 import {apiClient} from "./client";
 import {API_ENDPOINTS} from "./config";
-import type {Comment, CreateCommentData, UpdateCommentData} from "@/types/Type";
+import type {Comment, CreateCommentData} from "@/types/Type";
 
 export const commentService = {
   /**

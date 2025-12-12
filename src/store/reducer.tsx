@@ -1,20 +1,21 @@
-import { SET_SIDEBAR_OPEN } from './constants';
+import {SET_SIDEBAR_OPEN} from "./constants";
+import type {State, Action} from "./Context";
 
-const initState = {
-    isSidebarOpen: false,
+const initState: State = {
+  isSidebarOpen: false,
 };
 
-function reducer(state = initState, action: any) {
-    switch (action.type) {
-        case SET_SIDEBAR_OPEN:
-            return {
-                ...state,
-                isSidebarOpen: action.payload,
-            };
-        default:
-            return state;
-    }
+function reducer(state: State = initState, action: Action): State {
+  switch (action.type) {
+    case SET_SIDEBAR_OPEN:
+      return {
+        ...state,
+        isSidebarOpen: action.payload,
+      };
+    default:
+      return state;
+  }
 }
 
-export { initState };
+export {initState};
 export default reducer;

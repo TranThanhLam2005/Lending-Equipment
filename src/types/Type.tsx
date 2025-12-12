@@ -353,8 +353,8 @@ export interface UseCommentsReturn {
   isLoading: boolean;
   error: string | null;
   addComment: (content: string) => Promise<void>;
-  updateComment: (commentId: string, content: string) => Promise<void>;
-  deleteComment: (commentId: string) => Promise<void>;
+  // updateComment: (commentId: string, content: string) => Promise<void>;
+  // deleteComment: (commentId: string) => Promise<void>;
   refreshComments: () => Promise<void>;
 }
 

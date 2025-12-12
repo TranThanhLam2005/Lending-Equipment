@@ -1,8 +1,6 @@
 import {useEffect, useState} from "react";
 import type {LendingRecord, Equipment} from "@/types/Type";
 import {
-  BarChart,
-  Bar,
   LineChart,
   Line,
   PieChart,
@@ -12,7 +10,6 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
   ResponsiveContainer,
 } from "recharts";
 import {
@@ -255,7 +252,6 @@ const StudentDashBoard = () => {
     returned: 0,
     overdue: 0,
   });
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchDashboardData();
@@ -293,7 +289,7 @@ const StudentDashBoard = () => {
     } catch (error) {
       console.error("Error fetching dashboard data:", error);
     } finally {
-      setLoading(false);
+      // set loading to false
     }
   };
 

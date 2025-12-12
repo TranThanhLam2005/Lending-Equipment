@@ -63,41 +63,41 @@ export const useComments = (options: UseCommentsOptions): UseCommentsReturn => {
     }
   };
 
-  // Update comment
-  const updateComment = async (commentId: string, content: string) => {
-    setIsLoading(true);
-    setError(null);
+  // // Update comment
+  // const updateComment = async (commentId: string, content: string) => {
+  //   setIsLoading(true);
+  //   setError(null);
 
-    try {
-      const response = await commentService.updateComment(commentId, {content});
-      setComments((prev) =>
-        prev.map((comment) =>
-          comment.ID === commentId ? response.data : comment
-        )
-      );
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to update comment");
-      throw err;
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  //   try {
+  //     const response = await commentService.updateComment(commentId, {content});
+  //     setComments((prev) =>
+  //       prev.map((comment) =>
+  //         comment.ID === commentId ? response.data : comment
+  //       )
+  //     );
+  //   } catch (err) {
+  //     setError(err instanceof Error ? err.message : "Failed to update comment");
+  //     throw err;
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
-  // Delete comment
-  const deleteComment = async (commentId: string) => {
-    setIsLoading(true);
-    setError(null);
+  // // Delete comment
+  // const deleteComment = async (commentId: string) => {
+  //   setIsLoading(true);
+  //   setError(null);
 
-    try {
-      await commentService.deleteComment(commentId);
-      setComments((prev) => prev.filter((comment) => comment.ID !== commentId));
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to delete comment");
-      throw err;
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  //   try {
+  //     await commentService.deleteComment(commentId);
+  //     setComments((prev) => prev.filter((comment) => comment.ID !== commentId));
+  //   } catch (err) {
+  //     setError(err instanceof Error ? err.message : "Failed to delete comment");
+  //     throw err;
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
   return {
     // Data
@@ -107,8 +107,8 @@ export const useComments = (options: UseCommentsOptions): UseCommentsReturn => {
 
     // Actions
     addComment,
-    updateComment,
-    deleteComment,
+    // updateComment,
+    // deleteComment,
     refreshComments,
   };
 };
